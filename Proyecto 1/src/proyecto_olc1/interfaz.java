@@ -5,6 +5,21 @@
  */
 package proyecto_olc1;
 
+import Analizadores.A_sintactico;
+import Analizadores.Analizador_Lexico;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java_cup.runtime.Symbol;
+
 /**
  *
  * @author Moises
@@ -18,8 +33,8 @@ public class interfaz extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.jButton1.setOpaque(true);
-        this.jButton2.setOpaque(true);
+        this.btRun.setOpaque(true);
+        this.btClean.setOpaque(true);
         this.jButton3.setOpaque(true);
         this.jButton4.setOpaque(true);
         this.jTextField1.setEditable(false);
@@ -37,9 +52,9 @@ public class interfaz extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtCodigo = new javax.swing.JEditorPane();
+        btRun = new javax.swing.JButton();
+        btClean = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
@@ -66,21 +81,31 @@ public class interfaz extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel1.setText("OLC1_2S_2022 202010833");
 
-        jEditorPane1.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jEditorPane1.setToolTipText("");
-        jEditorPane1.setCaretColor(new java.awt.Color(0, 102, 102));
-        jEditorPane1.setSelectedTextColor(new java.awt.Color(255, 255, 237));
-        jEditorPane1.setSelectionColor(new java.awt.Color(0, 102, 102));
-        jScrollPane1.setViewportView(jEditorPane1);
+        txtCodigo.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        txtCodigo.setToolTipText("");
+        txtCodigo.setCaretColor(new java.awt.Color(0, 102, 102));
+        txtCodigo.setSelectedTextColor(new java.awt.Color(255, 255, 237));
+        txtCodigo.setSelectionColor(new java.awt.Color(0, 102, 102));
+        jScrollPane1.setViewportView(txtCodigo);
 
-        jButton1.setBackground(new java.awt.Color(51, 153, 0));
-        jButton1.setFont(new java.awt.Font("DialogInput", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Run");
+        btRun.setBackground(new java.awt.Color(51, 153, 0));
+        btRun.setFont(new java.awt.Font("DialogInput", 1, 24)); // NOI18N
+        btRun.setForeground(new java.awt.Color(255, 255, 255));
+        btRun.setText("Run");
+        btRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRunActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("DialogInput", 1, 22)); // NOI18N
-        jButton2.setText("Clean");
+        btClean.setBackground(new java.awt.Color(255, 255, 255));
+        btClean.setFont(new java.awt.Font("DialogInput", 1, 22)); // NOI18N
+        btClean.setText("Clean");
+        btClean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCleanActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("DialogInput", 3, 18)); // NOI18N
         jLabel2.setText("Errores:");
@@ -120,9 +145,9 @@ public class interfaz extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(btClean)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btRun, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1321, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,8 +168,8 @@ public class interfaz extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btClean, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -213,6 +238,47 @@ public class interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
+        
+        if (txtCodigo.getText().isEmpty()) {
+            System.out.println("No se ha escrito nada");
+        } else {
+        
+            try {
+                File archivo = new File("archivo.txt");
+                // Si el archivo no existe es creado
+                if (!archivo.exists()) {
+                    archivo.createNewFile();
+                }
+                FileWriter fw = new FileWriter(archivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(txtCodigo.getText());
+                bw.close();
+
+                //lexico
+                Analizador_Lexico lexico = new Analizador_Lexico(
+                        new BufferedReader(new FileReader(archivo))
+                );
+
+                //sintactico
+                try {
+                    A_sintactico sintactico = new A_sintactico(lexico);
+                    sintactico.parse();
+                } catch (Exception e) {
+                    System.out.println("error");
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }   
+        }
+    }//GEN-LAST:event_btRunActionPerformed
+
+    private void btCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanActionPerformed
+       txtCodigo.setText("");
+    }//GEN-LAST:event_btCleanActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -249,11 +315,10 @@ public class interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btClean;
+    private javax.swing.JButton btRun;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu2;
@@ -269,5 +334,6 @@ public class interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JEditorPane txtCodigo;
     // End of variables declaration//GEN-END:variables
 }

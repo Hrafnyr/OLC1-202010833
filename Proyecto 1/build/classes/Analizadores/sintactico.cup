@@ -1,0 +1,100 @@
+package Analizadores;
+import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+
+
+parser code
+{:
+    private Symbol s;
+    public void error(Symbol s){
+       this.s = s;
+   }
+
+    public Symbol getS(){
+        return this.s;
+    }
+
+:};
+
+//Terminales
+terminal Cadena;
+terminal digitoEntero;
+terminal digitoDecimal;
+terminal caracter;
+terminal Rnumero;
+terminal Rcadena;
+terminal Rboolean;
+terminal Rcaracter;
+terminal mas;
+terminal resta;
+terminal mult;
+terminal div;
+terminal Rpotencia;
+terminal Rmod;
+terminal abrir_par;
+terminal cerrar_par;
+terminal abrir_interr;
+terminal cerrar_interr;
+terminal puntoComa;
+terminal Coma;
+terminal mayor;
+terminal menor;
+terminal mayorIgual;
+terminal menorIgual;
+terminal igual;
+terminal diferente;
+terminal or;
+terminal and;
+terminal not;
+terminal inicio;
+terminal fin;
+terminal comentario;
+terminal Ringresar;
+terminal id;
+terminal Rcomo;
+terminal RCon_valor;
+terminal listaN;
+terminal asignacion;
+terminal condSi;
+terminal contrario;
+terminal finSi;
+terminal OSi;
+terminal segun;
+terminal hacer;
+terminal de_lo_contrario;
+terminal entonces;
+terminal finSegun;
+terminal para;
+terminal hasta;
+terminal incremento;
+terminal finPara;
+terminal mientras;
+terminal finMientras;
+terminal repetir;
+terminal hastaQue;
+terminal retornar;
+terminal metodo;
+terminal Finmetodo;
+terminal con_parametros;
+terminal funcion;
+terminal Finfuncion;
+terminal ejecutar;
+terminal imprimir;
+terminal imprimir_nl;
+
+//No terminales
+non terminal INICIO, E;
+
+
+
+//gramaticas
+start with INICIO;
+
+INICIO::= inicio E fin;
+
+
+E::= E Coma id   
+    | id  
+;
+
+
