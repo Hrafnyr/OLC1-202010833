@@ -265,7 +265,7 @@ public class interfaz extends javax.swing.JFrame {
                     A_sintactico sintactico = new A_sintactico(lexico);
                     sintactico.parse();
                 } catch (Exception e) {
-                    System.out.println("error");
+                    
                 }
 
 

@@ -28,15 +28,15 @@ L= [a-zA-Z]
 
 ID= _{L}({L}|{D})*_ //Nombre de variable
 
-Cadena= \"[^\"]*\" //Cadenas de texto
+Cadena= "\""[^\"]*"\"" //Cadenas de texto
 digitoEntero= [-]?{D}+ //Digitos enteros pos o neg
 digitoDecimal= [-]?{D}+.{D}+ //Digitos decimales
 
 caracter= '{L}' //caracter
 caracterASCII= \'\$\{[0-9]*\}\' //Debe validarse el codigo ASCII - caracter
 
-comentario1= \/\/[^\"]*\n
-comentario2= \/\*[^\"]*\*\/
+comentario1= ("//".*\r\n)|("//".*\n)|("//".*\r)
+comentario2= \/\*[^\*\/]*\*\/
 
 %%
 
@@ -64,22 +64,22 @@ comentario2= \/\*[^\"]*\*\/
                         }
 
 //Tipos de datos
-<YYINITIAL>"Número" {
+<YYINITIAL>"numero" {
                     System.out.println("Token Reservada:<Número> lexema:"+yytext());
                     return new Symbol(Simbolos.Rnumero,yyline,yycolumn,yytext());
                     }
 
-<YYINITIAL>"Cadena" {
+<YYINITIAL>"cadena" {
                     System.out.println("Token Reservada:<Cadena> lexema:"+yytext());
                     return new Symbol(Simbolos.Rcadena,yyline,yycolumn,yytext());
                     }
 
-<YYINITIAL>"Boolean"    {
+<YYINITIAL>"boolean"    {
                         System.out.println("Token Reservada:<Boolean> lexema:"+yytext());
                         return new Symbol(Simbolos.Rboolean,yyline,yycolumn,yytext());
                         }
 
-<YYINITIAL>"Carácter"   {
+<YYINITIAL>"caracter"   {
                         System.out.println("Token Reservada:<Carácter> lexema:"+yytext());
                         return new Symbol(Simbolos.Rcaracter,yyline,yycolumn,yytext());
                         }
@@ -207,13 +207,9 @@ comentario2= \/\*[^\"]*\*\/
 
 //Comentarios
 <YYINITIAL>{comentario1}    {
-                            System.out.println("Token:<comentario> lexema:"+yytext());
-                            return new Symbol(Simbolos.comentario, yyline,yycolumn, yytext());
                             }
        
 <YYINITIAL>{comentario2}    {
-                            System.out.println("Token:<comentario> lexema:"+yytext());
-                            return new Symbol(Simbolos.comentario,yyline,yycolumn, yytext());
                             }   
 
 //Declaracion
@@ -237,7 +233,7 @@ comentario2= \/\*[^\"]*\*\/
                         return new Symbol(Simbolos.RCon_valor,yyline,yycolumn, yytext());
                         }
 
-<YYINITIAL> "lista_de_nombres"  {
+<YYINITIAL> "lista"  {
                                 System.out.println("Token:<listaN> lexema:"+yytext());
                                 return new Symbol(Simbolos.listaN,yyline,yycolumn, yytext());
                                 }
