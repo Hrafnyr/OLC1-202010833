@@ -1,7 +1,7 @@
 inicio 
 
-ingresar lista _hola_ como cadena con_valor 3222;
 
-_jola_ es_igual _r1_,_r2_,_r4_;
+retornar -333;
+retornar -3.5;
 
 fin

@@ -34,8 +34,8 @@ terminal Rpotencia;
 terminal Rmod;
 terminal abrir_par;
 terminal cerrar_par;
-terminal abrir_interr;
-terminal cerrar_interr;
+terminal aitr;
+terminal citr;
 terminal puntoComa;
 terminal Coma;
 terminal mayor;
@@ -63,7 +63,6 @@ terminal finSi;
 terminal OSi;
 terminal segun;
 terminal hacer;
-terminal de_lo_contrario;
 terminal entonces;
 terminal finSegun;
 terminal para;
@@ -87,7 +86,11 @@ terminal imprimir_nl;
 //No terminales
 non terminal cuerpo,INICIO, ASIGNACION,DECLARACION, EXPRESION, TIPODATO;
 non terminal LISTA, CONDICIONALES;
-non terminal IF, CONDICION, INSTRUCCIONES; 
+non terminal IF, CONDICION, INSTRUCCIONES, BLOQUE;
+non terminal SEGUN,VALOR, CASE;
+non terminal PARA,VALORP;
+non terminal MIENTRAS,REPETIR;
+non terminal RETORNO;
 
 //gramaticas
 start with INICIO;
@@ -97,9 +100,13 @@ INICIO::= inicio cuerpo fin;
 cuerpo::= DECLARACION puntoComa
     | ASIGNACION puntoComa
     | CONDICIONALES
+    | EXPRESION
+    | RETORNO
+    | cuerpo EXPRESION
     | cuerpo CONDICIONALES
     | cuerpo DECLARACION puntoComa
     | cuerpo ASIGNACION puntoComa
+    | cuerpo RETORNO
 ;
 
 DECLARACION::= Ringresar id Rcomo TIPODATO RCon_valor EXPRESION
@@ -116,14 +123,71 @@ LISTA::= id
 ;
 
 CONDICIONALES::= IF
+                | SEGUN
+                | PARA
+                | MIENTRAS
+                | REPETIR
 ;
 
-IF::= si CONDICION entonces INSTRUCCIONES finSi
-      | si CONDICION 
-
-//Falta agregar esto
-EXPRESION::= digitoEntero
+IF::= condSi CONDICION entonces INSTRUCCIONES finSi
+    | condSi CONDICION INSTRUCCIONES  contrario INSTRUCCIONES finSi
+    | condSi CONDICION INSTRUCCIONES BLOQUE contrario INSTRUCCIONES finSi
 ;
+
+PARA::= para id asignacion VALORP hasta VALORP hacer INSTRUCCIONES finPara
+    | para id asignacion VALORP hasta VALORP hacer finPara
+    | para id asignacion VALORP hasta VALORP incremento digitoEntero hacer INSTRUCCIONES finPara
+    | para id asignacion VALORP hasta VALORP incremento digitoEntero hacer finPara
+;
+
+MIENTRAS::= mientras CONDICION hacer INSTRUCCIONES finMientras
+        | mientras CONDICION hacer finMientras
+;
+
+REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION
+        | repetir hastaQue CONDICION
+;
+
+RETORNO::= retornar EXPRESION puntoComa
+        | retornar CONDICION puntoComa
+        | retornar digitoEntero puntoComa
+        | retornar digitoDecimal puntoComa
+;
+
+VALORP::= id
+        | digitoEntero
+        | EXPRESION
+;
+
+SEGUN::= segun VALOR hacer CASE finSegun
+;
+
+CASE::= aitr VALOR citr entonces INSTRUCCIONES
+        | CASE contrario entonces INSTRUCCIONES
+        | CASE aitr VALOR citr entonces INSTRUCCIONES
+;
+
+VALOR::= id
+        | EXPRESION
+;
+
+//Falta agregar esto 
+EXPRESION::= digitoEntero mas digitoEntero
+            
+;
+
+
+BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
+        | BLOQUE OSi CONDICION entonces INSTRUCCIONES
+        | BLOQUE contrario entonces INSTRUCCIONES
+;
+
+CONDICION::= id igual id //Prueba
+;
+
+INSTRUCCIONES::= Cadena puntoComa //prueba
+;
+
 
 TIPODATO::= Rnumero
             | Rcadena

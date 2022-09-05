@@ -29,8 +29,8 @@ L= [a-zA-Z]
 ID= _{L}({L}|{D})*_ //Nombre de variable
 
 Cadena= "\""[^\"]*"\"" //Cadenas de texto
-digitoEntero= [-]?{D}+ //Digitos enteros pos o neg
-digitoDecimal= [-]?{D}+.{D}+ //Digitos decimales
+digitoEntero= [-]?({D})+ //Digitos enteros pos o neg
+digitoDecimal= [-]?({D})+"."({D})+ //Digitos decimales
 
 caracter= '{L}' //caracter
 caracterASCII= \'\$\{[0-9]*\}\' //Debe validarse el codigo ASCII - caracter
@@ -38,6 +38,8 @@ caracterASCII= \'\$\{[0-9]*\}\' //Debe validarse el codigo ASCII - caracter
 comentario1= ("//".*\r\n)|("//".*\n)|("//".*\r)
 comentario2= \/\*[^\*\/]*\*\/
 
+AbInt = [¿]
+Ssum = [+]
 %%
 
 //Area Léxica
@@ -86,7 +88,7 @@ comentario2= \/\*[^\*\/]*\*\/
 
 //Operaciones básicas y simbolos
 
-<YYINITIAL>"+"  {
+<YYINITIAL>{Ssum}  {
                 System.out.println("Token:<suma> lexema:"+yytext());
                 return new Symbol(Simbolos.mas,yyline,yycolumn,yytext());
                 }
@@ -126,14 +128,14 @@ comentario2= \/\*[^\*\/]*\*\/
                 return new Symbol(Simbolos.cerrar_par, yyline,yycolumn, yytext());
                 }   
 
-<YYINITIAL> "¿" {
+<YYINITIAL> {AbInt} {
                 System.out.println("Token:<interr_A> lexema:"+yytext());
-                return new Symbol(Simbolos.abrir_interr, yyline,yycolumn, yytext());
+                return new Symbol(Simbolos.aitr, yyline,yycolumn, yytext());
                 }
        
 <YYINITIAL> "?" {
                 System.out.println("Token:<interr_C> lexema:"+yytext());
-                return new Symbol(Simbolos.cerrar_interr, yyline,yycolumn, yytext());
+                return new Symbol(Simbolos.citr, yyline,yycolumn, yytext());
                 }   
 
 <YYINITIAL> ";" {
@@ -275,11 +277,6 @@ comentario2= \/\*[^\*\/]*\*\/
                     System.out.println("Token:<hacer> lexema:"+yytext());
                     return new Symbol(Simbolos.hacer, yyline,yycolumn, yytext());
                     }
-
-<YYINITIAL> "de_lo_contrario"   {
-                                System.out.println("Token:<de_lo_contrario> lexema:"+yytext());
-                                return new Symbol(Simbolos.de_lo_contrario, yyline,yycolumn, yytext());
-                                }
 
 <YYINITIAL> "entonces"  {
                         System.out.println("Token:<entonces> lexema:"+yytext());
