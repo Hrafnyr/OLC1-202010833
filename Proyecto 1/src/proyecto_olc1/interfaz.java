@@ -10,22 +10,35 @@ import Analizadores.Analizador_Lexico;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Moises
  */
 public class interfaz extends javax.swing.JFrame {
-
+    
+    JFileChooser ver = new JFileChooser("./");
+    
+    File archivo;
+    FileInputStream entrada;
+    FileOutputStream salida;
+    
+    
     /**
      * Creates new form interfaz
      */
@@ -37,9 +50,29 @@ public class interfaz extends javax.swing.JFrame {
         this.btClean.setOpaque(true);
         this.jButton3.setOpaque(true);
         this.jButton4.setOpaque(true);
-        this.jTextField1.setEditable(false);
+        this.txtErrores.setEditable(false);
+        
     }
-
+    
+    //abrir archivo
+    public String abrirArchivo(File archivo){
+        
+        String texto ="";
+        
+        try {
+            entrada = new FileInputStream(archivo);
+            int c;
+            
+            while ((c=entrada.read())!=-1) {                
+                char caracter = (char)c;
+                texto+=caracter;
+            }
+            
+        } catch (Exception e) {
+        }
+        return texto;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,7 +89,7 @@ public class interfaz extends javax.swing.JFrame {
         btRun = new javax.swing.JButton();
         btClean = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtErrores = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -110,15 +143,15 @@ public class interfaz extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("DialogInput", 3, 18)); // NOI18N
         jLabel2.setText("Errores:");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 0, 51));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("0");
-        jTextField1.setSelectedTextColor(new java.awt.Color(255, 255, 204));
-        jTextField1.setSelectionColor(new java.awt.Color(0, 102, 102));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtErrores.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtErrores.setForeground(new java.awt.Color(255, 0, 51));
+        txtErrores.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtErrores.setText("0");
+        txtErrores.setSelectedTextColor(new java.awt.Color(255, 255, 204));
+        txtErrores.setSelectionColor(new java.awt.Color(0, 102, 102));
+        txtErrores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtErroresActionPerformed(evt);
             }
         });
 
@@ -154,7 +187,7 @@ public class interfaz extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)
@@ -178,7 +211,7 @@ public class interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtErrores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(39, 39, 39))
@@ -188,6 +221,7 @@ public class interfaz extends javax.swing.JFrame {
 
         jMenu2.setText("Archivo");
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Abrir archivo");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +230,13 @@ public class interfaz extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem2);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Guardar como...");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
@@ -227,12 +267,31 @@ public class interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        
+        //filtro
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos olc", ".olc","olc");
+        ver.setFileFilter(filtro);
+        ver.setMultiSelectionEnabled(true);
+        
+        //abrir y obtener texto
+        if(ver.showDialog(null, "Abrir archivo")==JFileChooser.APPROVE_OPTION){
+            archivo = ver.getSelectedFile();
+            
+            if(archivo.canRead()){
+                String cont = abrirArchivo(archivo);
+                txtCodigo.setText(cont);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error");
+            }
+            
+        }
+        
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtErroresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtErroresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtErroresActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -240,6 +299,13 @@ public class interfaz extends javax.swing.JFrame {
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         
+        //Limpiar errores para nueva verificacion
+        Analizador_Lexico.TError.clear();
+        //mostrar errores
+        txtErrores.setEditable(true);
+        txtErrores.setText(String.valueOf(Analizador_Lexico.TError.size()));
+        txtErrores.setEditable(false);
+                
         if (txtCodigo.getText().isEmpty()) {
             System.out.println("No se ha escrito nada");
         } else {
@@ -259,6 +325,8 @@ public class interfaz extends javax.swing.JFrame {
                 Analizador_Lexico lexico = new Analizador_Lexico(
                         new BufferedReader(new FileReader(archivo))
                 );
+                
+                
 
                 //sintactico
                 try {
@@ -267,7 +335,12 @@ public class interfaz extends javax.swing.JFrame {
                 } catch (Exception e) {
                     
                 }
-
+                
+                
+                //mostrar errores
+                txtErrores.setEditable(true);
+                txtErrores.setText(String.valueOf(Analizador_Lexico.TError.size()));
+                txtErrores.setEditable(false);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -278,6 +351,25 @@ public class interfaz extends javax.swing.JFrame {
     private void btCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanActionPerformed
        txtCodigo.setText("");
     }//GEN-LAST:event_btCleanActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        if(ver.showDialog(null, "Guardar")==JFileChooser.APPROVE_OPTION){
+            archivo = ver.getSelectedFile().getAbsoluteFile() ;
+            if (archivo != null) {
+            String nombre = ver.getSelectedFile().getName();
+                try {
+                    FileWriter data = new FileWriter(archivo+".olc");
+                    data.write(txtCodigo.getText());
+                    data.close();
+                } catch (Exception e) {
+                    
+                }
+            }
+        }else{
+                return;
+            }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,7 +425,7 @@ public class interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JEditorPane txtCodigo;
+    private javax.swing.JTextField txtErrores;
     // End of variables declaration//GEN-END:variables
 }

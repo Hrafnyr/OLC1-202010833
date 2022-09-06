@@ -55,7 +55,6 @@ terminal Ringresar;
 terminal id;
 terminal Rcomo;
 terminal RCon_valor;
-terminal listaN;
 terminal asignacion;
 terminal condSi;
 terminal contrario;
@@ -90,7 +89,8 @@ non terminal IF, CONDICION, INSTRUCCIONES, BLOQUE;
 non terminal SEGUN,VALOR, CASE;
 non terminal PARA,VALORP;
 non terminal MIENTRAS,REPETIR;
-non terminal RETORNO;
+non terminal RETORNO, IMPRESION;
+non terminal METODO, LISTAP, FUNCION, LLAMADA;
 
 //gramaticas
 start with INICIO;
@@ -102,23 +102,50 @@ cuerpo::= DECLARACION puntoComa
     | CONDICIONALES
     | EXPRESION
     | RETORNO
+    | METODO
+    | FUNCION
+    | LLAMADA
+    | IMPRESION
     | cuerpo EXPRESION
     | cuerpo CONDICIONALES
     | cuerpo DECLARACION puntoComa
     | cuerpo ASIGNACION puntoComa
     | cuerpo RETORNO
+    | cuerpo METODO
+    | cuerpo FUNCION
+    | cuerpo LLAMADA
+    | cuerpo IMPRESION
 ;
 
-DECLARACION::= Ringresar id Rcomo TIPODATO RCon_valor EXPRESION
-            | Ringresar listaN id Rcomo TIPODATO RCon_valor EXPRESION
+LLAMADA::= ejecutar id abrir_par cerrar_par puntoComa
+    | ejecutar id abrir_par LISTAP cerrar_par puntoComa
+;
+
+METODO::= metodo id INSTRUCCIONES Finmetodo
+        | metodo id con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES Finmetodo
+;
+
+FUNCION::= funcion id TIPODATO INSTRUCCIONES Finfuncion
+        | funcion id TIPODATO INSTRUCCIONES RETORNO Finfuncion
+        | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES Finfuncion
+        | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES RETORNO Finfuncion
+;
+
+IMPRESION::= imprimir EXPRESION puntoComa
+    | imprimir_nl EXPRESION puntoComa
+;
+
+DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor EXPRESION
 ; 
 
-ASIGNACION::= id asignacion EXPRESION
-            | id igual LISTA puntoComa
+ASIGNACION::= LISTA asignacion EXPRESION
+;
+
+LISTAP::= id TIPODATO
+        | LISTAP Coma id TIPODATO
 ;
 
 LISTA::= id
-        | Coma id
         | LISTA Coma id
 ;
 

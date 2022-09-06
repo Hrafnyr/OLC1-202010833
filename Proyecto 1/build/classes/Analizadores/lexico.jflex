@@ -235,11 +235,6 @@ Ssum = [+]
                         return new Symbol(Simbolos.RCon_valor,yyline,yycolumn, yytext());
                         }
 
-<YYINITIAL> "lista"  {
-                                System.out.println("Token:<listaN> lexema:"+yytext());
-                                return new Symbol(Simbolos.listaN,yyline,yycolumn, yytext());
-                                }
-
 //Asignación
 <YYINITIAL> "->"    {
                     System.out.println("Token:<Simbolo_asignacion> lexema:"+yytext());
