@@ -1,20 +1,23 @@
 package Analizadores;
 import java_cup.runtime.Symbol;
-import java.util.LinkedList;
-
 
 parser code 
 {:
     
+
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
             System.err.println("Error Sintáctico en la Línea " + (s.left) +" Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+            claseErrores datos = new claseErrores(String.valueOf(s.value), "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            Analizador_Lexico.TError.add(datos);
     } 
     
-//Método al que se llama en el momento en que ya no es posible una recuperación de errores. 
+    //Método al que se llama en el momento en que ya no es posible una recuperación de errores. 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
             System.err.println("Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
-    }  
+            claseErrores datos = new claseErrores("Null", "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            Analizador_Lexico.TError.add(datos);
+    }
 :} 
 
 //Terminales
@@ -22,6 +25,11 @@ terminal Cadena;
 terminal digitoEntero;
 terminal digitoDecimal;
 terminal caracter;
+terminal caracterAS;
+terminal Rtrue;
+terminal Rfalse;
+terminal abrir_cor;
+terminal cerrar_cor;
 terminal Rnumero;
 terminal Rcadena;
 terminal Rboolean;
@@ -49,8 +57,6 @@ terminal and;
 terminal not;
 terminal inicio;
 terminal fin;
-terminal comentario1;
-terminal comentario2;
 terminal Ringresar;
 terminal id;
 terminal Rcomo;
@@ -86,39 +92,43 @@ terminal imprimir_nl;
 non terminal cuerpo,INICIO, ASIGNACION,DECLARACION, EXPRESION, TIPODATO;
 non terminal LISTA, CONDICIONALES;
 non terminal IF, CONDICION, INSTRUCCIONES, BLOQUE;
-non terminal SEGUN,VALOR, CASE;
-non terminal PARA,VALORP;
+non terminal SEGUN, CASE;
+non terminal PARA;
 non terminal MIENTRAS,REPETIR;
 non terminal RETORNO, IMPRESION;
-non terminal METODO, LISTAP, FUNCION, LLAMADA;
+non terminal METODO, LISTAP, FUNCION, LLAMADA;}
+non terminal OP, OPL;
+non terminal LEJC;
 
 //gramaticas
 start with INICIO;
 
-INICIO::= inicio cuerpo fin;
+INICIO::= inicio cuerpo fin
+;
 
-cuerpo::= DECLARACION puntoComa
-    | ASIGNACION puntoComa
+cuerpo::= DECLARACION 
+    | ASIGNACION 
     | CONDICIONALES
-    | EXPRESION
     | RETORNO
     | METODO
     | FUNCION
     | LLAMADA
     | IMPRESION
-    | cuerpo EXPRESION
     | cuerpo CONDICIONALES
-    | cuerpo DECLARACION puntoComa
-    | cuerpo ASIGNACION puntoComa
+    | cuerpo DECLARACION 
+    | cuerpo ASIGNACION 
     | cuerpo RETORNO
     | cuerpo METODO
     | cuerpo FUNCION
     | cuerpo LLAMADA
     | cuerpo IMPRESION
+    | error puntoComa {:System.out.println("Se espera punto y coma");:}
+    | error asignacion {:System.out.println("Se espera ->");:}
+    | error Coma {:System.out.println("Se espera coma");:}
 ;
 
 LLAMADA::= ejecutar id abrir_par cerrar_par puntoComa
-    | ejecutar id abrir_par LISTAP cerrar_par puntoComa
+    | ejecutar id abrir_par LEJC cerrar_par puntoComa
 ;
 
 METODO::= metodo id INSTRUCCIONES Finmetodo
@@ -131,14 +141,14 @@ FUNCION::= funcion id TIPODATO INSTRUCCIONES Finfuncion
         | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES RETORNO Finfuncion
 ;
 
-IMPRESION::= imprimir EXPRESION puntoComa
-    | imprimir_nl EXPRESION puntoComa
+IMPRESION::= imprimir CONDICION puntoComa
+    | imprimir_nl CONDICION puntoComa
 ;
 
-DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor EXPRESION
+DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION puntoComa
 ; 
 
-ASIGNACION::= LISTA asignacion EXPRESION
+ASIGNACION::= LISTA asignacion CONDICION puntoComa
 ;
 
 LISTAP::= id TIPODATO
@@ -147,6 +157,10 @@ LISTAP::= id TIPODATO
 
 LISTA::= id
         | LISTA Coma id
+;
+
+LEJC::= EXPRESION
+        | LEJC Coma EXPRESION
 ;
 
 CONDICIONALES::= IF
@@ -158,13 +172,13 @@ CONDICIONALES::= IF
 
 IF::= condSi CONDICION entonces INSTRUCCIONES finSi
     | condSi CONDICION INSTRUCCIONES  contrario INSTRUCCIONES finSi
-    | condSi CONDICION INSTRUCCIONES BLOQUE contrario INSTRUCCIONES finSi
+    | condSi CONDICION INSTRUCCIONES BLOQUE  finSi
 ;
 
-PARA::= para id asignacion VALORP hasta VALORP hacer INSTRUCCIONES finPara
-    | para id asignacion VALORP hasta VALORP hacer finPara
-    | para id asignacion VALORP hasta VALORP incremento digitoEntero hacer INSTRUCCIONES finPara
-    | para id asignacion VALORP hasta VALORP incremento digitoEntero hacer finPara
+PARA::= para id asignacion CONDICION hasta CONDICION hacer INSTRUCCIONES finPara
+    | para id asignacion CONDICION hasta CONDICION hacer finPara
+    | para id asignacion CONDICION hasta CONDICION incremento digitoEntero hacer INSTRUCCIONES finPara
+    | para id asignacion CONDICION hasta CONDICION incremento digitoEntero hacer finPara
 ;
 
 MIENTRAS::= mientras CONDICION hacer INSTRUCCIONES finMientras
@@ -175,44 +189,61 @@ REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION
         | repetir hastaQue CONDICION
 ;
 
-RETORNO::= retornar EXPRESION puntoComa
-        | retornar CONDICION puntoComa
-        | retornar digitoEntero puntoComa
-        | retornar digitoDecimal puntoComa
+RETORNO::= retornar CONDICION puntoComa
 ;
 
-VALORP::= id
-        | digitoEntero
-        | EXPRESION
+SEGUN::= segun CONDICION hacer CASE finSegun
 ;
 
-SEGUN::= segun VALOR hacer CASE finSegun
-;
-
-CASE::= aitr VALOR citr entonces INSTRUCCIONES
+CASE::= aitr CONDICION citr entonces INSTRUCCIONES
         | CASE contrario entonces INSTRUCCIONES
-        | CASE aitr VALOR citr entonces INSTRUCCIONES
+        | CASE aitr CONDICION citr entonces INSTRUCCIONES
 ;
 
-VALOR::= id
-        | EXPRESION
+//Falta operaciones aritmeticas
+EXPRESION::= digitoEntero 
+    | digitoDecimal 
+    | id 
+    | Cadena 
+    | caracter 
+    | Rtrue 
+    | Rfalse 
+    | caracterAS 
 ;
-
-//Falta agregar esto 
-EXPRESION::= digitoEntero mas digitoEntero
-            
-;
-
 
 BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
         | BLOQUE OSi CONDICION entonces INSTRUCCIONES
-        | BLOQUE contrario entonces INSTRUCCIONES
+        | BLOQUE contrario INSTRUCCIONES
 ;
 
-CONDICION::= id igual id //Prueba
+CONDICION::= EXPRESION 
+        | EXPRESION OP EXPRESION 
+        | CONDICION OPL EXPRESION   
 ;
 
-INSTRUCCIONES::= Cadena puntoComa //prueba
+OP::= mayor
+    | menor
+    | mayorIgual
+    | menorIgual
+    | igual
+    | diferente
+;
+
+OPL::= or
+    | and
+    | not
+;
+
+INSTRUCCIONES::= DECLARACION
+    | ASIGNACION
+    | CONDICIONALES
+    | LLAMADA
+    | IMPRESION
+    | INSTRUCCIONES DECLARACION 
+    | INSTRUCCIONES ASIGNACION
+    | INSTRUCCIONES CONDICIONALES
+    | INSTRUCCIONES LLAMADA
+    | INSTRUCCIONES IMPRESION
 ;
 
 

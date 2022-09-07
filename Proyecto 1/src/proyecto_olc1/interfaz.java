@@ -7,6 +7,7 @@ package proyecto_olc1;
 
 import Analizadores.A_sintactico;
 import Analizadores.Analizador_Lexico;
+import Analizadores.claseErrores;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +38,9 @@ public class interfaz extends javax.swing.JFrame {
     File archivo;
     FileInputStream entrada;
     FileOutputStream salida;
+    String nombre;
+
+    
     
     
     /**
@@ -247,6 +251,11 @@ public class interfaz extends javax.swing.JFrame {
         jMenu3.add(jMenuItem3);
 
         jMenuItem4.setText("Errores");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem4);
 
         jMenuBar1.add(jMenu3);
@@ -298,9 +307,10 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
-        
-        //Limpiar errores para nueva verificacion
+   
+        //Limpiar errores para nueva verificacion y tabla
         Analizador_Lexico.TError.clear();
+        
         //mostrar errores
         txtErrores.setEditable(true);
         txtErrores.setText(String.valueOf(Analizador_Lexico.TError.size()));
@@ -337,10 +347,12 @@ public class interfaz extends javax.swing.JFrame {
                 }
                 
                 
-                //mostrar errores
+                //mostrar errores lexicos y sintacticos
+                
                 txtErrores.setEditable(true);
                 txtErrores.setText(String.valueOf(Analizador_Lexico.TError.size()));
                 txtErrores.setEditable(false);
+               
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -350,6 +362,9 @@ public class interfaz extends javax.swing.JFrame {
 
     private void btCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanActionPerformed
        txtCodigo.setText("");
+       txtErrores.setEditable(true);
+       txtErrores.setText("0");
+       txtErrores.setEditable(false);
     }//GEN-LAST:event_btCleanActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -370,6 +385,14 @@ public class interfaz extends javax.swing.JFrame {
                 return;
             }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        //mostrar ventanta de errores
+        ReporteErrores vR = new ReporteErrores();
+        vR.Clear_T(); //limpia tabla
+        vR.addNewRow(); //agrega nuevos datos
+        vR.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

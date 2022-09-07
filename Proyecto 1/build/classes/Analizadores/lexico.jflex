@@ -5,7 +5,7 @@ import java.util.LinkedList;
 //directrices
 %%
 
-//Tabla de errores léxicos
+//Tabla de errores
 %{
     public static LinkedList<claseErrores> TError = new LinkedList<claseErrores>();
 %}
@@ -21,6 +21,7 @@ import java.util.LinkedList;
 %ignorecase
 %line
 %unicode
+%ignorecase //case insensitive off
 
 //Expresiones regulares
 D= [0-9] 
@@ -29,14 +30,14 @@ L= [a-zA-Z]
 ID= _{L}({L}|{D})*_ //Nombre de variable
 
 Cadena= "\""[^\"]*"\"" //Cadenas de texto
-digitoEntero= [-]?({D})+ //Digitos enteros pos o neg
-digitoDecimal= [-]?({D})+"."({D})+ //Digitos decimales
+digitoEntero= ({D})+ //Digitos enteros positivos
+digitoDecimal= ({D})+"."({D})+ //Digitos decimales
 
 caracter= '{L}' //caracter
-caracterASCII= \'\$\{[0-9]*\}\' //Debe validarse el codigo ASCII - caracter
+caracterAS= ['][$][{]({D})+[}][']
 
 comentario1= ("//".*\r\n)|("//".*\n)|("//".*\r)
-comentario2= \/\*[^\*\/]*\*\/
+comentario2= \/\**[^\*\/]*\**\/
 
 AbInt = [¿]
 Ssum = [+]
@@ -65,6 +66,11 @@ Ssum = [+]
                         return new Symbol(Simbolos.caracter,yyline,yycolumn,yytext());
                         }
 
+<YYINITIAL>{caracterAS}   {
+                        System.out.println("Token:<caracterAS> lexema:"+yytext());
+                        return new Symbol(Simbolos.caracterAS,yyline,yycolumn,yytext());
+                        }
+
 //Tipos de datos
 <YYINITIAL>"numero" {
                     System.out.println("Token Reservada:<Número> lexema:"+yytext());
@@ -84,6 +90,17 @@ Ssum = [+]
 <YYINITIAL>"caracter"   {
                         System.out.println("Token Reservada:<Carácter> lexema:"+yytext());
                         return new Symbol(Simbolos.Rcaracter,yyline,yycolumn,yytext());
+                        }
+
+//datos booleanos
+<YYINITIAL>"verdadero"   {
+                        System.out.println("Token:<Verdadero> lexema:"+yytext());
+                        return new Symbol(Simbolos.Rtrue,yyline,yycolumn,yytext());
+                        }
+
+<YYINITIAL>"falso"   {
+                        System.out.println("Token:<falso> lexema:"+yytext());
+                        return new Symbol(Simbolos.Rfalse,yyline,yycolumn,yytext());
                         }
 
 //Operaciones básicas y simbolos
@@ -126,7 +143,17 @@ Ssum = [+]
 <YYINITIAL> ")" {
                 System.out.println("Token:<Parentesis_C> lexema:"+yytext());
                 return new Symbol(Simbolos.cerrar_par, yyline,yycolumn, yytext());
-                }   
+                }
+
+<YYINITIAL> "[" {
+                System.out.println("Token:<Parentesis_A> lexema:"+yytext());
+                return new Symbol(Simbolos.abrir_cor, yyline,yycolumn, yytext());
+                }
+       
+<YYINITIAL> "]" {
+                System.out.println("Token:<Parentesis_C> lexema:"+yytext());
+                return new Symbol(Simbolos.cerrar_cor, yyline,yycolumn, yytext());
+                }     
 
 <YYINITIAL> {AbInt} {
                 System.out.println("Token:<interr_A> lexema:"+yytext());

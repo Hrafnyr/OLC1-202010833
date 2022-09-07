@@ -19,6 +19,29 @@ public class claseErrores {
         this.columna=c;
         
     }
+
+    public String getLexema() {
+        return lexema;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+    
+    
+    
     public String getError(){
         return "[ "+this.lexema+ " , "+this.tipo+" , "+this.descripcion+","+this.fila+","+this.columna+"]";
     }
