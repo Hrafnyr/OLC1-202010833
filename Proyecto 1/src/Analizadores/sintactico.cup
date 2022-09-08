@@ -1,9 +1,13 @@
 package Analizadores;
 import java_cup.runtime.Symbol;
 
+//java -jar java-cup-11b.jar -parser A_sintactico -symbols Simbolos sintactico.cup
+
 parser code 
 {:
-    
+    //Variable que guarda el código python
+    public String txtPython = "";
+    String auxP = "";
 
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
@@ -19,6 +23,8 @@ parser code
             Analizador_Lexico.TError.add(datos);
     }
 :} 
+
+//FALTA LIMPIAR TEXTO Y ELIMINAR SYSTEM.OUT.PRINT...
 
 //Terminales
 terminal Cadena;
@@ -127,22 +133,24 @@ cuerpo::= DECLARACION
     | error Coma {:System.out.println("Se espera coma");:}
 ;
 
-LLAMADA::= ejecutar id abrir_par cerrar_par puntoComa
-    | ejecutar id abrir_par LEJC cerrar_par puntoComa
+LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
+            {:txtPython+= String.valueOf(idd)+"()\n"; System.out.println(txtPython);:}
+    | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
+    {:txtPython+= String.valueOf(idd)+"("+auxP+")\n"; System.out.println(txtPython); auxP="";:}
 ;
 
-METODO::= metodo id INSTRUCCIONES Finmetodo
-        | metodo id con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES Finmetodo
+METODO::= metodo id:idd {:txtPython+="def "+String.valueOf(idd)+"\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
+        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
 ;
 
-FUNCION::= funcion id TIPODATO INSTRUCCIONES Finfuncion
-        | funcion id TIPODATO INSTRUCCIONES RETORNO Finfuncion
-        | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES Finfuncion
-        | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES RETORNO Finfuncion
+FUNCION::= funcion id:idd TIPODATO {:txtPython+="def "+String.valueOf(idd)+"\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finfuncion
+        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES  Finfuncion 
 ;
 
-IMPRESION::= imprimir CONDICION puntoComa
-    | imprimir_nl CONDICION puntoComa
+IMPRESION::= imprimir CONDICION:b puntoComa 
+            {:txtPython+="print("+String.valueOf(b)+")\n"; System.out.println(txtPython);:}
+        | imprimir_nl CONDICION:b puntoComa 
+            {:txtPython+="print("+String.valueOf(b)+"\\n)\n"; System.out.println(txtPython);:}
 ;
 
 DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION puntoComa
@@ -151,16 +159,16 @@ DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION puntoComa
 ASIGNACION::= LISTA asignacion CONDICION puntoComa
 ;
 
-LISTAP::= id TIPODATO
-        | LISTAP Coma id TIPODATO
+LISTAP::= id:idd TIPODATO {:auxP+=String.valueOf(idd);:} 
+        | LISTAP Coma id:idd  TIPODATO {:auxP+=","+String.valueOf(idd);:}
 ;
 
 LISTA::= id
         | LISTA Coma id
 ;
 
-LEJC::= EXPRESION
-        | LEJC Coma EXPRESION
+LEJC::= CONDICION:b  {:auxP+=b.toString();:}
+        | LEJC    Coma CONDICION:b  {:auxP+=","+b.toString();:}
 ;
 
 CONDICIONALES::= IF
@@ -189,7 +197,7 @@ REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION
         | repetir hastaQue CONDICION
 ;
 
-RETORNO::= retornar CONDICION puntoComa
+RETORNO::= retornar CONDICION:b puntoComa {:txtPython+="return "+String.valueOf(b)+"\n"; System.out.println(txtPython);:}
 ;
 
 SEGUN::= segun CONDICION hacer CASE finSegun
@@ -201,14 +209,14 @@ CASE::= aitr CONDICION citr entonces INSTRUCCIONES
 ;
 
 //Falta operaciones aritmeticas
-EXPRESION::= digitoEntero 
-    | digitoDecimal 
-    | id 
-    | Cadena 
-    | caracter 
-    | Rtrue 
-    | Rfalse 
-    | caracterAS 
+EXPRESION::= digitoEntero:a {:RESULT = a;:} 
+    | digitoDecimal:a {:RESULT = a;:} 
+    | id:a  {:RESULT = a;:} 
+    | Cadena:a {:RESULT = a;:} 
+    | caracter:a {:RESULT = a;:} 
+    | Rtrue:a {:RESULT = a;:} 
+    | Rfalse:a {:RESULT = a;:} 
+    | caracterAS:a {:RESULT = a;:} 
 ;
 
 BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
@@ -216,7 +224,8 @@ BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
         | BLOQUE contrario INSTRUCCIONES
 ;
 
-CONDICION::= EXPRESION 
+//Falta codigo de traduccion
+CONDICION::= EXPRESION:a {:RESULT = a;:} 
         | EXPRESION OP EXPRESION 
         | CONDICION OPL EXPRESION   
 ;
@@ -229,9 +238,9 @@ OP::= mayor
     | diferente
 ;
 
-OPL::= or
-    | and
-    | not
+OPL::= or:opl {:RESULT=opl;:}
+    | and: opl {:RESULT=opl;:}
+    | not: opl {:RESULT=opl;:}
 ;
 
 INSTRUCCIONES::= DECLARACION
@@ -239,6 +248,8 @@ INSTRUCCIONES::= DECLARACION
     | CONDICIONALES
     | LLAMADA
     | IMPRESION
+    | RETORNO
+    | INSTRUCCIONES RETORNO
     | INSTRUCCIONES DECLARACION 
     | INSTRUCCIONES ASIGNACION
     | INSTRUCCIONES CONDICIONALES
@@ -247,8 +258,8 @@ INSTRUCCIONES::= DECLARACION
 ;
 
 
-TIPODATO::= Rnumero
-            | Rcadena
-            | Rboolean
-            | Rcaracter
+TIPODATO::= Rnumero:td {:RESULT=td;:}
+            | Rcadena:td {:RESULT=td;:}
+            | Rboolean:td {:RESULT=td;:}
+            | Rcaracter:td {:RESULT=td;:}
 ;
