@@ -368,7 +368,7 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btCleanActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+        //Metodo para guardar
         if(ver.showDialog(null, "Guardar")==JFileChooser.APPROVE_OPTION){
             archivo = ver.getSelectedFile().getAbsoluteFile() ;
             if (archivo != null) {

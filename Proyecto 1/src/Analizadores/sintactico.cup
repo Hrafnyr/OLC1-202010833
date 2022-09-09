@@ -2,12 +2,16 @@ package Analizadores;
 import java_cup.runtime.Symbol;
 
 //java -jar java-cup-11b.jar -parser A_sintactico -symbols Simbolos sintactico.cup
-
+//identacion python probar con contador de sentencias 
 parser code 
 {:
     //Variable que guarda el código python
     public String txtPython = "";
     String auxP = "";
+    String aux2="";
+    String tmpPS = "";
+    String tmp = "";
+    int cont1 = 0;
 
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
@@ -23,6 +27,8 @@ parser code
             Analizador_Lexico.TError.add(datos);
     }
 :} 
+
+
 
 //FALTA LIMPIAR TEXTO Y ELIMINAR SYSTEM.OUT.PRINT...
 
@@ -102,14 +108,15 @@ non terminal SEGUN, CASE;
 non terminal PARA;
 non terminal MIENTRAS,REPETIR;
 non terminal RETORNO, IMPRESION;
-non terminal METODO, LISTAP, FUNCION, LLAMADA;}
+non terminal METODO, LISTAP, FUNCION, LLAMADA;
 non terminal OP, OPL;
 non terminal LEJC;
+non terminal auxFS;
 
 //gramaticas
 start with INICIO;
 
-INICIO::= inicio cuerpo fin
+INICIO::= inicio {:txtPython+="def main():\n    ";:} cuerpo fin {:txtPython+="if __name__ == '__main__':\n    main()";System.out.println(txtPython);:}
 ;
 
 cuerpo::= DECLARACION 
@@ -136,39 +143,65 @@ cuerpo::= DECLARACION
 LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
             {:txtPython+= String.valueOf(idd)+"()\n"; System.out.println(txtPython);:}
     | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
-    {:txtPython+= String.valueOf(idd)+"("+auxP+")\n"; System.out.println(txtPython); auxP="";:}
+    {:txtPython+= String.valueOf(idd)+"("+aux2+")\n"; System.out.println(txtPython); auxP=""; aux2="";:}
 ;
 
-METODO::= metodo id:idd {:txtPython+="def "+String.valueOf(idd)+"\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
-        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
+METODO::= metodo id:idd {:txtPython+="def "+String.valueOf(idd)+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
+        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
 ;
 
-FUNCION::= funcion id:idd TIPODATO {:txtPython+="def "+String.valueOf(idd)+"\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finfuncion
-        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES  Finfuncion 
+FUNCION::= funcion id:idd TIPODATO {:txtPython+="def "+String.valueOf(idd)+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finfuncion
+        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES  Finfuncion 
 ;
 
 IMPRESION::= imprimir CONDICION:b puntoComa 
-            {:txtPython+="print("+String.valueOf(b)+")\n"; System.out.println(txtPython);:}
+            {:txtPython+="print("+auxP+")\n"; System.out.println(txtPython);auxP="";:}
         | imprimir_nl CONDICION:b puntoComa 
-            {:txtPython+="print("+String.valueOf(b)+"\\n)\n"; System.out.println(txtPython);:}
+            {:txtPython+="print("+auxP+"\\n)\n"; System.out.println(txtPython);auxP="";:}
 ;
 
-DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION puntoComa
+DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION:b puntoComa
+            {:txtPython+= aux2; aux2="";txtPython+=" = ";
+           
+            for(int i = 0 ; i <= cont1; i = i + 1)
+            {
+                if(i==0){
+                    tmp+=auxP;
+                }
+                else{
+                    tmp+= "," + auxP;
+                }
+             
+            }
+            ;txtPython+= tmp+"\n"; System.out.println(txtPython); auxP="";tmp="";cont1=0;:}
 ; 
 
-ASIGNACION::= LISTA asignacion CONDICION puntoComa
+ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
+            {:txtPython+= aux2; aux2="";txtPython+=" = ";
+           
+            for(int i = 0 ; i <= cont1; i = i + 1)
+            {
+                if(i==0){
+                    tmp+=auxP;
+                }
+                else{
+                    tmp+= "," + auxP;
+                }
+             
+            }
+            ;txtPython+= tmp+"\n"; System.out.println(txtPython); auxP="";tmp="";cont1=0;:}
 ;
 
-LISTAP::= id:idd TIPODATO {:auxP+=String.valueOf(idd);:} 
-        | LISTAP Coma id:idd  TIPODATO {:auxP+=","+String.valueOf(idd);:}
+LISTAP::= id:idd TIPODATO {:aux2+=String.valueOf(idd);:} 
+        | LISTAP Coma id:idd  TIPODATO {:aux2+=","+String.valueOf(idd);:}
 ;
 
-LISTA::= id
-        | LISTA Coma id
+LISTA::= id:idd {:aux2+=idd.toString();:}
+        | LISTA Coma id:idd {:aux2+=","+idd.toString();cont1=cont1+1;:}
 ;
 
-LEJC::= CONDICION:b  {:auxP+=b.toString();:}
-        | LEJC    Coma CONDICION:b  {:auxP+=","+b.toString();:}
+LEJC::= CONDICION:b  {:aux2+=auxP;:}
+        | LEJC    Coma CONDICION:b  {:aux2+=","+auxP;:}
 ;
 
 CONDICIONALES::= IF
@@ -178,34 +211,43 @@ CONDICIONALES::= IF
                 | REPETIR
 ;
 
-IF::= condSi CONDICION entonces INSTRUCCIONES finSi
-    | condSi CONDICION INSTRUCCIONES  contrario INSTRUCCIONES finSi
-    | condSi CONDICION INSTRUCCIONES BLOQUE  finSi
+IF::= condSi CONDICION:b {:txtPython+="if "+auxP+": \n    "; System.out.println(txtPython); auxP="";:} auxFS
 ;
 
-PARA::= para id asignacion CONDICION hasta CONDICION hacer INSTRUCCIONES finPara
-    | para id asignacion CONDICION hasta CONDICION hacer finPara
-    | para id asignacion CONDICION hasta CONDICION incremento digitoEntero hacer INSTRUCCIONES finPara
-    | para id asignacion CONDICION hasta CONDICION incremento digitoEntero hacer finPara
+auxFS::= entonces INSTRUCCIONES finSi {:System.out.println(txtPython);auxP="";:}
+    | INSTRUCCIONES contrario {:txtPython+="\nelse:\n    ";:} INSTRUCCIONES finSi {:System.out.println(txtPython);auxP="";:} 
+    | INSTRUCCIONES BLOQUE finSi {:System.out.println(txtPython);auxP="";:} 
+  
 ;
 
-MIENTRAS::= mientras CONDICION hacer INSTRUCCIONES finMientras
-        | mientras CONDICION hacer finMientras
+BLOQUE::= OSi CONDICION:b entonces {:txtPython+="\nelif "+auxP+":\n    ";:} INSTRUCCIONES
+        | BLOQUE OSi CONDICION:b entonces {:txtPython+="\nelif "+auxP+":\n    ";:} INSTRUCCIONES
+        | BLOQUE contrario {:txtPython+="\nelse:\n    ";:}  INSTRUCCIONES
 ;
 
-REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION
-        | repetir hastaQue CONDICION
+PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finPara 
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer finPara {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+")\n\t"; System.out.println(txtPython); auxP="";:}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+","+String.valueOf(num)+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finPara
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer finPara  {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+","+String.valueOf(num)+")\n\t"; System.out.println(txtPython); auxP="";:}
 ;
 
-RETORNO::= retornar CONDICION:b puntoComa {:txtPython+="return "+String.valueOf(b)+"\n"; System.out.println(txtPython);:}
+MIENTRAS::= mientras CONDICION:b hacer {:txtPython+="while "+auxP+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finMientras
+        | mientras CONDICION:b hacer finMientras {:txtPython+="while "+auxP+"\n    "; System.out.println(txtPython); auxP="";:}
 ;
 
-SEGUN::= segun CONDICION hacer CASE finSegun
+REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION:b {:txtPython+="while "+auxP+"\n    if "+String.valueOf(b)+"== False:\n         break"; System.out.println(txtPython); auxP="";:}
+        | repetir hastaQue CONDICION:b {:txtPython+="while "+b+"\n    if "+auxP+"== False:\n         break"; System.out.println(txtPython); auxP="";:}
 ;
 
-CASE::= aitr CONDICION citr entonces INSTRUCCIONES
-        | CASE contrario entonces INSTRUCCIONES
-        | CASE aitr CONDICION citr entonces INSTRUCCIONES
+RETORNO::= retornar CONDICION:b puntoComa {:txtPython+="return "+auxP+"\n"; System.out.println(txtPython);:}
+;
+
+SEGUN::= segun CONDICION:b hacer {:tmpPS+=auxP; System.out.println(txtPython); auxP="";:} CASE finSegun {:tmpPS="";:}
+;
+
+CASE::= aitr CONDICION:c citr entonces {:txtPython+="if "+tmpPS+"=="+auxP+"\n    ";auxP="";:} INSTRUCCIONES 
+        | CASE contrario entonces {:txtPython+="\nelse: \n    ";:} INSTRUCCIONES
+        | CASE aitr CONDICION:c citr entonces {:txtPython+="elif "+tmpPS+"=="+auxP+"\n    ";auxP="";:} INSTRUCCIONES
 ;
 
 //Falta operaciones aritmeticas
@@ -219,30 +261,28 @@ EXPRESION::= digitoEntero:a {:RESULT = a;:}
     | caracterAS:a {:RESULT = a;:} 
 ;
 
-BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
-        | BLOQUE OSi CONDICION entonces INSTRUCCIONES
-        | BLOQUE contrario INSTRUCCIONES
+//Falta codigo de traduccion para más de una expresion
+CONDICION::= EXPRESION:a {:auxP+= a.toString();:} 
+        | EXPRESION:a OP:opr EXPRESION:s {:auxP+=a.toString()+opr+s.toString();System.out.println(txtPython);:}
+        | CONDICION OPL:oplr EXPRESION:a {:auxP+=oplr.toString()+" "+a.toString();:}  
 ;
 
-//Falta codigo de traduccion
-CONDICION::= EXPRESION:a {:RESULT = a;:} 
-        | EXPRESION OP EXPRESION 
-        | CONDICION OPL EXPRESION   
+//TERMINADO
+OP::= mayor:oop {:RESULT=">";:}
+    | menor:oop {:RESULT="<";:}
+    | mayorIgual:oop {:RESULT=">=";:}
+    | menorIgual:oop {:RESULT="<=";:}
+    | igual:oop {:RESULT="==";:}
+    | diferente:oop {:RESULT="!=";:}
 ;
 
-OP::= mayor
-    | menor
-    | mayorIgual
-    | menorIgual
-    | igual
-    | diferente
-;
-
+//TERMINADO
 OPL::= or:opl {:RESULT=opl;:}
     | and: opl {:RESULT=opl;:}
     | not: opl {:RESULT=opl;:}
 ;
 
+//TERMINADO
 INSTRUCCIONES::= DECLARACION
     | ASIGNACION
     | CONDICIONALES
@@ -257,7 +297,7 @@ INSTRUCCIONES::= DECLARACION
     | INSTRUCCIONES IMPRESION
 ;
 
-
+//TERMINADO
 TIPODATO::= Rnumero:td {:RESULT=td;:}
             | Rcadena:td {:RESULT=td;:}
             | Rboolean:td {:RESULT=td;:}

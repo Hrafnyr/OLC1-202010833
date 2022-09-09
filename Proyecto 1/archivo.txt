@@ -1,18 +1,5 @@
 inicio
 
-metodo _hola_ con_parametros(_r_ cadena, _s_ numero)
-	retornar "hola mundo";
-fin_metodo
-
-
-metodo _hola_ con_parametros (_r_ cadena)
-	retornar "hola mundo";
-fin_metodo
-
-
-metodo _hola_
-	retornar "hola mundo";
-fin_metodo
-
+_var1_,_var1_,_var1_,_var1_,_var1_ -> 5;
 
 fin

@@ -22,14 +22,13 @@ import java.util.LinkedList;
 %line
 %unicode
 %ignorecase //case insensitive off
-
+// java -jar jflex-full-1.7.0.jar lexico.jflex
 //Expresiones regulares
 D= [0-9] 
 L= [a-zA-Z]
 
 ID= _{L}({L}|{D})*_ //Nombre de variable
-
-Cadena= "\""[^\"]*"\"" //Cadenas de texto
+Cadena= "\""[^\"\n]*"\"" //Cadenas de texto
 digitoEntero= ({D})+ //Digitos enteros positivos
 digitoDecimal= ({D})+"."({D})+ //Digitos decimales
 
