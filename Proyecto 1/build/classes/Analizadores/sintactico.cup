@@ -2,16 +2,34 @@ package Analizadores;
 import java_cup.runtime.Symbol;
 
 //java -jar java-cup-11b.jar -parser A_sintactico -symbols Simbolos sintactico.cup
-//identacion python probar con contador de sentencias 
+
 parser code 
 {:
     //Variable que guarda el código python
-    public String txtPython = "";
+    public static String txtPython = "";
     String auxP = "";
     String aux2="";
     String tmpPS = "";
     String tmp = "";
+    String tmpPARA ="";
     int cont1 = 0;
+
+    int contTPY = 0;
+    
+    //caracter ascii
+    String cA = "";
+    int c = 0;
+
+    //Metodo para calcular la identación correcta python
+    public String tab(){
+        String tab = "";
+        for(int i = 0; i < (contTPY*4); i++) {
+            tab+=" ";
+
+        }
+       
+        return tab;
+    }
 
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
@@ -27,10 +45,6 @@ parser code
             Analizador_Lexico.TError.add(datos);
     }
 :} 
-
-
-
-//FALTA LIMPIAR TEXTO Y ELIMINAR SYSTEM.OUT.PRINT...
 
 //Terminales
 terminal Cadena;
@@ -116,7 +130,9 @@ non terminal auxFS;
 //gramaticas
 start with INICIO;
 
-INICIO::= inicio {:txtPython+="def main():\n    ";:} cuerpo fin {:txtPython+="if __name__ == '__main__':\n    main()";System.out.println(txtPython);:}
+INICIO::= inicio 
+    {: txtPython+=tab()+"def main():\n";contTPY+=1;:} cuerpo fin {:txtPython+="if __name__ == '__main__':\n    main()";contTPY-=1;System.out.println(txtPython);:}
+    | error fin {:System.out.println("Falta inicio");:}
 ;
 
 cuerpo::= DECLARACION 
@@ -135,33 +151,28 @@ cuerpo::= DECLARACION
     | cuerpo FUNCION
     | cuerpo LLAMADA
     | cuerpo IMPRESION
-    | error puntoComa {:System.out.println("Se espera punto y coma");:}
-    | error asignacion {:System.out.println("Se espera ->");:}
-    | error Coma {:System.out.println("Se espera coma");:}
 ;
 
 LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
-            {:txtPython+= String.valueOf(idd)+"()\n"; System.out.println(txtPython);:}
+            {:txtPython+=tab()+String.valueOf(idd)+"()\n";:}
     | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
-    {:txtPython+= String.valueOf(idd)+"("+aux2+")\n"; System.out.println(txtPython); auxP=""; aux2="";:}
+    {:txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n"; auxP=""; aux2="";:}
 ;
 
-METODO::= metodo id:idd {:txtPython+="def "+String.valueOf(idd)+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
-        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finmetodo
+METODO::= metodo id:idd {:txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";:} INSTRUCCIONES Finmetodo {:contTPY-=1;:}
+        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";contTPY+=1; aux2="";:} INSTRUCCIONES Finmetodo {:contTPY-=1;:}
 ;
 
-FUNCION::= funcion id:idd TIPODATO {:txtPython+="def "+String.valueOf(idd)+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES Finfuncion
-        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+="def "+String.valueOf(idd)+"("+auxP+")\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES  Finfuncion 
+FUNCION::= funcion id:idd TIPODATO {:txtPython+=tab()+"def "+String.valueOf(idd)+":\n"; contTPY+=1; auxP="";:} INSTRUCCIONES Finfuncion {:contTPY-=1;:}
+        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";:} INSTRUCCIONES  Finfuncion {:contTPY-=1;:}
 ;
 
-IMPRESION::= imprimir CONDICION:b puntoComa 
-            {:txtPython+="print("+auxP+")\n"; System.out.println(txtPython);auxP="";:}
-        | imprimir_nl CONDICION:b puntoComa 
-            {:txtPython+="print("+auxP+"\\n)\n"; System.out.println(txtPython);auxP="";:}
+IMPRESION::= imprimir CONDICION:b puntoComa {:txtPython+=tab()+"print("+auxP+")\n";auxP="";:}
+        | imprimir_nl CONDICION:b puntoComa {:txtPython+=tab()+"print("+auxP+",\"\\n\")\n";auxP="";:}
 ;
 
-DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION:b puntoComa
-            {:txtPython+= aux2; aux2="";txtPython+=" = ";
+DECLARACION::= Ringresar {:txtPython+=tab();:} LISTA Rcomo TIPODATO RCon_valor CONDICION:b puntoComa
+            {:txtPython+=aux2; aux2="";txtPython+=" = ";
            
             for(int i = 0 ; i <= cont1; i = i + 1)
             {
@@ -173,11 +184,11 @@ DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION:b puntoComa
                 }
              
             }
-            ;txtPython+= tmp+"\n"; System.out.println(txtPython); auxP="";tmp="";cont1=0;:}
+            ;txtPython+= tmp+"\n"; auxP="";tmp="";cont1=0;:}
 ; 
 
 ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
-            {:txtPython+= aux2; aux2="";txtPython+=" = ";
+            {:txtPython+= tab()+aux2; aux2="";txtPython+=" = ";
            
             for(int i = 0 ; i <= cont1; i = i + 1)
             {
@@ -189,7 +200,8 @@ ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
                 }
              
             }
-            ;txtPython+= tmp+"\n"; System.out.println(txtPython); auxP="";tmp="";cont1=0;:}
+            ;txtPython+= tmp+"\n"; auxP="";tmp="";cont1=0;:}
+
 ;
 
 LISTAP::= id:idd TIPODATO {:aux2+=String.valueOf(idd);:} 
@@ -200,8 +212,8 @@ LISTA::= id:idd {:aux2+=idd.toString();:}
         | LISTA Coma id:idd {:aux2+=","+idd.toString();cont1=cont1+1;:}
 ;
 
-LEJC::= CONDICION:b  {:aux2+=auxP;:}
-        | LEJC    Coma CONDICION:b  {:aux2+=","+auxP;:}
+LEJC::= CONDICION:b  {:aux2+=auxP;auxP="";:}
+        | LEJC    Coma CONDICION:b  {:aux2+=","+auxP;auxP="";:}
 ;
 
 CONDICIONALES::= IF
@@ -211,43 +223,43 @@ CONDICIONALES::= IF
                 | REPETIR
 ;
 
-IF::= condSi CONDICION:b {:txtPython+="if "+auxP+": \n    "; System.out.println(txtPython); auxP="";:} auxFS
+IF::= condSi CONDICION:b {:txtPython+=tab()+"if "+auxP+":\n"; contTPY+=1; auxP="";:} auxFS
 ;
 
-auxFS::= entonces INSTRUCCIONES finSi {:System.out.println(txtPython);auxP="";:}
-    | INSTRUCCIONES contrario {:txtPython+="\nelse:\n    ";:} INSTRUCCIONES finSi {:System.out.println(txtPython);auxP="";:} 
-    | INSTRUCCIONES BLOQUE finSi {:System.out.println(txtPython);auxP="";:} 
+auxFS::= entonces INSTRUCCIONES finSi {:contTPY-=1;auxP="";:}
+    | entonces INSTRUCCIONES contrario {:contTPY-=1;txtPython+=tab()+"else:\n";contTPY+=1;:} INSTRUCCIONES finSi {:contTPY-=1;auxP="";:} 
+    | entonces INSTRUCCIONES BLOQUE finSi {:contTPY-=1;auxP="";:} 
   
 ;
 
-BLOQUE::= OSi CONDICION:b entonces {:txtPython+="\nelif "+auxP+":\n    ";:} INSTRUCCIONES
-        | BLOQUE OSi CONDICION:b entonces {:txtPython+="\nelif "+auxP+":\n    ";:} INSTRUCCIONES
-        | BLOQUE contrario {:txtPython+="\nelse:\n    ";:}  INSTRUCCIONES
+BLOQUE::= OSi CONDICION:b entonces {:contTPY-=1; txtPython+=tab()+"elif "+auxP+":\n";contTPY+=1;auxP="";:}  INSTRUCCIONES
+        | BLOQUE OSi CONDICION:b entonces {:contTPY-=1; txtPython+=tab()+"elif "+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES
+        | BLOQUE contrario {:contTPY-=1; txtPython+=tab()+"else:\n";contTPY+=1;auxP="";:}   INSTRUCCIONES
 ;
 
-PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finPara 
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer finPara {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+")\n\t"; System.out.println(txtPython); auxP="";:}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+","+String.valueOf(num)+")\n\t"; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finPara
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer finPara  {:txtPython="for "+String.valueOf(idd)+" in range("+auxP;auxP="";txtPython+=","+auxP+","+String.valueOf(num)+")\n\t"; System.out.println(txtPython); auxP="";:}
+PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); txtPython+=","+c.toString()+"):\n"; contTPY+=1; auxP="";tmpPARA="";:} INSTRUCCIONES finPara {:contTPY-=1;:}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer  finPara {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); txtPython+=","+c.toString()+"):\n"; contTPY+=1; auxP="";tmpPARA=""; contTPY-=1;:}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n"; contTPY+=1; auxP="";:} INSTRUCCIONES finPara {:contTPY-=1;:}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n"; auxP="";:} finPara {:contTPY-=1;:}
 ;
 
-MIENTRAS::= mientras CONDICION:b hacer {:txtPython+="while "+auxP+"\n    "; System.out.println(txtPython); auxP="";:} INSTRUCCIONES finMientras
-        | mientras CONDICION:b hacer finMientras {:txtPython+="while "+auxP+"\n    "; System.out.println(txtPython); auxP="";:}
+MIENTRAS::= mientras CONDICION:b hacer {:txtPython+=tab()+"while "+auxP+":\n";contTPY+=1; auxP="";:} INSTRUCCIONES finMientras {:contTPY-=1;:}
+        | mientras CONDICION:b hacer {:txtPython+=tab()+"while "+auxP+":\n";contTPY+=1;; auxP="";:} finMientras {:contTPY-=1;:}
 ;
 
-REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION:b {:txtPython+="while "+auxP+"\n    if "+String.valueOf(b)+"== False:\n         break"; System.out.println(txtPython); auxP="";:}
-        | repetir hastaQue CONDICION:b {:txtPython+="while "+b+"\n    if "+auxP+"== False:\n         break"; System.out.println(txtPython); auxP="";:}
+REPETIR::= repetir {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;:} INSTRUCCIONES hastaQue CONDICION:b {:txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";:}
+        | repetir hastaQue CONDICION:b {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";:}
 ;
 
-RETORNO::= retornar CONDICION:b puntoComa {:txtPython+="return "+auxP+"\n"; System.out.println(txtPython);:}
+RETORNO::= retornar CONDICION:b puntoComa {:txtPython+=tab()+"return "+auxP+"\n";auxP="";:}
 ;
 
-SEGUN::= segun CONDICION:b hacer {:tmpPS+=auxP; System.out.println(txtPython); auxP="";:} CASE finSegun {:tmpPS="";:}
+SEGUN::= segun CONDICION:b hacer {:tmpPS+=auxP; auxP="";:} CASE finSegun {:contTPY-=1;tmpPS="";:}
 ;
 
-CASE::= aitr CONDICION:c citr entonces {:txtPython+="if "+tmpPS+"=="+auxP+"\n    ";auxP="";:} INSTRUCCIONES 
-        | CASE contrario entonces {:txtPython+="\nelse: \n    ";:} INSTRUCCIONES
-        | CASE aitr CONDICION:c citr entonces {:txtPython+="elif "+tmpPS+"=="+auxP+"\n    ";auxP="";:} INSTRUCCIONES
+CASE::= aitr CONDICION:c citr entonces {:txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES 
+        | CASE contrario entonces {:contTPY-=1;txtPython+=tab()+"else:\n";contTPY+=1;:} INSTRUCCIONES
+        | CASE aitr CONDICION:c citr entonces {:contTPY-=1; txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES
 ;
 
 //Falta operaciones aritmeticas
@@ -261,13 +273,72 @@ EXPRESION::= digitoEntero:a {:RESULT = a;:}
     | caracterAS:a {:RESULT = a;:} 
 ;
 
-//Falta codigo de traduccion para más de una expresion
-CONDICION::= EXPRESION:a {:auxP+= a.toString();:} 
-        | EXPRESION:a OP:opr EXPRESION:s {:auxP+=a.toString()+opr+s.toString();System.out.println(txtPython);:}
-        | CONDICION OPL:oplr EXPRESION:a {:auxP+=oplr.toString()+" "+a.toString();:}  
+CONDICION::= EXPRESION:a 
+            {:RESULT=a;
+
+                //si empieza con $ es caracter
+                if(a.toString().length()>1){
+                    if((a.toString().charAt(1)=='$')){
+                        //obtener numero
+                        cA+= a.toString().replace("'","").replace("$","").replace("{","").replace("}","");
+                        c = Integer.parseInt(cA);
+                        //verificar numero sino espacion en blanco
+                        if((c>=65 && c<=90)||(c>=97 && c<=122)){
+                            char convertedChar = (char)c;
+                            auxP+= "'"+String.valueOf(convertedChar)+"'"; tmpPARA = cA;
+                            cA="";
+                        }
+                        else{
+                            auxP+= "\" \""; tmpPARA = cA;
+                            cA="";
+                        }
+                    }
+                    else if(a.toString().toLowerCase().equals("verdadero")){
+                        auxP+= "True";tmpPARA=a.toString();
+                    }
+                    else if(a.toString().toLowerCase().equals("falso")){
+                        auxP+= "False";tmpPARA=a.toString();
+                    }
+                    else{
+                        auxP+= a.toString();tmpPARA=a.toString();
+                    }
+                }
+                else{
+                    auxP+= a.toString();tmpPARA=a.toString();
+                }
+         
+            :} 
+        | EXPRESION:q OP:opr EXPRESION:s {:auxP+=q.toString()+opr+s.toString();:}
+        | CONDICION OPL:oplr EXPRESION:z 
+        {:
+            if(oplr.toString().equals("or")){
+                auxP+=" or "+z.toString();
+            }
+
+            if(oplr.toString().equals("and")){
+                auxP+=" and "+z.toString();
+            }
+            
+            if(oplr.toString().equals("not")){
+                auxP+=" not "+z.toString();
+            }
+        :}  
+        | CONDICION OPL:oplr EXPRESION:x OP:opr EXPRESION:y
+        {:
+            if(oplr.toString().equals("or")){
+                auxP+=" or "+x.toString()+opr+y.toString();
+            }
+
+            if(oplr.toString().equals("and")){
+                auxP+=" and "+x.toString()+opr+y.toString();
+            }
+            
+            if(oplr.toString().equals("not")){
+                auxP+=" not "+x.toString()+opr+y.toString();
+            }
+        :}  
 ;
 
-//TERMINADO
 OP::= mayor:oop {:RESULT=">";:}
     | menor:oop {:RESULT="<";:}
     | mayorIgual:oop {:RESULT=">=";:}
@@ -276,13 +347,11 @@ OP::= mayor:oop {:RESULT=">";:}
     | diferente:oop {:RESULT="!=";:}
 ;
 
-//TERMINADO
 OPL::= or:opl {:RESULT=opl;:}
     | and: opl {:RESULT=opl;:}
     | not: opl {:RESULT=opl;:}
 ;
 
-//TERMINADO
 INSTRUCCIONES::= DECLARACION
     | ASIGNACION
     | CONDICIONALES
@@ -297,7 +366,6 @@ INSTRUCCIONES::= DECLARACION
     | INSTRUCCIONES IMPRESION
 ;
 
-//TERMINADO
 TIPODATO::= Rnumero:td {:RESULT=td;:}
             | Rcadena:td {:RESULT=td;:}
             | Rboolean:td {:RESULT=td;:}

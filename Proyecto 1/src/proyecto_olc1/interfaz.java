@@ -39,6 +39,8 @@ public class interfaz extends javax.swing.JFrame {
     FileInputStream entrada;
     FileOutputStream salida;
     String nombre;
+    
+    
 
     
     
@@ -162,6 +164,11 @@ public class interfaz extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(0, 255, 255));
         jButton3.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
         jButton3.setText("Ver código Golang");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(221, 236, 67));
         jButton4.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
@@ -246,6 +253,11 @@ public class interfaz extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Reportes");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
 
         jMenuItem3.setText("Diagrama de flujo");
         jMenu3.add(jMenuItem3);
@@ -303,13 +315,38 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtErroresActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        String txt = A_sintactico.txtPython;
+        
+        //filtro
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos py", ".py","py");
+        ver.setFileFilter(filtro);
+        ver.setMultiSelectionEnabled(true);
+        
+        //Metodo para guardar
+        if(ver.showDialog(null, "Guardar")==JFileChooser.APPROVE_OPTION){
+            archivo = ver.getSelectedFile().getAbsoluteFile() ;
+            if (archivo != null) {
+            String nombre = ver.getSelectedFile().getName();
+                try {
+                    FileWriter data = new FileWriter(archivo+".py");
+                    data.write(txt);
+                    data.close();
+                } catch (Exception e) {
+                    
+                }
+            }
+        }else{
+                return;
+            }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
    
         //Limpiar errores para nueva verificacion y tabla
         Analizador_Lexico.TError.clear();
+        
+        //limpiar textoGuardado
+        A_sintactico.txtPython="";
         
         //mostrar errores
         txtErrores.setEditable(true);
@@ -393,6 +430,15 @@ public class interfaz extends javax.swing.JFrame {
         vR.addNewRow(); //agrega nuevos datos
         vR.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu3ActionPerformed
 
     /**
      * @param args the command line arguments
