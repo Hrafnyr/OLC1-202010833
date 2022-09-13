@@ -72,7 +72,7 @@ fin_si
 ingresar _varB_ como Boolean con_valor falso; 
 
 si _varB_ entonces
-	imprimir_nl "Estas definiendo bien los valores";
+	imprimir_nl "Cambiado";
 	ingresar _varaux_ como Numero con_valor 2;
 	segun _varaux_ hacer
 		¿0? entonces

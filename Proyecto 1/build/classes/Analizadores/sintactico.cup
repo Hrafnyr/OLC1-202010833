@@ -5,20 +5,24 @@ import java_cup.runtime.Symbol;
 
 parser code 
 {:
-    //Variable que guarda el código python
-    public static String txtPython = "";
-    String auxP = "";
-    String aux2="";
-    String tmpPS = "";
-    String tmp = "";
-    String tmpPARA ="";
-    int cont1 = 0;
-
-    int contTPY = 0;
     
+    public static String txtPython = ""; //Variable que guarda el código python
+    String auxP = ""; //Guarda condicion/expresion
+    String aux2=""; //Guarda informacion de lista parametros, nombres y expresiones/condiciones
+    String tmpPS = ""; //Guarda condicion del switch case
+    String tmp = "";   // Guarda lista de resultados asignacion/declaracion
+    String tmpPARA =""; //Guarda condicion hasta(condicion) del ciclo para
+    int cont1 = 0; //contador de nombres asignacion/declaracion
+
+    int contTPY = 0; //contador de tabulacion
+    
+    public static String txtGo = ""; //Variable que guarda el código Golang
+    String auxTP = ""; //guarda el tipo de dato
+    String imps = ""; //guarda bloque de importaciones
+
     //caracter ascii
-    String cA = "";
-    int c = 0;
+    String cA = ""; //guarda el valor del token caracter Ascci
+    int c = 0; //guarda el valor del caracter asccii
 
     //Metodo para calcular la identación correcta python
     public String tab(){
@@ -131,7 +135,20 @@ non terminal auxFS;
 start with INICIO;
 
 INICIO::= inicio 
-    {: txtPython+=tab()+"def main():\n";contTPY+=1;:} cuerpo fin {:txtPython+="if __name__ == '__main__':\n    main()";contTPY-=1;System.out.println(txtPython);:}
+    {: 
+        txtPython+=tab()+"def main():\n";
+        imps+= "import (\n\"fmt\"\n )\n";
+        txtGo+=tab()+"package main\n"+tab()+imps+"func main(){\n";
+        contTPY+=1;
+    :} cuerpo fin 
+    {:
+        txtPython+="if __name__ == '__main__':\n    main()";
+        txtGo+="}";
+        contTPY-=1;
+        imps = "";
+        System.out.println(txtPython);
+        System.out.println(txtGo);
+    :}
     | error fin {:System.out.println("Falta inicio");:}
 ;
 
@@ -154,9 +171,16 @@ cuerpo::= DECLARACION
 ;
 
 LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
-            {:txtPython+=tab()+String.valueOf(idd)+"()\n";:}
+            {:
+                txtPython+=tab()+String.valueOf(idd)+"()\n";
+                txtGo+= tab()+String.valueOf(idd)+"()\n";
+            :}
     | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
-    {:txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n"; auxP=""; aux2="";:}
+    {:
+        txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n"; 
+        auxP=""; 
+        aux2="";
+    :}
 ;
 
 METODO::= metodo id:idd {:txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";:} INSTRUCCIONES Finmetodo {:contTPY-=1;:}
@@ -167,51 +191,90 @@ FUNCION::= funcion id:idd TIPODATO {:txtPython+=tab()+"def "+String.valueOf(idd)
         | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";:} INSTRUCCIONES  Finfuncion {:contTPY-=1;:}
 ;
 
-IMPRESION::= imprimir CONDICION:b puntoComa {:txtPython+=tab()+"print("+auxP+")\n";auxP="";:}
-        | imprimir_nl CONDICION:b puntoComa {:txtPython+=tab()+"print("+auxP+",\"\\n\")\n";auxP="";:}
+IMPRESION::= imprimir CONDICION:b puntoComa 
+    {:
+        txtPython+=tab()+"print("+auxP+")\n";
+        txtGo+=tab()+"fmt.Print("+auxP+")\n";
+        auxP="";
+    :}
+        | imprimir_nl CONDICION:b puntoComa 
+    {:
+        txtPython+=tab()+"print("+auxP+",\"\\n\")\n";
+        txtGo+=tab()+"fmt.Println("+auxP+")\n";
+        auxP="";
+    :}
 ;
 
-DECLARACION::= Ringresar {:txtPython+=tab();:} LISTA Rcomo TIPODATO RCon_valor CONDICION:b puntoComa
-            {:txtPython+=aux2; aux2="";txtPython+=" = ";
+DECLARACION::= Ringresar 
+            {:
+                txtPython+=tab();
+                txtGo+=tab()+"var ";
+            :} LISTA Rcomo TIPODATO:ttd {:auxTP+=ttd;:} RCon_valor CONDICION:b puntoComa
+            {:
+                txtPython+=aux2;
+                txtGo+=aux2;
+
+                aux2="";
+                txtPython+=" = ";
+                txtGo+=" "+auxTP+" = ";
+                auxTP="";
            
-            for(int i = 0 ; i <= cont1; i = i + 1)
-            {
-                if(i==0){
-                    tmp+=auxP;
-                }
-                else{
-                    tmp+= "," + auxP;
-                }
-             
-            }
-            ;txtPython+= tmp+"\n"; auxP="";tmp="";cont1=0;:}
+                for(int i = 0 ; i <= cont1; i = i + 1)
+                {
+                    if(i==0){
+                        tmp+=auxP;
+                    }
+                    else{
+                        tmp+= "," + auxP;
+                    }
+
+                };
+                txtPython+= tmp+"\n";
+                txtGo+= tmp+"\n"; 
+                auxP="";
+                tmp="";
+                cont1=0;
+            :}
 ; 
 
 ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
-            {:txtPython+= tab()+aux2; aux2="";txtPython+=" = ";
-           
-            for(int i = 0 ; i <= cont1; i = i + 1)
-            {
-                if(i==0){
-                    tmp+=auxP;
-                }
-                else{
-                    tmp+= "," + auxP;
-                }
-             
-            }
-            ;txtPython+= tmp+"\n"; auxP="";tmp="";cont1=0;:}
+            {:
+                txtPython+= tab()+aux2;
+                txtGo+= tab()+aux2;
+                aux2="";
+                txtPython+=" = ";
+                txtGo+=" = ";
+
+                for(int i = 0 ; i <= cont1; i = i + 1)
+                {
+                    if(i==0){
+                        tmp+=auxP;
+                    }
+                    else{
+                        tmp+= "," + auxP;
+                    }
+
+                };
+                txtPython+= tmp+"\n";
+                txtGo+=tmp+"\n";
+                auxP="";
+                tmp="";
+                cont1=0;
+            :}
 
 ;
 
+//Lista de parametros
 LISTAP::= id:idd TIPODATO {:aux2+=String.valueOf(idd);:} 
         | LISTAP Coma id:idd  TIPODATO {:aux2+=","+String.valueOf(idd);:}
 ;
 
+//Lista de id (declaracion, asignacion)
 LISTA::= id:idd {:aux2+=idd.toString();:}
         | LISTA Coma id:idd {:aux2+=","+idd.toString();cont1=cont1+1;:}
 ;
 
+//Lista para llamadas
 LEJC::= CONDICION:b  {:aux2+=auxP;auxP="";:}
         | LEJC    Coma CONDICION:b  {:aux2+=","+auxP;auxP="";:}
 ;
@@ -223,28 +286,143 @@ CONDICIONALES::= IF
                 | REPETIR
 ;
 
-IF::= condSi CONDICION:b {:txtPython+=tab()+"if "+auxP+":\n"; contTPY+=1; auxP="";:} auxFS
+IF::= condSi CONDICION:b 
+    {:
+        txtPython+=tab()+"if "+auxP+":\n";
+        txtGo+=tab()+"if "+auxP+" {\n";
+        contTPY+=1; auxP="";
+    :} 
+    auxFS
 ;
 
-auxFS::= entonces INSTRUCCIONES finSi {:contTPY-=1;auxP="";:}
-    | entonces INSTRUCCIONES contrario {:contTPY-=1;txtPython+=tab()+"else:\n";contTPY+=1;:} INSTRUCCIONES finSi {:contTPY-=1;auxP="";:} 
-    | entonces INSTRUCCIONES BLOQUE finSi {:contTPY-=1;auxP="";:} 
+auxFS::= entonces INSTRUCCIONES finSi 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+        auxP="";
+    :}
+    | entonces INSTRUCCIONES contrario 
+    {:
+        contTPY-=1;
+        txtPython+=tab()+"else:\n";
+        txtGo+=tab()+"} else {\n";
+        contTPY+=1;
+    :} 
+    INSTRUCCIONES finSi 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+        auxP="";
+    :} 
+    | entonces INSTRUCCIONES BLOQUE finSi 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+        auxP="";:} 
   
 ;
 
-BLOQUE::= OSi CONDICION:b entonces {:contTPY-=1; txtPython+=tab()+"elif "+auxP+":\n";contTPY+=1;auxP="";:}  INSTRUCCIONES
-        | BLOQUE OSi CONDICION:b entonces {:contTPY-=1; txtPython+=tab()+"elif "+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES
-        | BLOQUE contrario {:contTPY-=1; txtPython+=tab()+"else:\n";contTPY+=1;auxP="";:}   INSTRUCCIONES
+BLOQUE::= OSi CONDICION:b entonces 
+    {:
+        contTPY-=1; 
+        txtPython+=tab()+"elif "+auxP+":\n";
+        txtGo+= tab()+"}else if "+auxP+" {\n";
+        contTPY+=1;
+        auxP="";
+    :}  INSTRUCCIONES
+        | BLOQUE OSi CONDICION:b entonces 
+    {:
+        contTPY-=1; 
+        txtPython+=tab()+"elif "+auxP+":\n";
+        txtGo+=tab()+"}else if "+auxP+" {\n";
+        contTPY+=1;
+        auxP="";
+    :} INSTRUCCIONES
+        | BLOQUE contrario 
+    {:
+        contTPY-=1;
+        txtPython+=tab()+"else:\n";
+        txtGo+=tab()+" }else {\n";
+        contTPY+=1;
+        auxP="";
+    :}   INSTRUCCIONES
 ;
 
-PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); txtPython+=","+c.toString()+"):\n"; contTPY+=1; auxP="";tmpPARA="";:} INSTRUCCIONES finPara {:contTPY-=1;:}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer  finPara {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); txtPython+=","+c.toString()+"):\n"; contTPY+=1; auxP="";tmpPARA=""; contTPY-=1;:}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n"; contTPY+=1; auxP="";:} INSTRUCCIONES finPara {:contTPY-=1;:}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer {:txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n"; auxP="";:} finPara {:contTPY-=1;:}
+PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer 
+    {:
+        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); 
+        txtPython+=","+c.toString()+"):\n";
+        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";";
+        txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
+        contTPY+=1; 
+        auxP="";
+        tmpPARA="";
+    :} INSTRUCCIONES finPara
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer  finPara 
+    {:
+        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); 
+        txtPython+=","+c.toString()+"):\n";
+        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";";
+        txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
+        contTPY+=1; 
+        auxP="";
+        tmpPARA=""; 
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer 
+    {:
+        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
+        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
+        contTPY+=1; 
+        auxP="";
+    :} INSTRUCCIONES finPara 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer 
+    {:
+        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
+        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
+        auxP="";
+    :} finPara 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
 ;
 
-MIENTRAS::= mientras CONDICION:b hacer {:txtPython+=tab()+"while "+auxP+":\n";contTPY+=1; auxP="";:} INSTRUCCIONES finMientras {:contTPY-=1;:}
-        | mientras CONDICION:b hacer {:txtPython+=tab()+"while "+auxP+":\n";contTPY+=1;; auxP="";:} finMientras {:contTPY-=1;:}
+MIENTRAS::= mientras CONDICION:b hacer 
+    {:
+        txtPython+=tab()+"while "+auxP+":\n";
+        txtGo+=tab()+"for true {\n"; contTPY+=1; 
+        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"break\n";  contTPY-=1;
+        txtGo+=tab()+"}\n";
+        auxP="";
+    :} INSTRUCCIONES finMientras 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+        | mientras CONDICION:b hacer 
+    {:
+        txtPython+=tab()+"while "+auxP+":\n";
+        txtGo+=tab()+"for true {\n"; contTPY+=1; 
+        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"break\n";  contTPY-=1;
+        txtGo+=tab()+"}\n";
+        auxP="";
+    :} finMientras 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
 ;
 
 REPETIR::= repetir {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;:} INSTRUCCIONES hastaQue CONDICION:b {:txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";:}
@@ -254,12 +432,41 @@ REPETIR::= repetir {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;:} INSTRUCCI
 RETORNO::= retornar CONDICION:b puntoComa {:txtPython+=tab()+"return "+auxP+"\n";auxP="";:}
 ;
 
-SEGUN::= segun CONDICION:b hacer {:tmpPS+=auxP; auxP="";:} CASE finSegun {:contTPY-=1;tmpPS="";:}
+SEGUN::= segun CONDICION:b hacer 
+    {:
+        tmpPS+=auxP;
+        txtGo+=tab()+"switch "+auxP+" {\n";
+        auxP="";
+    :} CASE finSegun 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+        tmpPS="";
+    :}
 ;
 
-CASE::= aitr CONDICION:c citr entonces {:txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES 
-        | CASE contrario entonces {:contTPY-=1;txtPython+=tab()+"else:\n";contTPY+=1;:} INSTRUCCIONES
-        | CASE aitr CONDICION:c citr entonces {:contTPY-=1; txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";contTPY+=1;auxP="";:} INSTRUCCIONES
+CASE::= aitr CONDICION:c citr entonces 
+    {:
+        txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";
+        txtGo+= tab()+"case "+auxP+":\n";
+        contTPY+=1;
+        auxP="";
+    :} INSTRUCCIONES 
+        | CASE contrario entonces 
+    {:
+        contTPY-=1;
+        txtPython+=tab()+"else:\n";
+        txtGo+= tab()+"default:\n";
+        contTPY+=1;
+    :} INSTRUCCIONES
+        | CASE aitr CONDICION:c citr entonces 
+    {:
+        contTPY-=1; 
+        txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";
+        txtGo+= tab()+"case "+auxP+":\n";
+        contTPY+=1;
+        auxP="";
+    :} INSTRUCCIONES
 ;
 
 //Falta operaciones aritmeticas
@@ -366,8 +573,8 @@ INSTRUCCIONES::= DECLARACION
     | INSTRUCCIONES IMPRESION
 ;
 
-TIPODATO::= Rnumero:td {:RESULT=td;:}
-            | Rcadena:td {:RESULT=td;:}
-            | Rboolean:td {:RESULT=td;:}
-            | Rcaracter:td {:RESULT=td;:}
+TIPODATO::= Rnumero:td {:RESULT="float64";:}
+            | Rcadena:td {:RESULT="string";:}
+            | Rboolean:td {:RESULT="bool";:}
+            | Rcaracter:td {:RESULT="byte";:}
 ;
