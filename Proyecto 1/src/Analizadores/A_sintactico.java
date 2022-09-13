@@ -757,7 +757,11 @@ public class A_sintactico extends java_cup.runtime.lr_parser {
     
     public static String txtGo = ""; //Variable que guarda el código Golang
     String auxTP = ""; //guarda el tipo de dato
+    String auxC = "";
+    String aux2G = "";
+    String tmpG="";
     String imps = ""; //guarda bloque de importaciones
+    int flag = 0; //verificador para cierre de llave main
 
     //caracter ascii
     String cA = ""; //guarda el valor del token caracter Ascci
@@ -849,7 +853,11 @@ class CUP$A_sintactico$actions {
                 RESULT = (Object) ((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)).value;
 		
         txtPython+="if __name__ == '__main__':\n    main()";
-        txtGo+="}";
+        
+        if(flag==0){
+            txtGo+="}";
+        }
+
         contTPY-=1;
         imps = "";
         System.out.println(txtPython);
@@ -1035,9 +1043,12 @@ class CUP$A_sintactico$actions {
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).value;
 		
-        txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n"; 
-        auxP=""; 
+        txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n";
+        txtGo+=tab()+String.valueOf(idd)+"("+aux2G+")\n";
+        auxP="";
+        auxC="";
         aux2="";
+        aux2G="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LLAMADA",22, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1050,7 +1061,15 @@ class CUP$A_sintactico$actions {
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";
+
+        txtPython+=tab()+"def "+String.valueOf(idd)+"():\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"(){\n";
+        contTPY+=1; 
+        auxP="";
+        auxC="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$1",28, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1064,7 +1083,10 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).value;
-		contTPY-=1;
+		
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("METODO",19, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1076,7 +1098,15 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).value;
-txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";contTPY+=1; aux2="";
+
+        txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"("+aux2G+"){\n";
+        contTPY+=1; 
+        aux2="";
+        aux2G="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$2",29, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1090,7 +1120,10 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";contTPY+=1; aux2="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).value;
-		contTPY-=1;
+		
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("METODO",19, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-8)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1102,7 +1135,18 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";contTPY+=1; aux2="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
-txtPython+=tab()+"def "+String.valueOf(idd)+":\n"; contTPY+=1; auxP="";
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
+
+        txtPython+=tab()+"def "+String.valueOf(idd)+":\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"()"+String.valueOf(tdd)+"{\n";
+        contTPY+=1; 
+        auxP="";
+        auxC="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$3",30, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1116,7 +1160,13 @@ txtPython+=tab()+"def "+String.valueOf(idd)+":\n"; contTPY+=1; auxP="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).value;
-		contTPY-=1;
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).value;
+		
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("FUNCION",21, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1128,7 +1178,18 @@ txtPython+=tab()+"def "+String.valueOf(idd)+":\n"; contTPY+=1; auxP="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)).value;
-txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)).value;
+
+        txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"("+aux2G+")"+String.valueOf(tdd)+"{\n";
+        contTPY+=1; 
+        aux2="";
+        aux2G="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$4",31, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1142,7 +1203,13 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-8)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-8)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-8)).value;
-		contTPY-=1;
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-7)).value;
+		
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("FUNCION",21, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-9)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1156,8 +1223,9 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
 		
         txtPython+=tab()+"print("+auxP+")\n";
-        txtGo+=tab()+"fmt.Print("+auxP+")\n";
+        txtGo+=tab()+"fmt.Print("+auxC+")\n";
         auxP="";
+        auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("IMPRESION",18, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1172,8 +1240,9 @@ txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
 		
         txtPython+=tab()+"print("+auxP+",\"\\n\")\n";
-        txtGo+=tab()+"fmt.Println("+auxP+")\n";
+        txtGo+=tab()+"fmt.Println("+auxC+")\n";
         auxP="";
+        auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("IMPRESION",18, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1228,16 +1297,20 @@ auxTP+=ttd;
                 {
                     if(i==0){
                         tmp+=auxP;
+                        tmpG+=auxC;
                     }
                     else{
                         tmp+= "," + auxP;
+                        tmpG+= ","+ auxC;
                     }
 
                 };
                 txtPython+= tmp+"\n";
-                txtGo+= tmp+"\n"; 
+                txtGo+= tmpG+"\n"; 
                 auxP="";
+                auxC="";
                 tmp="";
+                tmpG="";
                 cont1=0;
             
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("DECLARACION",3, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-8)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
@@ -1262,16 +1335,20 @@ auxTP+=ttd;
                 {
                     if(i==0){
                         tmp+=auxP;
+                        tmpG+=auxC;
                     }
                     else{
                         tmp+= "," + auxP;
+                        tmpG+= ","+ auxC;
                     }
 
                 };
                 txtPython+= tmp+"\n";
-                txtGo+=tmp+"\n";
+                txtGo+=tmpG+"\n";
                 auxP="";
+                auxC="";
                 tmp="";
+                tmpG="";
                 cont1=0;
             
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("ASIGNACION",2, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
@@ -1285,7 +1362,13 @@ auxTP+=ttd;
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
-		aux2+=String.valueOf(idd);
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
+		
+        aux2+=String.valueOf(idd);
+        aux2G+= String.valueOf(idd)+" "+String.valueOf(tdd);
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LISTAP",20, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1297,7 +1380,13 @@ auxTP+=ttd;
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
-		aux2+=","+String.valueOf(idd);
+		int tddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
+		int tddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
+		Object tdd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
+		
+        aux2+=","+String.valueOf(idd);
+        aux2G+=","+String.valueOf(idd)+" "+String.valueOf(tdd);
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LISTAP",20, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1309,7 +1398,9 @@ auxTP+=ttd;
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		aux2+=idd.toString();
+		
+        aux2+=idd.toString();
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LISTA",6, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1321,7 +1412,10 @@ auxTP+=ttd;
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		aux2+=","+idd.toString();cont1=cont1+1;
+		
+        aux2+=","+idd.toString();
+        cont1=cont1+1;
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LISTA",6, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1333,7 +1427,12 @@ auxTP+=ttd;
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		aux2+=auxP;auxP="";
+		
+        aux2+=auxP;
+        aux2G+=auxC;
+        auxC="";
+        auxP="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LEJC",25, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1345,7 +1444,12 @@ auxTP+=ttd;
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		aux2+=","+auxP;auxP="";
+		
+        aux2+=","+auxP;
+        aux2G+=","+auxC;
+        auxC="";
+        auxP="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LEJC",25, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1404,8 +1508,8 @@ auxTP+=ttd;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
 
         txtPython+=tab()+"if "+auxP+":\n";
-        txtGo+=tab()+"if "+auxP+" {\n";
-        contTPY+=1; auxP="";
+        txtGo+=tab()+"if "+auxC+" {\n";
+        contTPY+=1; auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$7",34, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1432,7 +1536,7 @@ auxTP+=ttd;
 		
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("auxFS",26, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1461,7 +1565,7 @@ auxTP+=ttd;
 		
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("auxFS",26, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-5)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1474,7 +1578,7 @@ auxTP+=ttd;
 		
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("auxFS",26, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1489,9 +1593,10 @@ auxTP+=ttd;
 
         contTPY-=1; 
         txtPython+=tab()+"elif "+auxP+":\n";
-        txtGo+= tab()+"}else if "+auxP+" {\n";
+        txtGo+= tab()+"}else if "+auxC+" {\n";
         contTPY+=1;
         auxP="";
+        auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$9",36, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1521,9 +1626,9 @@ auxTP+=ttd;
 
         contTPY-=1; 
         txtPython+=tab()+"elif "+auxP+":\n";
-        txtGo+=tab()+"}else if "+auxP+" {\n";
+        txtGo+=tab()+"}else if "+auxC+" {\n";
         contTPY+=1;
-        auxP="";
+        auxP=""; auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$10",37, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1553,6 +1658,7 @@ auxTP+=ttd;
         txtGo+=tab()+" }else {\n";
         contTPY+=1;
         auxP="";
+        auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$11",38, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1589,6 +1695,7 @@ auxTP+=ttd;
         txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
         contTPY+=1; 
         auxP="";
+        auxC="";
         tmpPARA="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$12",39, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
@@ -1638,6 +1745,7 @@ auxTP+=ttd;
         txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
         contTPY+=1; 
         auxP="";
+        auxC="";
         tmpPARA=""; 
         contTPY-=1;
         txtGo+=tab()+"}\n";
@@ -1666,7 +1774,7 @@ auxTP+=ttd;
         txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
         txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
         contTPY+=1; 
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$13",40, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1717,7 +1825,7 @@ auxTP+=ttd;
 
         txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
         txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$14",41, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1759,10 +1867,10 @@ auxTP+=ttd;
 
         txtPython+=tab()+"while "+auxP+":\n";
         txtGo+=tab()+"for true {\n"; contTPY+=1; 
-        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"if !("+auxC+"){\n";  contTPY+=1;
         txtGo+=tab()+"break\n";  contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$15",42, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1795,10 +1903,10 @@ auxTP+=ttd;
 
         txtPython+=tab()+"while "+auxP+":\n";
         txtGo+=tab()+"for true {\n"; contTPY+=1; 
-        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"if !("+auxC+"){\n";  contTPY+=1;
         txtGo+=tab()+"break\n";  contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$16",43, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1825,7 +1933,11 @@ auxTP+=ttd;
           case 70: // NT$17 ::= 
             {
               Object RESULT =null;
-txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
+
+        txtPython+=tab()+"while "+auxP+"\n";
+        txtGo+= tab()+"for true {\n";
+        contTPY+=1;
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$17",44, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1839,7 +1951,15 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";
+		
+        txtPython+=tab()+"if "+auxP+" == False:\n";
+        txtGo+=tab()+"if ("+auxC+"){\n"; contTPY+=1;
+        txtPython+=tab()+"break\n";
+        txtGo+=tab()+"break}\n";
+        contTPY-=2; 
+        txtGo+=tab()+"}\n";
+        auxP="";auxC="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("REPETIR",16, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1851,7 +1971,17 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";
+		
+        txtPython+=tab()+"while "+auxP+"\n";
+        txtGo+= tab()+"for true {\n"; contTPY+=1;
+        txtPython+=tab()+"if "+auxP+" == False:\n";
+        txtGo+=tab()+"if ("+auxC+"){\n"; contTPY+=1;
+        txtPython+=tab()+"break\n"; 
+        txtGo+=tab()+"break}\n";
+        contTPY-=2; 
+        txtGo+=tab()+"}\n";
+        auxP="";auxC="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("REPETIR",16, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1863,7 +1993,11 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
-		txtPython+=tab()+"return "+auxP+"\n";auxP="";
+		
+        txtPython+=tab()+"return "+auxP+"\n";
+        txtGo+=tab()+"return "+auxC+"\n";
+        auxP="";auxC="";
+    
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("RETORNO",17, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1877,8 +2011,8 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
 
         tmpPS+=auxP;
-        txtGo+=tab()+"switch "+auxP+" {\n";
-        auxP="";
+        txtGo+=tab()+"switch "+auxC+" {\n";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$18",45, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1911,9 +2045,9 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)).value;
 
         txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";
-        txtGo+= tab()+"case "+auxP+":\n";
+        txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$19",46, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1968,9 +2102,9 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 
         contTPY-=1; 
         txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";
-        txtGo+= tab()+"case "+auxP+":\n";
+        txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
-        auxP="";
+        auxP="";auxC="";
     
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("NT$21",48, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -2105,25 +2239,31 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
                         if((c>=65 && c<=90)||(c>=97 && c<=122)){
                             char convertedChar = (char)c;
                             auxP+= "'"+String.valueOf(convertedChar)+"'"; tmpPARA = cA;
+                            auxC+= "'"+String.valueOf(convertedChar)+"'";
                             cA="";
                         }
                         else{
                             auxP+= "\" \""; tmpPARA = cA;
+                            auxC+= "\" \"";
                             cA="";
                         }
                     }
                     else if(a.toString().toLowerCase().equals("verdadero")){
                         auxP+= "True";tmpPARA=a.toString();
+                        auxC+= "true";
                     }
                     else if(a.toString().toLowerCase().equals("falso")){
                         auxP+= "False";tmpPARA=a.toString();
+                        auxC+= "false";
                     }
                     else{
                         auxP+= a.toString();tmpPARA=a.toString();
+                        auxC+= a.toString();
                     }
                 }
                 else{
                     auxP+= a.toString();tmpPARA=a.toString();
+                    auxC+= a.toString();
                 }
          
             
@@ -2144,7 +2284,7 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		int sleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object s = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		auxP+=q.toString()+opr+s.toString();
+		auxP+=q.toString()+opr+s.toString();auxC+=q.toString()+opr+s.toString();
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("CONDICION",9, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -2162,14 +2302,17 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		
             if(oplr.toString().equals("or")){
                 auxP+=" or "+z.toString();
+                auxC+=" || "+z.toString();
             }
 
             if(oplr.toString().equals("and")){
                 auxP+=" and "+z.toString();
+                auxC+=" && "+z.toString();
             }
             
             if(oplr.toString().equals("not")){
                 auxP+=" not "+z.toString();
+                auxC+=" ! "+z.toString();
             }
         
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("CONDICION",9, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
@@ -2195,14 +2338,17 @@ txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;
 		
             if(oplr.toString().equals("or")){
                 auxP+=" or "+x.toString()+opr+y.toString();
+                auxC+=" || "+x.toString()+opr+y.toString();
             }
 
             if(oplr.toString().equals("and")){
                 auxP+=" and "+x.toString()+opr+y.toString();
+                auxC+=" && "+x.toString()+opr+y.toString();
             }
             
             if(oplr.toString().equals("not")){
                 auxP+=" not "+x.toString()+opr+y.toString();
+                auxC+=" ! "+x.toString()+opr+y.toString();
             }
         
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("CONDICION",9, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);

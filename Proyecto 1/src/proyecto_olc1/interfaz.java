@@ -538,7 +538,34 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if(contV==0){
+               JOptionPane.showMessageDialog(null, "Debe presionar el botón Run ");
+            
+        }else{
+            String txt = A_sintactico.txtGo;
+        
+            //filtro
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos go", ".go","go");
+            ver.setFileFilter(filtro);
+            ver.setMultiSelectionEnabled(true);
 
+            //Metodo para guardar
+            if(ver.showDialog(null, "Guardar")==JFileChooser.APPROVE_OPTION){
+                archivo = ver.getSelectedFile().getAbsoluteFile() ;
+                if (archivo != null) {
+                String nombre = ver.getSelectedFile().getName();
+                    try {
+                        FileWriter data = new FileWriter(archivo+".go");
+                        data.write(txt);
+                        data.close();
+                    } catch (Exception e) {
+
+                    }
+                }
+            }else{
+                    return;
+                }
+        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

@@ -18,7 +18,11 @@ parser code
     
     public static String txtGo = ""; //Variable que guarda el código Golang
     String auxTP = ""; //guarda el tipo de dato
+    String auxC = "";
+    String aux2G = "";
+    String tmpG="";
     String imps = ""; //guarda bloque de importaciones
+    int flag = 0; //verificador para cierre de llave main
 
     //caracter ascii
     String cA = ""; //guarda el valor del token caracter Ascci
@@ -143,7 +147,11 @@ INICIO::= inicio
     :} cuerpo fin 
     {:
         txtPython+="if __name__ == '__main__':\n    main()";
-        txtGo+="}";
+        
+        if(flag==0){
+            txtGo+="}";
+        }
+
         contTPY-=1;
         imps = "";
         System.out.println(txtPython);
@@ -177,31 +185,88 @@ LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
             :}
     | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
     {:
-        txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n"; 
-        auxP=""; 
+        txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n";
+        txtGo+=tab()+String.valueOf(idd)+"("+aux2G+")\n";
+        auxP="";
+        auxC="";
         aux2="";
+        aux2G="";
     :}
 ;
 
-METODO::= metodo id:idd {:txtPython+=tab()+"def "+String.valueOf(idd)+"():\n"; contTPY+=1; auxP="";:} INSTRUCCIONES Finmetodo {:contTPY-=1;:}
-        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par {:txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";contTPY+=1; aux2="";:} INSTRUCCIONES Finmetodo {:contTPY-=1;:}
+METODO::= metodo id:idd 
+    {:
+        txtPython+=tab()+"def "+String.valueOf(idd)+"():\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"(){\n";
+        contTPY+=1; 
+        auxP="";
+        auxC="";
+    :} INSTRUCCIONES Finmetodo 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+        | metodo id:idd con_parametros abrir_par LISTAP cerrar_par 
+    {:
+        txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"("+aux2G+"){\n";
+        contTPY+=1; 
+        aux2="";
+        aux2G="";
+    :} INSTRUCCIONES Finmetodo 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
 ;
 
-FUNCION::= funcion id:idd TIPODATO {:txtPython+=tab()+"def "+String.valueOf(idd)+":\n"; contTPY+=1; auxP="";:} INSTRUCCIONES Finfuncion {:contTPY-=1;:}
-        | funcion id:idd TIPODATO con_parametros abrir_par LISTAP cerrar_par {:txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n"; contTPY+=1;aux2="";:} INSTRUCCIONES  Finfuncion {:contTPY-=1;:}
+FUNCION::= funcion id:idd TIPODATO:tdd 
+    {:
+        txtPython+=tab()+"def "+String.valueOf(idd)+":\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"()"+String.valueOf(tdd)+"{\n";
+        contTPY+=1; 
+        auxP="";
+        auxC="";
+    :} INSTRUCCIONES Finfuncion 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
+        | funcion id:idd TIPODATO:tdd con_parametros abrir_par LISTAP cerrar_par 
+    {:
+        txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
+        flag=1;
+        txtGo+="}\n";
+        txtGo+="func "+String.valueOf(idd)+"("+aux2G+")"+String.valueOf(tdd)+"{\n";
+        contTPY+=1; 
+        aux2="";
+        aux2G="";
+    :} INSTRUCCIONES  Finfuncion 
+    {:
+        contTPY-=1;
+        txtGo+=tab()+"}\n";
+    :}
 ;
 
 IMPRESION::= imprimir CONDICION:b puntoComa 
     {:
         txtPython+=tab()+"print("+auxP+")\n";
-        txtGo+=tab()+"fmt.Print("+auxP+")\n";
+        txtGo+=tab()+"fmt.Print("+auxC+")\n";
         auxP="";
+        auxC="";
     :}
         | imprimir_nl CONDICION:b puntoComa 
     {:
         txtPython+=tab()+"print("+auxP+",\"\\n\")\n";
-        txtGo+=tab()+"fmt.Println("+auxP+")\n";
+        txtGo+=tab()+"fmt.Println("+auxC+")\n";
         auxP="";
+        auxC="";
     :}
 ;
 
@@ -223,16 +288,20 @@ DECLARACION::= Ringresar
                 {
                     if(i==0){
                         tmp+=auxP;
+                        tmpG+=auxC;
                     }
                     else{
                         tmp+= "," + auxP;
+                        tmpG+= ","+ auxC;
                     }
 
                 };
                 txtPython+= tmp+"\n";
-                txtGo+= tmp+"\n"; 
+                txtGo+= tmpG+"\n"; 
                 auxP="";
+                auxC="";
                 tmp="";
+                tmpG="";
                 cont1=0;
             :}
 ; 
@@ -249,34 +318,65 @@ ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
                 {
                     if(i==0){
                         tmp+=auxP;
+                        tmpG+=auxC;
                     }
                     else{
                         tmp+= "," + auxP;
+                        tmpG+= ","+ auxC;
                     }
 
                 };
                 txtPython+= tmp+"\n";
-                txtGo+=tmp+"\n";
+                txtGo+=tmpG+"\n";
                 auxP="";
+                auxC="";
                 tmp="";
+                tmpG="";
                 cont1=0;
             :}
 
 ;
 
 //Lista de parametros
-LISTAP::= id:idd TIPODATO {:aux2+=String.valueOf(idd);:} 
-        | LISTAP Coma id:idd  TIPODATO {:aux2+=","+String.valueOf(idd);:}
+LISTAP::= id:idd TIPODATO:tdd 
+    {:
+        aux2+=String.valueOf(idd);
+        aux2G+= String.valueOf(idd)+" "+String.valueOf(tdd);
+    :} 
+        | LISTAP Coma id:idd  TIPODATO:tdd 
+    {:
+        aux2+=","+String.valueOf(idd);
+        aux2G+=","+String.valueOf(idd)+" "+String.valueOf(tdd);
+    :}
 ;
 
 //Lista de id (declaracion, asignacion)
-LISTA::= id:idd {:aux2+=idd.toString();:}
-        | LISTA Coma id:idd {:aux2+=","+idd.toString();cont1=cont1+1;:}
+LISTA::= id:idd 
+    {:
+        aux2+=idd.toString();
+    :}
+        | LISTA Coma id:idd 
+    {:
+        aux2+=","+idd.toString();
+        cont1=cont1+1;
+    :}
 ;
 
 //Lista para llamadas
-LEJC::= CONDICION:b  {:aux2+=auxP;auxP="";:}
-        | LEJC    Coma CONDICION:b  {:aux2+=","+auxP;auxP="";:}
+LEJC::= CONDICION:b  
+    {:
+        aux2+=auxP;
+        aux2G+=auxC;
+        auxC="";
+        auxP="";
+    :}
+        | LEJC Coma CONDICION:b 
+    {:
+        aux2+=","+auxP;
+        aux2G+=","+auxC;
+        auxC="";
+        auxP="";
+    :}
 ;
 
 CONDICIONALES::= IF
@@ -289,8 +389,8 @@ CONDICIONALES::= IF
 IF::= condSi CONDICION:b 
     {:
         txtPython+=tab()+"if "+auxP+":\n";
-        txtGo+=tab()+"if "+auxP+" {\n";
-        contTPY+=1; auxP="";
+        txtGo+=tab()+"if "+auxC+" {\n";
+        contTPY+=1; auxP="";auxC="";
     :} 
     auxFS
 ;
@@ -299,7 +399,7 @@ auxFS::= entonces INSTRUCCIONES finSi
     {:
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     :}
     | entonces INSTRUCCIONES contrario 
     {:
@@ -312,13 +412,13 @@ auxFS::= entonces INSTRUCCIONES finSi
     {:
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     :} 
     | entonces INSTRUCCIONES BLOQUE finSi 
     {:
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";:} 
+        auxP="";auxC="";:} 
   
 ;
 
@@ -326,17 +426,18 @@ BLOQUE::= OSi CONDICION:b entonces
     {:
         contTPY-=1; 
         txtPython+=tab()+"elif "+auxP+":\n";
-        txtGo+= tab()+"}else if "+auxP+" {\n";
+        txtGo+= tab()+"}else if "+auxC+" {\n";
         contTPY+=1;
         auxP="";
+        auxC="";
     :}  INSTRUCCIONES
         | BLOQUE OSi CONDICION:b entonces 
     {:
         contTPY-=1; 
         txtPython+=tab()+"elif "+auxP+":\n";
-        txtGo+=tab()+"}else if "+auxP+" {\n";
+        txtGo+=tab()+"}else if "+auxC+" {\n";
         contTPY+=1;
-        auxP="";
+        auxP=""; auxC="";
     :} INSTRUCCIONES
         | BLOQUE contrario 
     {:
@@ -345,6 +446,7 @@ BLOQUE::= OSi CONDICION:b entonces
         txtGo+=tab()+" }else {\n";
         contTPY+=1;
         auxP="";
+        auxC="";
     :}   INSTRUCCIONES
 ;
 
@@ -356,6 +458,7 @@ PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer
         txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
         contTPY+=1; 
         auxP="";
+        auxC="";
         tmpPARA="";
     :} INSTRUCCIONES finPara
     {:
@@ -370,6 +473,7 @@ PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer
         txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
         contTPY+=1; 
         auxP="";
+        auxC="";
         tmpPARA=""; 
         contTPY-=1;
         txtGo+=tab()+"}\n";
@@ -379,7 +483,7 @@ PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer
         txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
         txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
         contTPY+=1; 
-        auxP="";
+        auxP="";auxC="";
     :} INSTRUCCIONES finPara 
     {:
         contTPY-=1;
@@ -389,7 +493,7 @@ PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer
     {:
         txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
         txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
-        auxP="";
+        auxP="";auxC="";
     :} finPara 
     {:
         contTPY-=1;
@@ -401,10 +505,10 @@ MIENTRAS::= mientras CONDICION:b hacer
     {:
         txtPython+=tab()+"while "+auxP+":\n";
         txtGo+=tab()+"for true {\n"; contTPY+=1; 
-        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"if !("+auxC+"){\n";  contTPY+=1;
         txtGo+=tab()+"break\n";  contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     :} INSTRUCCIONES finMientras 
     {:
         contTPY-=1;
@@ -414,10 +518,10 @@ MIENTRAS::= mientras CONDICION:b hacer
     {:
         txtPython+=tab()+"while "+auxP+":\n";
         txtGo+=tab()+"for true {\n"; contTPY+=1; 
-        txtGo+=tab()+"if !("+auxP+"){\n";  contTPY+=1;
+        txtGo+=tab()+"if !("+auxC+"){\n";  contTPY+=1;
         txtGo+=tab()+"break\n";  contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";
+        auxP="";auxC="";
     :} finMientras 
     {:
         contTPY-=1;
@@ -425,18 +529,48 @@ MIENTRAS::= mientras CONDICION:b hacer
     :}
 ;
 
-REPETIR::= repetir {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;:} INSTRUCCIONES hastaQue CONDICION:b {:txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";:}
-        | repetir hastaQue CONDICION:b {:txtPython+=tab()+"while "+auxP+"\n";contTPY+=1;txtPython+=tab()+"if "+auxP+" == False:\n";contTPY+=1;txtPython+=tab()+"break\n"; contTPY-=2; auxP="";:}
+REPETIR::= repetir 
+    {:
+        txtPython+=tab()+"while "+auxP+"\n";
+        txtGo+= tab()+"for true {\n";
+        contTPY+=1;
+    :} INSTRUCCIONES hastaQue CONDICION:b 
+    {:
+        txtPython+=tab()+"if "+auxP+" == False:\n";
+        txtGo+=tab()+"if ("+auxC+"){\n"; contTPY+=1;
+        txtPython+=tab()+"break\n";
+        txtGo+=tab()+"break}\n";
+        contTPY-=2; 
+        txtGo+=tab()+"}\n";
+        auxP="";auxC="";
+    :}
+        | repetir hastaQue CONDICION:b 
+    {:
+        txtPython+=tab()+"while "+auxP+"\n";
+        txtGo+= tab()+"for true {\n"; contTPY+=1;
+        txtPython+=tab()+"if "+auxP+" == False:\n";
+        txtGo+=tab()+"if ("+auxC+"){\n"; contTPY+=1;
+        txtPython+=tab()+"break\n"; 
+        txtGo+=tab()+"break}\n";
+        contTPY-=2; 
+        txtGo+=tab()+"}\n";
+        auxP="";auxC="";
+    :}
 ;
 
-RETORNO::= retornar CONDICION:b puntoComa {:txtPython+=tab()+"return "+auxP+"\n";auxP="";:}
+RETORNO::= retornar CONDICION:b puntoComa 
+    {:
+        txtPython+=tab()+"return "+auxP+"\n";
+        txtGo+=tab()+"return "+auxC+"\n";
+        auxP="";auxC="";
+    :}
 ;
 
 SEGUN::= segun CONDICION:b hacer 
     {:
         tmpPS+=auxP;
-        txtGo+=tab()+"switch "+auxP+" {\n";
-        auxP="";
+        txtGo+=tab()+"switch "+auxC+" {\n";
+        auxP="";auxC="";
     :} CASE finSegun 
     {:
         contTPY-=1;
@@ -448,9 +582,9 @@ SEGUN::= segun CONDICION:b hacer
 CASE::= aitr CONDICION:c citr entonces 
     {:
         txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";
-        txtGo+= tab()+"case "+auxP+":\n";
+        txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
-        auxP="";
+        auxP="";auxC="";
     :} INSTRUCCIONES 
         | CASE contrario entonces 
     {:
@@ -463,9 +597,9 @@ CASE::= aitr CONDICION:c citr entonces
     {:
         contTPY-=1; 
         txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";
-        txtGo+= tab()+"case "+auxP+":\n";
+        txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
-        auxP="";
+        auxP="";auxC="";
     :} INSTRUCCIONES
 ;
 
@@ -493,55 +627,67 @@ CONDICION::= EXPRESION:a
                         if((c>=65 && c<=90)||(c>=97 && c<=122)){
                             char convertedChar = (char)c;
                             auxP+= "'"+String.valueOf(convertedChar)+"'"; tmpPARA = cA;
+                            auxC+= "'"+String.valueOf(convertedChar)+"'";
                             cA="";
                         }
                         else{
                             auxP+= "\" \""; tmpPARA = cA;
+                            auxC+= "\" \"";
                             cA="";
                         }
                     }
                     else if(a.toString().toLowerCase().equals("verdadero")){
                         auxP+= "True";tmpPARA=a.toString();
+                        auxC+= "true";
                     }
                     else if(a.toString().toLowerCase().equals("falso")){
                         auxP+= "False";tmpPARA=a.toString();
+                        auxC+= "false";
                     }
                     else{
                         auxP+= a.toString();tmpPARA=a.toString();
+                        auxC+= a.toString();
                     }
                 }
                 else{
                     auxP+= a.toString();tmpPARA=a.toString();
+                    auxC+= a.toString();
                 }
          
             :} 
-        | EXPRESION:q OP:opr EXPRESION:s {:auxP+=q.toString()+opr+s.toString();:}
+        | EXPRESION:q OP:opr EXPRESION:s {:auxP+=q.toString()+opr+s.toString();auxC+=q.toString()+opr+s.toString();:}
         | CONDICION OPL:oplr EXPRESION:z 
         {:
             if(oplr.toString().equals("or")){
                 auxP+=" or "+z.toString();
+                auxC+=" || "+z.toString();
             }
 
             if(oplr.toString().equals("and")){
                 auxP+=" and "+z.toString();
+                auxC+=" && "+z.toString();
             }
             
             if(oplr.toString().equals("not")){
                 auxP+=" not "+z.toString();
+                auxC+=" ! "+z.toString();
             }
         :}  
         | CONDICION OPL:oplr EXPRESION:x OP:opr EXPRESION:y
         {:
             if(oplr.toString().equals("or")){
                 auxP+=" or "+x.toString()+opr+y.toString();
+                auxC+=" || "+x.toString()+opr+y.toString();
             }
 
             if(oplr.toString().equals("and")){
                 auxP+=" and "+x.toString()+opr+y.toString();
+                auxC+=" && "+x.toString()+opr+y.toString();
             }
             
             if(oplr.toString().equals("not")){
                 auxP+=" not "+x.toString()+opr+y.toString();
+                auxC+=" ! "+x.toString()+opr+y.toString();
             }
         :}  
 ;
