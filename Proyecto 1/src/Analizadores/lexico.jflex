@@ -40,6 +40,7 @@ comentario2= \/\**[^\*\/]*\**\/
 
 AbInt = [¿]
 Ssum = [+]
+
 %%
 
 //Area Léxica

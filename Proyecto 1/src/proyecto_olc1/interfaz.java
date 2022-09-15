@@ -121,7 +121,7 @@ public class interfaz extends javax.swing.JFrame {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                         if (text.substring(wordL, wordR).matches("(\\W)*(si|fin_si|ingresar|como|con_valor|de_lo_contrario|o_si|entonces|repetir|hasta_que|ejecutar)")) {
                             setCharacterAttributes(wordL, wordR - wordL, attblue, false);
-                        } else if (text.substring(wordL, wordR).matches("(\\W)*(numero|cadena|bolean|caracter|para|hasta|fin_para|con_incremental|retornar|con_parametros|imprimir|imprimir_nl)")) {
+                        } else if (text.substring(wordL, wordR).matches("(\\W)*(numero|cadena|boolean|caracter|para|hasta|fin_para|con_incremental|retornar|con_parametros|imprimir|imprimir_nl)")) {
                             setCharacterAttributes(wordL, wordR - wordL, attgreen, false);
                         } else if (text.substring(wordL, wordR).matches("(\\W)*(inicio|fin|segun|hacer|fin_segun|mientras|fin_mientras|metodo|fin_metodo|funcion|fin_funcion)")) {
                             setCharacterAttributes(wordL, wordR - wordL, attred, false);
@@ -146,7 +146,15 @@ public class interfaz extends javax.swing.JFrame {
             }
         };
 
-        JTextPane txt = new JTextPane(doc);
+        JTextPane txt = new JTextPane(doc)
+        {
+            @Override
+            public boolean getScrollableTracksViewportWidth()
+            {
+                return getUI().getPreferredSize(this).width 
+                    <= getParent().getSize().width;
+            }
+        };
         String temp = txtCodigo.getText();
         txtCodigo.setStyledDocument(txt.getStyledDocument());
         txtCodigo.setText(temp);
@@ -266,7 +274,7 @@ public class interfaz extends javax.swing.JFrame {
             }
         });
 
-        txtCodigo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        txtCodigo.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         txtCodigo.setSelectedTextColor(new java.awt.Color(255, 255, 204));
         txtCodigo.setSelectionColor(new java.awt.Color(0, 102, 102));
         jScrollPane2.setViewportView(txtCodigo);

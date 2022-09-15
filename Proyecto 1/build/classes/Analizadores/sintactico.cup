@@ -21,8 +21,11 @@ parser code
     String auxC = "";
     String aux2G = "";
     String tmpG="";
+    String auxID="";
+    String tmpPARAG="";
     String imps = ""; //guarda bloque de importaciones
     int flag = 0; //verificador para cierre de llave main
+    int flag2 = 0;
 
     //caracter ascii
     String cA = ""; //guarda el valor del token caracter Ascci
@@ -53,6 +56,55 @@ parser code
             Analizador_Lexico.TError.add(datos);
     }
 :} 
+
+action code
+{:
+    String sumaO(Object v1, Object v2){
+        auxP+= " "+v1.toString() + " + " + v2.toString();
+        auxC+= " "+v1.toString() + " + " + v2.toString();
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        return "";
+    }
+    
+    String restaO(Object v1, Object v2){
+        auxP+= " "+v1.toString() + " - " + v2.toString();
+        auxC+= " "+v1.toString() + " - " + v2.toString();
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        flag2=0;
+        return "";
+    }
+
+    String multi(Object v1, Object v2){
+        auxP+= " "+v1.toString() + " * " + v2.toString();
+        auxC+= " "+v1.toString() + " * " + v2.toString();
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        return "";
+    }
+
+    String divs(Object v1, Object v2){
+
+        auxP+= " "+v1.toString() + " / " + v2.toString();
+        auxC+= " "+v1.toString() + " / " + v2.toString();
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        return "";
+    }
+    
+    String modulo(Object v1, Object v2){
+
+        auxP+= " "+v1.toString() + " % " + v2.toString();
+        auxC+= " "+v1.toString() + " % " + v2.toString();
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        return "";
+    }
+    
+    String potencia(Object v1, Object v2){
+
+        auxP+= " "+v1.toString() + " ** " + v2.toString();
+        auxC+= " math.Pow(float64("+v1.toString() + "),float64(" + v2.toString()+"))";
+        System.out.println("dato:"+v1.toString()+"," + v2.toString());
+        return "";
+    }
+:}
 
 //Terminales
 terminal Cadena;
@@ -122,18 +174,22 @@ terminal ejecutar;
 terminal imprimir;
 terminal imprimir_nl;
 
+
 //No terminales
 non terminal cuerpo,INICIO, ASIGNACION,DECLARACION, EXPRESION, TIPODATO;
 non terminal LISTA, CONDICIONALES;
 non terminal IF, CONDICION, INSTRUCCIONES, BLOQUE;
 non terminal SEGUN, CASE;
-non terminal PARA;
+non terminal PARA,BLOQUEPARA;
 non terminal MIENTRAS,REPETIR;
 non terminal RETORNO, IMPRESION;
 non terminal METODO, LISTAP, FUNCION, LLAMADA;
 non terminal OP, OPL;
 non terminal LEJC;
 non terminal auxFS;
+non terminal OP1, OP2,OP3;
+non terminal OPERACIONES;
+
 
 //gramaticas
 start with INICIO;
@@ -401,7 +457,7 @@ auxFS::= entonces INSTRUCCIONES finSi
         txtGo+=tab()+"}\n";
         auxP="";auxC="";
     :}
-    | entonces INSTRUCCIONES contrario 
+    | entonces INSTRUCCIONES contrario  
     {:
         contTPY-=1;
         txtPython+=tab()+"else:\n";
@@ -418,7 +474,8 @@ auxFS::= entonces INSTRUCCIONES finSi
     {:
         contTPY-=1;
         txtGo+=tab()+"}\n";
-        auxP="";auxC="";:} 
+        auxP="";auxC="";
+    :} 
   
 ;
 
@@ -450,54 +507,59 @@ BLOQUE::= OSi CONDICION:b entonces
     :}   INSTRUCCIONES
 ;
 
-PARA::= para id:idd asignacion CONDICION:b hasta CONDICION:c hacer 
+PARA::= para id:idd asignacion CONDICION:b 
     {:
-        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); 
-        txtPython+=","+c.toString()+"):\n";
-        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";";
-        txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
+        auxID=String.valueOf(idd);
+        txtPython+=tab()+"for "+auxID+" in range("+auxP; 
+        txtGo+=tab()+"for "+auxID+" := "+auxC+";";
+        auxP="";
+        auxC="";
+    :} 
+    hasta CONDICION:c 
+    {:
+        tmpPARA=auxP;
+        tmpPARAG=auxC;
         contTPY+=1; 
         auxP="";
         auxC="";
-        tmpPARA="";
-    :} INSTRUCCIONES finPara
-    {:
-        contTPY-=1;
-        txtGo+=tab()+"}\n";
+        
     :}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c hacer  finPara 
+    BLOQUEPARA
+     
+;
+
+BLOQUEPARA::= hacer
     {:
-        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString(); 
-        txtPython+=","+c.toString()+"):\n";
-        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";";
-        txtGo+= String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"++ {\n";
-        contTPY+=1; 
-        auxP="";
-        auxC="";
-        tmpPARA=""; 
-        contTPY-=1;
-        txtGo+=tab()+"}\n";
+        txtPython+=","+tmpPARA+"):\n";
+        txtGo+= " "+tmpPARAG+";"+auxID+"++ {\n";
+        tmpPARA ="";tmpPARAG="";auxID="";
+
+    :} INSTRUCCIONES finPara  
+    {: 
+        contTPY-=1; txtGo+=tab()+"}\n";
     :}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer 
+    | incremento CONDICION hacer 
     {:
-        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
-        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
-        contTPY+=1; 
-        auxP="";auxC="";
+        txtPython+=","+tmpPARA+","+auxP+"):\n";
+        txtGo+= " "+tmpPARAG+";"+auxID+"+= "+auxC+"{\n";
+        tmpPARA ="";tmpPARAG="";auxID="";auxP="";auxC="";
     :} INSTRUCCIONES finPara 
-    {:
-        contTPY-=1;
-        txtGo+=tab()+"}\n";
+    {: 
+        contTPY-=1; txtGo+=tab()+"}\n";
     :}
-    | para id:idd asignacion CONDICION:b hasta CONDICION:c incremento digitoEntero:num hacer 
+    | hacer finPara 
     {:
-        txtPython+=tab()+"for "+String.valueOf(idd)+" in range("+b.toString();txtPython+=","+c.toString()+","+String.valueOf(num)+"):\n";
-        txtGo+=tab()+"for "+String.valueOf(idd)+" := "+b.toString()+";"+String.valueOf(idd)+" < "+c.toString()+";"+String.valueOf(idd)+"+="+String.valueOf(num)+" {\n";
-        auxP="";auxC="";
-    :} finPara 
+        txtPython+=","+tmpPARA+"):\n";
+        txtGo+= " "+tmpPARAG+";"+auxID+"++ {\n";
+        tmpPARA ="";tmpPARAG="";auxID="";
+        contTPY-=1; txtGo+=tab()+"}\n";
+    :} 
+    | incremento CONDICION hacer finPara 
     {:
-        contTPY-=1;
-        txtGo+=tab()+"}\n";
+        txtPython+=","+tmpPARA+","+auxP+"):\n";
+        txtGo+= " "+tmpPARAG+";"+auxID+"+= "+auxC+"{\n";
+        tmpPARA ="";tmpPARAG="";auxID="";auxP="";auxC="";
+        contTPY-=1; txtGo+=tab()+"}\n";
     :}
 ;
 
@@ -603,93 +665,96 @@ CASE::= aitr CONDICION:c citr entonces
     :} INSTRUCCIONES
 ;
 
-//Falta operaciones aritmeticas
-EXPRESION::= digitoEntero:a {:RESULT = a;:} 
-    | digitoDecimal:a {:RESULT = a;:} 
-    | id:a  {:RESULT = a;:} 
-    | Cadena:a {:RESULT = a;:} 
-    | caracter:a {:RESULT = a;:} 
-    | Rtrue:a {:RESULT = a;:} 
-    | Rfalse:a {:RESULT = a;:} 
-    | caracterAS:a {:RESULT = a;:} 
-;
-
-CONDICION::= EXPRESION:a 
-            {:RESULT=a;
-
-                //si empieza con $ es caracter
-                if(a.toString().length()>1){
-                    if((a.toString().charAt(1)=='$')){
-                        //obtener numero
-                        cA+= a.toString().replace("'","").replace("$","").replace("{","").replace("}","");
-                        c = Integer.parseInt(cA);
-                        //verificar numero sino espacion en blanco
-                        if((c>=65 && c<=90)||(c>=97 && c<=122)){
-                            char convertedChar = (char)c;
-                            auxP+= "'"+String.valueOf(convertedChar)+"'"; tmpPARA = cA;
-                            auxC+= "'"+String.valueOf(convertedChar)+"'";
-                            cA="";
-                        }
-                        else{
-                            auxP+= "\" \""; tmpPARA = cA;
-                            auxC+= "\" \"";
-                            cA="";
-                        }
-                    }
-                    else if(a.toString().toLowerCase().equals("verdadero")){
-                        auxP+= "True";tmpPARA=a.toString();
-                        auxC+= "true";
-                    }
-                    else if(a.toString().toLowerCase().equals("falso")){
-                        auxP+= "False";tmpPARA=a.toString();
-                        auxC+= "false";
-                    }
-                    else{
-                        auxP+= a.toString();tmpPARA=a.toString();
-                        auxC+= a.toString();
-                    }
+OPERACIONES::= EXPRESION:a 
+    {:
+        RESULT=a; 
+        System.out.println("datoTot:"+a.toString());
+        //si empieza con $ es caracter
+        if(a.toString().length()>1){
+            if((a.toString().charAt(1)=='$')){
+                //obtener numero
+                cA+= a.toString().replace("'","").replace("$","").replace("{","").replace("}","");
+                c = Integer.parseInt(cA);
+                //verificar numero sino espacion en blanco
+                if((c>=65 && c<=90)||(c>=97 && c<=122)){
+                    char convertedChar = (char)c;
+                    auxP+= "'"+String.valueOf(convertedChar)+"'";
+                    auxC+= "'"+String.valueOf(convertedChar)+"'";
+                    cA="";
                 }
                 else{
-                    auxP+= a.toString();tmpPARA=a.toString();
-                    auxC+= a.toString();
+                    auxP+= "\" \"";
+                    auxC+= "\" \"";
+                    cA="";
                 }
-         
-            :} 
-        | EXPRESION:q OP:opr EXPRESION:s {:auxP+=q.toString()+opr+s.toString();auxC+=q.toString()+opr+s.toString();:}
-        | CONDICION OPL:oplr EXPRESION:z 
-        {:
-            if(oplr.toString().equals("or")){
-                auxP+=" or "+z.toString();
-                auxC+=" || "+z.toString();
             }
+            else if(a.toString().toLowerCase().equals("verdadero")){
+                auxP+= "True";
+                auxC+= "true";
+            }
+            else if(a.toString().toLowerCase().equals("falso")){
+                auxP+= "False";
+                auxC+= "false";
+            }
+            else{
+                auxP+= a.toString();
+                auxC+= a.toString();
+            }
+        }
+        else{
+            auxP+= a.toString();
+            auxC+= a.toString();
+        }
+    :}
+;
 
-            if(oplr.toString().equals("and")){
-                auxP+=" and "+z.toString();
-                auxC+=" && "+z.toString();
-            }
-            
-            if(oplr.toString().equals("not")){
-                auxP+=" not "+z.toString();
-                auxC+=" ! "+z.toString();
-            }
-        :}  
-        | CONDICION OPL:oplr EXPRESION:x OP:opr EXPRESION:y
-        {:
-            if(oplr.toString().equals("or")){
-                auxP+=" or "+x.toString()+opr+y.toString();
-                auxC+=" || "+x.toString()+opr+y.toString();
-            }
+EXPRESION::= EXPRESION:a mas OP1:b          {:RESULT = sumaO(a,b);:} 
+    | EXPRESION:a resta OP1:b               {:RESULT = restaO(a,b);:} 
+    | OP1:a                                 {:RESULT =a;:}
+;
+    
+OP1::= OP1:a mult OP2:b     {:RESULT = multi(a,b);:} 
+      | OP1:a div  OP2:b    {:RESULT = divs(a,b);:} 
+      | OP1:a Rmod OP2:b    {:RESULT = modulo(a,b);:} 
+      | OP2:a               {:RESULT =a;:}
+;
 
-            if(oplr.toString().equals("and")){
-                auxP+=" and "+x.toString()+opr+y.toString();
-                auxC+=" && "+x.toString()+opr+y.toString();
-            }
-            
-            if(oplr.toString().equals("not")){
-                auxP+=" not "+x.toString()+opr+y.toString();
-                auxC+=" ! "+x.toString()+opr+y.toString();
-            }
-        :}  
+OP2::= OP2:a Rpotencia abrir_cor OP3:b cerrar_cor {:RESULT = potencia(a,b);:}
+    |  OP3:a {: RESULT = a; :}
+;                 
+
+OP3::= abrir_par {:auxP+="("; auxC+="(";:} OPERACIONES:a cerrar_par {:RESULT = a; auxP+=")"; auxC+=")";:}
+    |digitoEntero:a       {:RESULT = a;:} 
+    | digitoDecimal:a       {:RESULT = a;:} 
+    | id:a                  {:RESULT = a;:} 
+    | Cadena:a              {:RESULT = a;:} 
+    | caracter:a            {:RESULT = a;:} 
+    | Rtrue:a               {:RESULT = a;:} 
+    | Rfalse:a              {:RESULT = a;:} 
+    | caracterAS:a          {:RESULT = a;:}
+    
+;
+
+CONDICION::= OPERACIONES
+    | OPERACIONES OP:opr {:auxP+=opr; auxC+=opr;:} OPERACIONES
+    | CONDICION OPL:oopl 
+    {:
+        if(oopl.toString().equals("or")){
+            auxP+=" or ";
+            auxC+=" || ";
+        }
+
+        if(oopl.toString().equals("and")){
+            auxP+=" and ";
+            auxC+=" && ";
+        }
+
+        if(oopl.toString().equals("not")){
+            auxP+=" not ";
+            auxC+=" ! ";
+        }
+    :} 
+    OPERACIONES OP:opr {:auxP+=opr; auxC+=opr;:} OPERACIONES
 ;
 
 OP::= mayor:oop {:RESULT=">";:}
