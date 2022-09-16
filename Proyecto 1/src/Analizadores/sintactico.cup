@@ -1,11 +1,22 @@
 package Analizadores;
 import java_cup.runtime.Symbol;
+import proyecto_olc1.Nodo;
+import proyecto_olc1.arbolSintactico;
+
+
 
 //java -jar java-cup-11b.jar -parser A_sintactico -symbols Simbolos sintactico.cup
 
 parser code 
 {:
-    
+    //Variables para el Arbol sintactico
+    proyecto_olc1.arbolSintactico arbolAux = proyecto_olc1.interfaz.arbol;
+    proyecto_olc1.Nodo nodoAux = proyecto_olc1.interfaz.nodo;
+
+    int v1 = 0;
+    int contLL = 0;
+    String cond;
+
     public static String txtPython = ""; //Variable que guarda el código python
     String auxP = ""; //Guarda condicion/expresion
     String aux2=""; //Guarda informacion de lista parametros, nombres y expresiones/condiciones
@@ -45,14 +56,14 @@ parser code
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
             System.err.println("Error Sintáctico en la Línea " + (s.left) +" Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
-            claseErrores datos = new claseErrores(String.valueOf(s.value), "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            claseErrores datos = new claseErrores(String.valueOf(s.value), "Error sintáctico", "No se esperaba este componente:",s.left,s.right);
             Analizador_Lexico.TError.add(datos);
     } 
     
     //Método al que se llama en el momento en que ya no es posible una recuperación de errores. 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
             System.err.println("Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
-            claseErrores datos = new claseErrores("Null", "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            claseErrores datos = new claseErrores("Null", "Error sintáctico", "Error irrecuperable", s.left,s.right);
             Analizador_Lexico.TError.add(datos);
     }
 :} 
@@ -190,18 +201,24 @@ non terminal auxFS;
 non terminal OP1, OP2,OP3;
 non terminal OPERACIONES;
 
-
 //gramaticas
 start with INICIO;
 
-INICIO::= inicio 
+INICIO::= inicio:i 
     {: 
+        arbolAux.InsertarRecursivo(nodoAux,"inicio","Global");
+        arbolAux.InsertarRecursivo(nodoAux,"inicio","inicio");
+
         txtPython+=tab()+"def main():\n";
-        imps+= "import (\n\"fmt\"\n )\n";
+        imps+= "import (\n\"fmt\"\n\"math\"\n)\n";
         txtGo+=tab()+"package main\n"+tab()+imps+"func main(){\n";
         contTPY+=1;
-    :} cuerpo fin 
+    :} cuerpo:crp fin:f 
     {:
+        //arbol
+        arbolAux.InsertarRecursivo(nodoAux,"fin","Global");
+        arbolAux.InsertarRecursivo(nodoAux,"fin","fin");
+
         txtPython+="if __name__ == '__main__':\n    main()";
         
         if(flag==0){
@@ -216,28 +233,80 @@ INICIO::= inicio
     | error fin {:System.out.println("Falta inicio");:}
 ;
 
-cuerpo::= DECLARACION 
-    | ASIGNACION 
+cuerpo::= DECLARACION
+        {:
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo");
+        :}
+    | ASIGNACION
+        {:
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo");
+        :}
     | CONDICIONALES
-    | RETORNO
+        {:
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo");
+        :}
+    | RETORNO               
+        {:
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo");
+        :}
     | METODO
+        {:
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo");
+        :}
     | FUNCION
-    | LLAMADA
-    | IMPRESION
-    | cuerpo CONDICIONALES
-    | cuerpo DECLARACION 
-    | cuerpo ASIGNACION 
-    | cuerpo RETORNO
-    | cuerpo METODO
-    | cuerpo FUNCION
-    | cuerpo LLAMADA
-    | cuerpo IMPRESION
+        {:
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo");
+        :}
+    | LLAMADA    {:cond="cuerpo";:}    
+        
+    | IMPRESION 
+        {:
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo");
+        :}
+    | cuerpo CONDICIONALES  {: arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo"); :}
+    | cuerpo DECLARACION    {: arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo"); :}
+    | cuerpo ASIGNACION     {: arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo"); :}
+    | cuerpo RETORNO        {: arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo"); :}
+    | cuerpo METODO         {: arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo"); :}
+    | cuerpo FUNCION        {: arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo"); :}
+    | cuerpo LLAMADA        
+    | cuerpo IMPRESION      {: arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo"); :}
 ;
 
 LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
-            {:
+            {:  
+                if(v1==0){
+                    arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+                    v1 = 1;
+                }
+                
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LLAMADA","cuerpo");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-ejecutar",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,"ejecutar",String.valueOf(contLL)+"-ejecutar");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-id",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-id");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-abrir_par",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,"(",String.valueOf(contLL)+"-abrir_par");
+                
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cerrar_par",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-cerrar_par");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+    
                 txtPython+=tab()+String.valueOf(idd)+"()\n";
                 txtGo+= tab()+String.valueOf(idd)+"()\n";
+                contLL++;
             :}
     | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
     {:
@@ -310,8 +379,10 @@ FUNCION::= funcion id:idd TIPODATO:tdd
     :}
 ;
 
-IMPRESION::= imprimir CONDICION:b puntoComa 
-    {:
+IMPRESION::= imprimir 
+    CONDICION:b puntoComa 
+    
+    {:       
         txtPython+=tab()+"print("+auxP+")\n";
         txtGo+=tab()+"fmt.Print("+auxC+")\n";
         auxP="";
@@ -670,14 +741,14 @@ OPERACIONES::= EXPRESION:a
         RESULT=a; 
         System.out.println("datoTot:"+a.toString());
         //si empieza con $ es caracter
-        if(a.toString().length()>1){
+        if(a.toString().length()>1){ 
             if((a.toString().charAt(1)=='$')){
                 //obtener numero
                 cA+= a.toString().replace("'","").replace("$","").replace("{","").replace("}","");
-                c = Integer.parseInt(cA);
+                c = Integer.parseInt(cA); 
                 //verificar numero sino espacion en blanco
                 if((c>=65 && c<=90)||(c>=97 && c<=122)){
-                    char convertedChar = (char)c;
+                    char convertedChar = (char)c; 
                     auxP+= "'"+String.valueOf(convertedChar)+"'";
                     auxC+= "'"+String.valueOf(convertedChar)+"'";
                     cA="";
@@ -723,15 +794,19 @@ OP2::= OP2:a Rpotencia abrir_cor OP3:b cerrar_cor {:RESULT = potencia(a,b);:}
     |  OP3:a {: RESULT = a; :}
 ;                 
 
-OP3::= abrir_par {:auxP+="("; auxC+="(";:} OPERACIONES:a cerrar_par {:RESULT = a; auxP+=")"; auxC+=")";:}
-    |digitoEntero:a       {:RESULT = a;:} 
+OP3::= abrir_par            {:auxP+="("; auxC+="(";:} OPERACIONES:a cerrar_par {:RESULT = a; auxP+=")"; auxC+=")";:}
+    | digitoEntero:a         {:RESULT = a;:} 
     | digitoDecimal:a       {:RESULT = a;:} 
     | id:a                  {:RESULT = a;:} 
     | Cadena:a              {:RESULT = a;:} 
     | caracter:a            {:RESULT = a;:} 
     | Rtrue:a               {:RESULT = a;:} 
     | Rfalse:a              {:RESULT = a;:} 
-    | caracterAS:a          {:RESULT = a;:}
+    | caracterAS:a          
+        {:
+            RESULT = a;
+            
+        :}
     
 ;
 

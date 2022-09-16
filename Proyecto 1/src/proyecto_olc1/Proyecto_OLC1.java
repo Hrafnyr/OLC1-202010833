@@ -12,6 +12,7 @@ public class Proyecto_OLC1 {
        //Inicio de interfaz 
         interfaz v = new interfaz();
         ReporteErrores vR = new ReporteErrores();
+             
     }
     
 }

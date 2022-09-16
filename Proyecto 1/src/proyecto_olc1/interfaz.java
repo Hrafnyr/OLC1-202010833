@@ -8,6 +8,8 @@ package proyecto_olc1;
 import Analizadores.A_sintactico;
 import Analizadores.Analizador_Lexico;
 import Analizadores.claseErrores;
+import proyecto_olc1.arbolSintactico;
+import proyecto_olc1.Nodo;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,7 +42,8 @@ import javax.swing.text.StyleContext;
  * @author Moises
  */
 public class interfaz extends javax.swing.JFrame {
-    
+    public static proyecto_olc1.arbolSintactico arbol;
+    public static Nodo nodo; 
     JFileChooser ver = new JFileChooser("./");
     
     File archivo;
@@ -454,9 +457,10 @@ public class interfaz extends javax.swing.JFrame {
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         contV=1;
-        //Limpiar errores para nueva verificacion y tabla
+        //Limpiar errores para nueva verificacion y tabla y arbol
         Analizador_Lexico.TError.clear();
-        
+        arbol = new proyecto_olc1.arbolSintactico();
+        nodo = arbol.insertarRaiz("Global"); 
         //limpiar textoGuardado
         A_sintactico.txtPython="";
         A_sintactico.txtGo="";
@@ -469,7 +473,8 @@ public class interfaz extends javax.swing.JFrame {
         if (txtCodigo.getText().isEmpty()) {
             System.out.println("No se ha escrito nada");
         } else {
-        
+            
+            
             try {
                 File archivo = new File("archivo.txt");
                 // Si el archivo no existe es creado
@@ -502,11 +507,13 @@ public class interfaz extends javax.swing.JFrame {
                 txtErrores.setEditable(true);
                 txtErrores.setText(String.valueOf(Analizador_Lexico.TError.size()));
                 txtErrores.setEditable(false);
+                
                
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }   
+            } 
+            
         }
     }//GEN-LAST:event_btRunActionPerformed
 
@@ -582,7 +589,10 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        
+        //ver arbol - metodo de pruebas
+        arbol.raíz.verNodo();
+        arbol.verHijosRecursivo(nodo);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**

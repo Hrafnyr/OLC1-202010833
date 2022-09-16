@@ -6,6 +6,8 @@
 package Analizadores;
 
 import java_cup.runtime.Symbol;
+import proyecto_olc1.Nodo;
+import proyecto_olc1.arbolSintactico;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -892,7 +894,14 @@ public class A_sintactico extends java_cup.runtime.lr_parser {
 
 
 
-    
+    //Variables para el Arbol sintactico
+    proyecto_olc1.arbolSintactico arbolAux = proyecto_olc1.interfaz.arbol;
+    proyecto_olc1.Nodo nodoAux = proyecto_olc1.interfaz.nodo;
+
+    int v1 = 0;
+    int contLL = 0;
+    String cond;
+
     public static String txtPython = ""; //Variable que guarda el código python
     String auxP = ""; //Guarda condicion/expresion
     String aux2=""; //Guarda informacion de lista parametros, nombres y expresiones/condiciones
@@ -932,14 +941,14 @@ public class A_sintactico extends java_cup.runtime.lr_parser {
     //Método al que se llama automáticamente ante algún error sintactico. 
     public void syntax_error(Symbol s){ 
             System.err.println("Error Sintáctico en la Línea " + (s.left) +" Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
-            claseErrores datos = new claseErrores(String.valueOf(s.value), "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            claseErrores datos = new claseErrores(String.valueOf(s.value), "Error sintáctico", "No se esperaba este componente:",s.left,s.right);
             Analizador_Lexico.TError.add(datos);
     } 
     
     //Método al que se llama en el momento en que ya no es posible una recuperación de errores. 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
             System.err.println("Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
-            claseErrores datos = new claseErrores("Null", "Error sintáctico", "eliminar entrada incorrecta",s.left,s.right);
+            claseErrores datos = new claseErrores("Null", "Error sintáctico", "Error irrecuperable", s.left,s.right);
             Analizador_Lexico.TError.add(datos);
     }
 
@@ -1034,9 +1043,15 @@ class CUP$A_sintactico$actions {
           case 1: // NT$0 ::= 
             {
               Object RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
+		Object i = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
  
+        arbolAux.InsertarRecursivo(nodoAux,"inicio","Global");
+        arbolAux.InsertarRecursivo(nodoAux,"inicio","inicio");
+
         txtPython+=tab()+"def main():\n";
-        imps+= "import (\n\"fmt\"\n )\n";
+        imps+= "import (\n\"fmt\"\n\"math\"\n)\n";
         txtGo+=tab()+"package main\n"+tab()+imps+"func main(){\n";
         contTPY+=1;
     
@@ -1050,7 +1065,20 @@ class CUP$A_sintactico$actions {
               Object RESULT =null;
               // propagate RESULT from NT$0
                 RESULT = (Object) ((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-2)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).right;
+		Object i = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).value;
+		int crpleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
+		int crpright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
+		Object crp = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
+		int fleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
+		Object f = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
 		
+        //arbol
+        arbolAux.InsertarRecursivo(nodoAux,"fin","Global");
+        arbolAux.InsertarRecursivo(nodoAux,"fin","fin");
+
         txtPython+="if __name__ == '__main__':\n    main()";
         
         if(flag==0){
@@ -1079,7 +1107,10 @@ class CUP$A_sintactico$actions {
           case 4: // cuerpo ::= DECLARACION 
             {
               Object RESULT =null;
-
+		
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1088,7 +1119,10 @@ class CUP$A_sintactico$actions {
           case 5: // cuerpo ::= ASIGNACION 
             {
               Object RESULT =null;
-
+		
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1097,7 +1131,10 @@ class CUP$A_sintactico$actions {
           case 6: // cuerpo ::= CONDICIONALES 
             {
               Object RESULT =null;
-
+		
+            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+            arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1106,7 +1143,10 @@ class CUP$A_sintactico$actions {
           case 7: // cuerpo ::= RETORNO 
             {
               Object RESULT =null;
-
+		
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1115,7 +1155,10 @@ class CUP$A_sintactico$actions {
           case 8: // cuerpo ::= METODO 
             {
               Object RESULT =null;
-
+		
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1124,7 +1167,10 @@ class CUP$A_sintactico$actions {
           case 9: // cuerpo ::= FUNCION 
             {
               Object RESULT =null;
-
+		
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1133,7 +1179,7 @@ class CUP$A_sintactico$actions {
           case 10: // cuerpo ::= LLAMADA 
             {
               Object RESULT =null;
-
+		cond="cuerpo";
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1142,7 +1188,10 @@ class CUP$A_sintactico$actions {
           case 11: // cuerpo ::= IMPRESION 
             {
               Object RESULT =null;
-
+		
+           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+           arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo");
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1151,7 +1200,7 @@ class CUP$A_sintactico$actions {
           case 12: // cuerpo ::= cuerpo CONDICIONALES 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1160,7 +1209,7 @@ class CUP$A_sintactico$actions {
           case 13: // cuerpo ::= cuerpo DECLARACION 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1169,7 +1218,7 @@ class CUP$A_sintactico$actions {
           case 14: // cuerpo ::= cuerpo ASIGNACION 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1178,7 +1227,7 @@ class CUP$A_sintactico$actions {
           case 15: // cuerpo ::= cuerpo RETORNO 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1187,7 +1236,7 @@ class CUP$A_sintactico$actions {
           case 16: // cuerpo ::= cuerpo METODO 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1196,7 +1245,7 @@ class CUP$A_sintactico$actions {
           case 17: // cuerpo ::= cuerpo FUNCION 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1214,7 +1263,7 @@ class CUP$A_sintactico$actions {
           case 19: // cuerpo ::= cuerpo IMPRESION 
             {
               Object RESULT =null;
-
+		 arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo"); 
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("cuerpo",0, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;
@@ -1226,9 +1275,32 @@ class CUP$A_sintactico$actions {
 		int iddleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).left;
 		int iddright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).right;
 		Object idd = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-3)).value;
-		
+		  
+                if(v1==0){
+                    arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+                    v1 = 1;
+                }
+                
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LLAMADA","cuerpo");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-ejecutar",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,"ejecutar",String.valueOf(contLL)+"-ejecutar");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-id",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-id");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-abrir_par",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,"(",String.valueOf(contLL)+"-abrir_par");
+                
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cerrar_par",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-cerrar_par");
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+    
                 txtPython+=tab()+String.valueOf(idd)+"()\n";
                 txtGo+= tab()+String.valueOf(idd)+"()\n";
+                contLL++;
             
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("LLAMADA",23, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
@@ -1420,7 +1492,7 @@ class CUP$A_sintactico$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.elementAt(CUP$A_sintactico$top-1)).value;
-		
+		       
         txtPython+=tab()+"print("+auxP+")\n";
         txtGo+=tab()+"fmt.Print("+auxC+")\n";
         auxP="";
@@ -2300,14 +2372,14 @@ auxTP+=ttd;
         RESULT=a; 
         System.out.println("datoTot:"+a.toString());
         //si empieza con $ es caracter
-        if(a.toString().length()>1){
+        if(a.toString().length()>1){ 
             if((a.toString().charAt(1)=='$')){
                 //obtener numero
                 cA+= a.toString().replace("'","").replace("$","").replace("{","").replace("}","");
-                c = Integer.parseInt(cA);
+                c = Integer.parseInt(cA); 
                 //verificar numero sino espacion en blanco
                 if((c>=65 && c<=90)||(c>=97 && c<=122)){
-                    char convertedChar = (char)c;
+                    char convertedChar = (char)c; 
                     auxP+= "'"+String.valueOf(convertedChar)+"'";
                     auxC+= "'"+String.valueOf(convertedChar)+"'";
                     cA="";
@@ -2580,7 +2652,10 @@ auxP+="("; auxC+="(";
 		int aleft = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()).right;
 		Object a = (Object)((java_cup.runtime.Symbol) CUP$A_sintactico$stack.peek()).value;
-		RESULT = a;
+		
+            RESULT = a;
+            
+        
               CUP$A_sintactico$result = parser.getSymbolFactory().newSymbol("OP3",30, ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$A_sintactico$stack.peek()), RESULT);
             }
           return CUP$A_sintactico$result;

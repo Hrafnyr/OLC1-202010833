@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/Analizadores/lexico.jflex</file>
+            <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/proyecto_olc1/arbolSintactico.java</file>
             <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/proyecto_olc1/interfaz.java</file>
-            <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/Analizadores/A_sintactico.java</file>
+            <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/proyecto_olc1/Nodo.java</file>
             <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/Analizadores/sintactico.cup</file>
+            <file>file:/C:/Users/Moises/Documents/NetBeansProjects/Proyecto%201/src/Analizadores/A_sintactico.java</file>
         </group>
     </open-files>
 </project-private>
