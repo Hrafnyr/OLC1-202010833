@@ -39,12 +39,12 @@ public class arbolSintactico {
     public boolean verificarExistencia(Nodo nodo, String dato, String padre) {
      
       if (nodo.getValor().equals(padre)) {
-          System.out.println("Existe");
+          System.out.println("Entrando al padre");
 	  return true;
       } else {
 	  for (int i = 0; i < nodo.contHijos; i++) {
 	     if (nodo.hijos[i].getValor().equals(padre)) {
-                 System.out.println("Existe");
+                 System.out.println("Existe como hijo");
 		 return true;
 	     } else {
 		verificarExistencia(nodo.hijos[i], dato, padre);

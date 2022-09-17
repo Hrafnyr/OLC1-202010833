@@ -1,6 +1,6 @@
-
 inicio
-
-_id_,_f_,_tt_ -> 5;
-
+retornar "hola";
+retornar "hola";
+retornar "hola";
+retornar "hola";
 fin
