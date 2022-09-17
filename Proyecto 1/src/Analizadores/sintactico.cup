@@ -3,19 +3,16 @@ import java_cup.runtime.Symbol;
 import proyecto_olc1.Nodo;
 import proyecto_olc1.arbolSintactico;
 
-
-
-//java -jar java-cup-11b.jar -parser A_sintactico -symbols Simbolos sintactico.cup
-
 parser code 
 {:
     //Variables para el Arbol sintactico
     proyecto_olc1.arbolSintactico arbolAux = proyecto_olc1.interfaz.arbol;
     proyecto_olc1.Nodo nodoAux = proyecto_olc1.interfaz.nodo;
 
-    int v1 = 0;
-    int contLL = 0;
-    String cond;
+    int v1,v2 = 0;
+    int contLL,contCL = 0;
+    String crp = "cuerpo";
+    String ins = "INSTRUCCIONES";
 
     public static String txtPython = ""; //Variable que guarda el código python
     String auxP = ""; //Guarda condicion/expresion
@@ -204,20 +201,21 @@ non terminal OPERACIONES;
 //gramaticas
 start with INICIO;
 
-INICIO::= inicio:i 
+INICIO::= inicio
     {: 
-        arbolAux.InsertarRecursivo(nodoAux,"inicio","Global");
+        //arbol
+        arbolAux.InsertarRecursivo(nodoAux,"Rinicio","Global");
         arbolAux.InsertarRecursivo(nodoAux,"inicio","inicio");
+        arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
+        arbolAux.InsertarRecursivo(nodoAux,"Rfin","Global");
 
         txtPython+=tab()+"def main():\n";
         imps+= "import (\n\"fmt\"\n\"math\"\n)\n";
         txtGo+=tab()+"package main\n"+tab()+imps+"func main(){\n";
         contTPY+=1;
-    :} cuerpo:crp fin:f 
+    :} cuerpo:crp fin
     {:
-        //arbol
-        arbolAux.InsertarRecursivo(nodoAux,"fin","Global");
-        arbolAux.InsertarRecursivo(nodoAux,"fin","fin");
+        arbolAux.InsertarRecursivo(nodoAux,"fin","Rfin");
 
         txtPython+="if __name__ == '__main__':\n    main()";
         
@@ -234,62 +232,29 @@ INICIO::= inicio:i
 ;
 
 cuerpo::= DECLARACION
-        {:
-            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-            arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo");
-        :}
     | ASIGNACION
-        {:
-            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-            arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo");
-        :}
     | CONDICIONALES
-        {:
-            arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-            arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo");
-        :}
     | RETORNO               
-        {:
-           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-           arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo");
-        :}
     | METODO
-        {:
-           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-           arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo");
-        :}
     | FUNCION
-        {:
-           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-           arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo");
-        :}
-    | LLAMADA    {:cond="cuerpo";:}    
-        
+    | LLAMADA       
     | IMPRESION 
-        {:
-           arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-           arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo");
-        :}
-    | cuerpo CONDICIONALES  {: arbolAux.InsertarRecursivo(nodoAux,"CONDICIONALES","cuerpo"); :}
-    | cuerpo DECLARACION    {: arbolAux.InsertarRecursivo(nodoAux,"DECLARACION","cuerpo"); :}
-    | cuerpo ASIGNACION     {: arbolAux.InsertarRecursivo(nodoAux,"ASIGNACION","cuerpo"); :}
-    | cuerpo RETORNO        {: arbolAux.InsertarRecursivo(nodoAux,"RETORNO","cuerpo"); :}
-    | cuerpo METODO         {: arbolAux.InsertarRecursivo(nodoAux,"METODO","cuerpo"); :}
-    | cuerpo FUNCION        {: arbolAux.InsertarRecursivo(nodoAux,"FUNCION","cuerpo"); :}
+    | cuerpo CONDICIONALES 
+    | cuerpo DECLARACION    
+    | cuerpo ASIGNACION     
+    | cuerpo RETORNO        
+    | cuerpo METODO         
+    | cuerpo FUNCION        
     | cuerpo LLAMADA        
-    | cuerpo IMPRESION      {: arbolAux.InsertarRecursivo(nodoAux,"IMPRESION","cuerpo"); :}
+    | cuerpo IMPRESION      
 ;
 
 LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
             {:  
-                if(v1==0){
-                    arbolAux.InsertarRecursivo(nodoAux,"cuerpo","Global");
-                    v1 = 1;
-                }
-                
-                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LLAMADA","cuerpo");
+                                
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LLAMADA",crp);
 
-                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-ejecutar",String.valueOf(contLL)+"-LLAMADA");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rejecutar",String.valueOf(contLL)+"-LLAMADA");
                 arbolAux.InsertarRecursivo(nodoAux,"ejecutar",String.valueOf(contLL)+"-ejecutar");
 
                 arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-id",String.valueOf(contLL)+"-LLAMADA");
@@ -308,10 +273,34 @@ LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
                 txtGo+= tab()+String.valueOf(idd)+"()\n";
                 contLL++;
             :}
-    | ejecutar id:idd abrir_par LEJC cerrar_par puntoComa
+    | ejecutar id:idd abrir_par {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LLAMADA",crp);
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rejecutar",String.valueOf(contLL)+"-LLAMADA");
+        arbolAux.InsertarRecursivo(nodoAux,"ejecutar",String.valueOf(contLL)+"-ejecutar");
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-id",String.valueOf(contLL)+"-LLAMADA");
+        arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-id");
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-abrir_par",String.valueOf(contLL)+"-LLAMADA");
+        arbolAux.InsertarRecursivo(nodoAux,"(",String.valueOf(contLL)+"-abrir_par");
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LEJC",String.valueOf(contLL)+"-LLAMADA");
+
+    :} LEJC cerrar_par puntoComa
     {:
+        
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cerrar_par",String.valueOf(contLL)+"-LLAMADA");
+        arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-cerrar_par");
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-LLAMADA");
+        arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+        
+       
+
         txtPython+= tab()+ String.valueOf(idd)+"("+aux2+")\n";
         txtGo+=tab()+String.valueOf(idd)+"("+aux2G+")\n";
+        contLL++;
         auxP="";
         auxC="";
         aux2="";
@@ -319,6 +308,7 @@ LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
     :}
 ;
 
+//FALTA ARBOL
 METODO::= metodo id:idd 
     {:
         txtPython+=tab()+"def "+String.valueOf(idd)+"():\n";
@@ -349,6 +339,7 @@ METODO::= metodo id:idd
     :}
 ;
 
+//FALTA ARBOL
 FUNCION::= funcion id:idd TIPODATO:tdd 
     {:
         txtPython+=tab()+"def "+String.valueOf(idd)+":\n";
@@ -380,18 +371,40 @@ FUNCION::= funcion id:idd TIPODATO:tdd
 ;
 
 IMPRESION::= imprimir 
+    {:
+    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-IMPRESION",crp);
+    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rimprimir",String.valueOf(contLL)+"-IMPRESION");
+    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-imprimir",String.valueOf(contLL)+"-imprimir");
+    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-IMPRESION");
+    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-IMPRESION");
+    arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+    :}
     CONDICION:b puntoComa 
     
     {:       
+
         txtPython+=tab()+"print("+auxP+")\n";
         txtGo+=tab()+"fmt.Print("+auxC+")\n";
+        contLL++;
+        contCL++;
         auxP="";
         auxC="";
     :}
-        | imprimir_nl CONDICION:b puntoComa 
+        | imprimir_nl 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-IMPRESION",crp);
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rimprimir_nl",String.valueOf(contLL)+"-IMPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-imprimir_nl",String.valueOf(contLL)+"-imprimir_nl");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-IMPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-IMPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+    :} 
+        CONDICION:b puntoComa 
     {:
         txtPython+=tab()+"print("+auxP+",\"\\n\")\n";
         txtGo+=tab()+"fmt.Println("+auxC+")\n";
+        contLL++;
+        contCL++;
         auxP="";
         auxC="";
     :}
@@ -399,10 +412,26 @@ IMPRESION::= imprimir
 
 DECLARACION::= Ringresar 
             {:
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-DECLARACION",crp);
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Ringresar",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-ingresar",String.valueOf(contLL)+"-Ringresar");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LISTA",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rcomo",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-como",String.valueOf(contLL)+"-Rcomo");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-TIPODATO",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-RCon_valor",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-con_valor",String.valueOf(contLL)+"-RCon_valor");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-DECLARACION");
+                arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+
                 txtPython+=tab();
                 txtGo+=tab()+"var ";
             :} LISTA Rcomo TIPODATO:ttd {:auxTP+=ttd;:} RCon_valor CONDICION:b puntoComa
             {:
+                contLL++;
+                contCL++;
+
                 txtPython+=aux2;
                 txtGo+=aux2;
 
@@ -433,8 +462,20 @@ DECLARACION::= Ringresar
             :}
 ; 
 
-ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
+ASIGNACION::= 
+    {:
+        //arbol
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-ASIGNACION",crp);
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LISTA",String.valueOf(contLL)+"-ASIGNACION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rasignacion",String.valueOf(contLL)+"-ASIGNACION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- ->",String.valueOf(contLL)+"-Rasignacion");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-ASIGNACION");
+
+    :} LISTA asignacion CONDICION:b puntoComa
             {:
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-ASIGNACION");
+                arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
+
                 txtPython+= tab()+aux2;
                 txtGo+= tab()+aux2;
                 aux2="";
@@ -460,6 +501,8 @@ ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
                 tmp="";
                 tmpG="";
                 cont1=0;
+                contLL++;
+                contCL++;
             :}
 
 ;
@@ -480,10 +523,19 @@ LISTAP::= id:idd TIPODATO:tdd
 //Lista de id (declaracion, asignacion)
 LISTA::= id:idd 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-idd",String.valueOf(contLL)+"-LISTA");
+        arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-idd");
+        contCL++;
         aux2+=idd.toString();
     :}
-        | LISTA Coma id:idd 
+        | LISTA Coma  id:idd 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Coma",String.valueOf(contLL)+"-LISTA");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"- , ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Coma");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-idd",String.valueOf(contLL)+"-LISTA");
+        arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-idd");
+        
+        contCL++;
         aux2+=","+idd.toString();
         cont1=cont1+1;
     :}
@@ -492,15 +544,25 @@ LISTA::= id:idd
 //Lista para llamadas
 LEJC::= CONDICION:b  
     {:
+        
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-LEJC");
+
+        contCL++;
         aux2+=auxP;
         aux2G+=auxC;
         auxC="";
         auxP="";
     :}
-        | LEJC Coma CONDICION:b 
+        | LEJC Coma 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Coma",String.valueOf(contLL)+"-LEJC");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"- , ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Coma");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-LEJC");
+    :} CONDICION:b 
     {:
         aux2+=","+auxP;
         aux2G+=","+auxC;
+        contCL++;
         auxC="";
         auxP="";
     :}

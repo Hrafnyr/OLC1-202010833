@@ -1,6 +1,6 @@
+
 inicio
-ejecutar _er_();
-ejecutar _er_();
-ejecutar _er_();
-ejecutar _er_();
+
+_id_,_f_,_tt_ -> 5;
+
 fin
