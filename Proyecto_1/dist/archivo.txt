@@ -1,0 +1,4 @@
+inicio
+	imprimir "hola";
+	imprimir
+fin

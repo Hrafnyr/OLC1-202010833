@@ -1,4 +1,0 @@
-inicio
-ingresar _ttt_ como numero con_valor 5;
-
-fin

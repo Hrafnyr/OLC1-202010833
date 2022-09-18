@@ -1,0 +1,160 @@
+
+				GRAMATICA UTILIZA PARA EL PROYECTO
+Terminales = {
+	Cadena, digitoEntero, digitoDecimal, caracter, caracterAS, Rtrue, Rfalse,
+	abrir_cor, cerrar_cor, Rnumero, Rcadena, Rboolean, Rcaracter, mas, resta,
+	mult, div, Rpotencia, Rmod, abrir_par, cerrar_par, aitr, citr, puntoComa,
+	Coma, mayor, menor, mayorIgual, menorIgual, igual, diferente, or, and, not,
+	inicio, fin, Ringresar, id, Rcomo, RCon_valor, asignacion, condSi, contrario,
+	finSi, OSi, segun, hacer, entonces, finSegun, para, hasta, incremento, finPara,
+	mientras, finMientras, repetir, hastaQue, retornar, metodo, Finmetodo, con_parametros,
+	funcion, Finfuncion, ejecutar, imprimir, imprimir_nl
+	}
+
+No terminales = {
+	cuerpo,INICIO, ASIGNACION,DECLARACION, EXPRESION, TIPODATO,
+	LISTA, CONDICIONALES, IF, CONDICION, INSTRUCCIONES, BLOQUE,
+	SEGUN, CASE, PARA,BLOQUEPARA,MIENTRAS,REPETIR, RETORNO, IMPRESION,
+	METODO, LISTAP, FUNCION, LLAMADA,OP, OPL,LEJC,auxFS,OP1, OP2,OP3,
+	OPERACIONES,AuxIFF,AUXPR,AUXMTR
+	}
+
+Inicio=INICIO;
+
+INICIO::= inicio cuerpo fin | error fin
+
+cuerpo::= DECLARACION
+    | ASIGNACION
+    | CONDICIONALES
+    | RETORNO               
+    | METODO
+    | FUNCION
+    | LLAMADA       
+    | IMPRESION 
+    | cuerpo CONDICIONALES 
+    | cuerpo DECLARACION    
+    | cuerpo ASIGNACION     
+    | cuerpo RETORNO        
+    | cuerpo METODO         
+    | cuerpo FUNCION        
+    | cuerpo LLAMADA        
+    | cuerpo IMPRESION      
+
+LLAMADA::= ejecutar id abrir_par cerrar_par puntoComa        
+    | ejecutar id abrir_par LEJC cerrar_par puntoComa
+
+METODO::= metodo id | INSTRUCCIONES Finmetodo 
+	| metodo id con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES Finmetodo 
+
+FUNCION::= funcion id TIPODATO INSTRUCCIONES Finfuncion 
+        | funcion id TIPODATO con_parametros abrir_par LISTAP cerrar_par INSTRUCCIONES  Finfuncion 
+
+IMPRESION::= imprimir CONDICION puntoComa 
+        | imprimir_nl CONDICION puntoComa 
+
+DECLARACION::= Ringresar LISTA Rcomo TIPODATO RCon_valor CONDICION puntoComa
+
+ASIGNACION::= LISTA asignacion CONDICION:b puntoComa
+            
+LISTAP::= id TIPODATO | LISTAP Coma id TIPODATO
+    
+LISTA::= id | LISTA Coma  id
+   
+LEJC::= CONDICION | LEJC Coma CONDICION
+
+CONDICIONALES::= IF
+    | SEGUN
+    | PARA
+    | MIENTRAS
+    | REPETIR
+
+IF::= condSi CONDICION auxFS
+
+auxFS::= entonces INSTRUCCIONES AuxIFF
+
+AuxIFF::= finSi | contrario INSTRUCCIONES finSi | BLOQUE finSi 
+
+BLOQUE::= OSi CONDICION entonces INSTRUCCIONES
+     | BLOQUE OSi CONDICIONentonces INSTRUCCIONES
+     | BLOQUE contrario INSTRUCCIONES 
+
+PARA::= para id asignacion CONDICION hasta CONDICION BLOQUEPARA
+     
+BLOQUEPARA::= hacer INSTRUCCIONES finPara  
+    | hacer finPara 
+    | incremento CONDICION hacer AUXPR
+
+AUXPR::= INSTRUCCIONES finPara | finPara 
+
+MIENTRAS::= mientras CONDICION hacer AUXMTR
+
+AUXMTR::= INSTRUCCIONES finMientras 
+    | finMientras 
+
+REPETIR::= repetir INSTRUCCIONES hastaQue CONDICION:b 
+   | repetir hastaQue CONDICION
+    
+RETORNO::= retornar CONDICION puntoComa 
+
+SEGUN::= segun CONDICION hacer CASE finSegun 
+
+CASE::= aitr CONDICION:c citr entonces INSTRUCCIONES 
+     | CASE contrario entonces INSTRUCCIONES
+     | CASE aitr CONDICION citr entonces INSTRUCCIONES
+    
+OPERACIONES::= EXPRESION
+
+EXPRESION::= EXPRESION mas OP1
+    | EXPRESION resta OP1            
+    | OP1                            
+    
+OP1::= OP1 mult OP2   
+      | OP1 div  OP2
+      | OP1 Rmod OP2 
+      | OP2             
+
+OP2::= OP2 Rpotencia abrir_cor OP3 cerrar_cor
+    |  OP3
+
+OP3::= abrir_par OPERACIONES cerrar_par
+    | digitoEntero        
+    | digitoDecimal  
+    | id               
+    | Cadena        
+    | caracter         
+    | Rtrue              
+    | Rfalse         
+    | caracterAS
+
+CONDICION::= OPERACIONES
+    | OPERACIONES OP OPERACIONES
+    | CONDICION OPL OPERACIONES OP OPERACIONES
+
+OP::= mayor
+    | menor
+    | mayorIgual
+    | menorIgual
+    | igua
+    | diferente
+
+OPL::= or
+    | and
+    | not
+
+INSTRUCCIONES::= DECLARACION
+    | ASIGNACION
+    | CONDICIONALES
+    | LLAMADA
+    | IMPRESION 
+    | RETORNO
+    | INSTRUCCIONES RETORNO
+    | INSTRUCCIONES DECLARACION 
+    | INSTRUCCIONES ASIGNACION
+    | INSTRUCCIONES CONDICIONALES
+    | INSTRUCCIONES LLAMADA
+    | INSTRUCCIONES IMPRESION
+
+TIPODATO::= Rnumero
+            | Rcadena
+            | Rboolean
+            | Rcaracter
