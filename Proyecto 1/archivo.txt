@@ -1,6 +1,4 @@
 inicio
-retornar "hola";
-retornar "hola";
-retornar "hola";
-retornar "hola";
+ingresar _ttt_ como numero con_valor 5;
+
 fin

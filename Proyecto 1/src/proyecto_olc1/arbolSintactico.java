@@ -1,6 +1,12 @@
 
 package proyecto_olc1;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class arbolSintactico {
    public Nodo raíz;
    
@@ -54,5 +60,60 @@ public class arbolSintactico {
       System.out.println("No Existe");
       return false;
    }
-   
+    
+    public void Graficar(){
+        String grafica = "Digraph AST{\n\n" + generarNodos(raíz, "0") + "\n\n}";        
+        generarArchivoDot(grafica);
+
+    }
+    
+    private String generarNodos(Nodo nodo, String i){
+        int cont=0; 
+        String datos = "";
+        String nodoAux = nodo.getValor();
+        nodoAux = nodoAux.replace("\"", "");
+        datos= "node" + i + "[label = \"" + nodoAux + "\"];\n";
+        
+        for(int j =0 ; j<=nodo.contHijos-1; j++){
+            datos += "node" + i + " -> node" + i + cont + "\n";
+            datos += generarNodos(nodo.hijos[j], ""+i+cont);
+            cont++;
+        }
+        
+        return datos;
+    }
+    
+    private void generarArchivoDot(String cadena){
+        FileWriter fichero = null;
+        try{
+            fichero = new FileWriter("arbolS.dot");
+            fichero.write(cadena);
+            fichero.close();
+            
+            //GenerarJpg();
+            crearImagen();
+            
+        } catch (Exception e) {
+            System.out.println("error al generar dot");
+            e.printStackTrace();
+        }
+    }
+    
+     
+    public void crearImagen() throws IOException {
+        try {
+      
+            
+        String command = "C:/Users/Moises/Documents/NetBeansProjects/Proyecto 1/ScriptGenerarImagen.py";
+     
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", command);
+        Process p = pb.start();
+      
+    } catch (IOException e) {
+      e.printStackTrace();
+    } 
+       
+     
+       //Desktop.getDesktop().open(new File(filePNG));
+    }
 }

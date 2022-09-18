@@ -10,7 +10,7 @@ parser code
     proyecto_olc1.Nodo nodoAux = proyecto_olc1.interfaz.nodo;
 
     int v1,v2 = 0;
-    int contLL,contCL = 0;
+    int contLL,contCL,contEXPR = 0;
     String crp = "cuerpo"; 
     String ins = "INSTRUCCIONES";
 
@@ -70,6 +70,13 @@ action code
     String sumaO(Object v1, Object v2){
         auxP+= " "+v1.toString() + " + " + v2.toString();
         auxC+= " "+v1.toString() + " + " + v2.toString();
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Suma",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Suma");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-mas",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Suma");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- + ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-mas");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Suma");
+        contEXPR++;
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         return "";
     }
@@ -77,6 +84,14 @@ action code
     String restaO(Object v1, Object v2){
         auxP+= " "+v1.toString() + " - " + v2.toString();
         auxC+= " "+v1.toString() + " - " + v2.toString();
+        
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rresta",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rresta");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-resta",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rresta");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- - ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-resta");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rresta");
+        contEXPR++;
+
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         flag2=0;
         return "";
@@ -85,6 +100,14 @@ action code
     String multi(Object v1, Object v2){
         auxP+= " "+v1.toString() + " * " + v2.toString();
         auxC+= " "+v1.toString() + " * " + v2.toString();
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-multi",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-multi");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-mult",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-multi");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- * ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-mult");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-multi");
+        contEXPR++;
+
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         return "";
     }
@@ -93,6 +116,14 @@ action code
 
         auxP+= " "+v1.toString() + " / " + v2.toString();
         auxC+= " "+v1.toString() + " / " + v2.toString();
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-divs",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-divs");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-div",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-divs");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- / ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-div");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-divs");
+        contEXPR++;
+
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         return "";
     }
@@ -101,6 +132,14 @@ action code
 
         auxP+= " "+v1.toString() + " % " + v2.toString();
         auxC+= " "+v1.toString() + " % " + v2.toString();
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPmodulo",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPmodulo");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rmod",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPmodulo");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- modulo ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rmod");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPmodulo");
+        contEXPR++;
+
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         return "";
     }
@@ -109,6 +148,18 @@ action code
 
         auxP+= " "+v1.toString() + " ** " + v2.toString();
         auxC+= " math.Pow(float64("+v1.toString() + "),float64(" + v2.toString()+"))";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v1.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rpotencia",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- potencia ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-Rpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-abrir_C",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- [ ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-abrir_C");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-"+v2.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-cerrar_C",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-OPpotencia");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"- ] ",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(contEXPR)+"-cerrar_C");
+        contEXPR++;
+
         System.out.println("dato:"+v1.toString()+"," + v2.toString());
         return "";
     }
@@ -312,9 +363,18 @@ LLAMADA::= ejecutar id:idd abrir_par cerrar_par puntoComa
     :}
 ;
 
-//FALTA ARBOL
 METODO::= metodo id:idd 
     {:
+        if(crp.equals("cuerpo")){
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-METODO",crp);
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rmetodo",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,"metodo",String.valueOf(contLL)+"-Rmetodo");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-idd",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-idd");
+        }  
+
         txtPython+=tab()+"def "+String.valueOf(idd)+"():\n";
         flag=1;
         txtGo+="}\n";
@@ -322,13 +382,50 @@ METODO::= metodo id:idd
         contTPY+=1; 
         auxP="";
         auxC="";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-METODO");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES Finmetodo 
     {:
+
+        crp="cuerpo";
+        
+        contLL--;
+        contCL--;
+    
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-finMetodo",String.valueOf(contLL)+"-METODO");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-fin_metodo",String.valueOf(contLL)+"-finMetodo");
+        
+        contLL++;
+
         contTPY-=1;
         txtGo+=tab()+"}\n";
     :}
         | metodo id:idd con_parametros abrir_par LISTAP cerrar_par 
     {:
+        if(crp.equals("cuerpo")){
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-METODO",crp);
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rmetodo",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,"metodo",String.valueOf(contLL)+"-Rmetodo");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-idd",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-idd");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rparametros",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,"con_parametros",String.valueOf(contLL)+"-Rparametros");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-abrir_par",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-abrir_par");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LISTAP",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,aux2,String.valueOf(contLL)+"-LISTAP");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cerrar_par ",String.valueOf(contLL)+"-METODO");
+            arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-cerrar_par ");
+        }
+
         txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
         flag=1;
         txtGo+="}\n";
@@ -336,16 +433,42 @@ METODO::= metodo id:idd
         contTPY+=1; 
         aux2="";
         aux2G="";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-METODO");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES Finmetodo 
     {:
+        crp="cuerpo";
+        
+        contLL--;
+        contCL--;
+    
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-finMetodo",String.valueOf(contLL)+"-METODO");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-fin_metodo",String.valueOf(contLL)+"-finMetodo");
+        
+        contLL++;
+
         contTPY-=1;
         txtGo+=tab()+"}\n";
     :}
 ;
 
-//FALTA ARBOL
 FUNCION::= funcion id:idd TIPODATO:tdd 
     {:
+        if(crp.equals("cuerpo")){
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-FUNCION",crp);
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rfuncion",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,"funcion",String.valueOf(contLL)+"-Rfuncion");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-idd",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-idd");
+            
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-TIPODATO",String.valueOf(contLL)+"-FUNCION");
+           
+        }  
+
         txtPython+=tab()+"def "+String.valueOf(idd)+":\n";
         flag=1;
         txtGo+="}\n";
@@ -353,13 +476,51 @@ FUNCION::= funcion id:idd TIPODATO:tdd
         contTPY+=1; 
         auxP="";
         auxC="";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-FUNCION");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES Finfuncion 
     {:
+        crp="cuerpo";
+        
+        contLL--;
+        contCL--;
+    
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-finFuncion",String.valueOf(contLL)+"-FUNCION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-fin_funcion",String.valueOf(contLL)+"-finFuncion");
+        
+        contLL++;
+
         contTPY-=1;
         txtGo+=tab()+"}\n";
     :}
         | funcion id:idd TIPODATO:tdd con_parametros abrir_par LISTAP cerrar_par 
     {:
+        if(crp.equals("cuerpo")){
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-FUNCION",crp);
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rfuncion",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,"funcion",String.valueOf(contLL)+"-Rfuncion");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-idd",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,idd.toString(),String.valueOf(contLL)+"-idd");
+            
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-TIPODATO",String.valueOf(contLL)+"-FUNCION");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rparametros",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,"con_parametros",String.valueOf(contLL)+"-Rparametros");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-abrir_par",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-abrir_par");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-LISTAP",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,aux2,String.valueOf(contLL)+"-LISTAP");
+
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cerrar_par ",String.valueOf(contLL)+"-FUNCION");
+            arbolAux.InsertarRecursivo(nodoAux,")",String.valueOf(contLL)+"-cerrar_par ");
+        }
+
         txtPython+=tab()+"def "+String.valueOf(idd)+"("+aux2+"):\n";
         flag=1;
         txtGo+="}\n";
@@ -367,8 +528,22 @@ FUNCION::= funcion id:idd TIPODATO:tdd
         contTPY+=1; 
         aux2="";
         aux2G="";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-FUNCION");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES  Finfuncion 
     {:
+        crp="cuerpo";
+        
+        contLL--;
+        contCL--;
+    
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-finFuncion",String.valueOf(contLL)+"-FUNCION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-fin_funcion",String.valueOf(contLL)+"-finFuncion");
+        
+        contLL++;
+
         contTPY-=1;
         txtGo+=tab()+"}\n";
     :}
@@ -434,12 +609,13 @@ DECLARACION::= Ringresar
                     arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-DECLARACION");
                     arbolAux.InsertarRecursivo(nodoAux,";",String.valueOf(contLL)+"-puntoComa");
                 }
+               
                 txtPython+=tab();
                 txtGo+=tab()+"var ";
             :} LISTA Rcomo TIPODATO:ttd {:auxTP+=ttd;:} RCon_valor CONDICION:b puntoComa
             {:
                 contLL++;
-                contCL++;
+                //contCL++;
 
                 txtPython+=aux2;
                 txtGo+=aux2;
@@ -481,6 +657,7 @@ ASIGNACION::=
             arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- ->",String.valueOf(contLL)+"-Rasignacion");
             arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-ASIGNACION");
         }
+        
     :} LISTA asignacion CONDICION:b puntoComa
             {:
                 arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-puntoComa",String.valueOf(contLL)+"-ASIGNACION");
@@ -585,7 +762,11 @@ CONDICIONALES::=
             arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-CONDICIONALES",crp);
         }
     :} IF
-    | SEGUN
+    | {:
+        if(crp.equals("cuerpo")){
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-CONDICIONALES",crp);
+        }
+    :}SEGUN
     | {:
         if(crp.equals("cuerpo")){
             arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-CONDICIONALES",crp);
@@ -902,6 +1083,8 @@ MIENTRAS::=
     :} 
     mientras CONDICION:b hacer 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rhacer",String.valueOf(contLL)+"-MIENTRAS");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- hacer",String.valueOf(contLL)+"-Rhacer");
         arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-AUXMTR",String.valueOf(contLL)+"-MIENTRAS");
     :} 
     AUXMTR
@@ -1037,44 +1220,118 @@ RETORNO::= retornar
     :}
 ;
 
-SEGUN::= segun CONDICION:b hacer 
+SEGUN::= segun 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-SEGUN",String.valueOf(contLL)+"-CONDICIONALES");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rsegun",String.valueOf(contLL)+"-SEGUN");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-segun",String.valueOf(contLL)+"-Rsegun");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-SEGUN");   
+        contCL++;
+    :}  CONDICION:b hacer 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-Rhacer",String.valueOf(contLL)+"-SEGUN");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- hacer",String.valueOf(contLL)+"-Rhacer");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-CASE",String.valueOf(contLL)+"-SEGUN");
+
         tmpPS+=auxP;
         txtGo+=tab()+"switch "+auxC+" {\n";
         auxP="";auxC="";
     :} CASE finSegun 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-finSegun",String.valueOf(contLL)+"-SEGUN");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-fin_segun",String.valueOf(contLL)+"-finSegun");
+        contLL++;
+        contCL++;
+
         contTPY-=1;
         txtGo+=tab()+"}\n";
         tmpPS="";
     :}
 ;
 
-CASE::= aitr CONDICION:c citr entonces 
+CASE::= 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-aitr",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- ¿",String.valueOf(contLL)+"-aitr");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-CASE");   
+        contCL++;
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-citr",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- ?",String.valueOf(contLL)+"-citr");
+
+    :} aitr CONDICION:c citr entonces 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- entonces",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces"); 
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-CASE");
+        crp="INSTRUCCIONES";
+
         txtPython+=tab()+"if "+tmpPS+"=="+auxP+":\n";
         txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
         auxP="";auxC="";
     :} INSTRUCCIONES 
+    {:
+        crp="cuerpo";  
+        contLL--;
+        contCL--;
+    :}
         | CASE contrario entonces 
     {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-contrario",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-de_lo_contrario",String.valueOf(contLL)+"-contrario");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- entonces",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces");
+
         contTPY-=1;
         txtPython+=tab()+"else:\n";
         txtGo+= tab()+"default:\n";
         contTPY+=1;
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-CASE");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES
-        | CASE aitr CONDICION:c citr entonces 
     {:
+        crp="cuerpo";  
+        contLL--;
+        contCL--;
+    :}
+        | CASE 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-aitr",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"- ¿",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-aitr");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION",String.valueOf(contLL)+"-CASE");   
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-citr",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"- ?",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-citr");
+        contCL++;
+    :}
+        aitr CONDICION:c citr entonces 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces",String.valueOf(contLL)+"-CASE");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"- entonces",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rentonces");
+
         contTPY-=1; 
         txtPython+=tab()+"elif "+tmpPS+"=="+auxP+":\n";
         txtGo+= tab()+"case "+auxC+":\n";
         contTPY+=1;
         auxP="";auxC="";
+
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-INSTRUCCIONES",String.valueOf(contLL)+"-CASE");
+        crp="INSTRUCCIONES";
+
     :} INSTRUCCIONES
+    {:
+        crp="cuerpo";  
+        contLL--;
+        contCL--;
+    :}
 ;
 
-OPERACIONES::= EXPRESION:a 
+OPERACIONES::= 
+    {:
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-OPERACIONES",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-CONDICION");
+        arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-OPERACIONES");
+    :} EXPRESION:a 
     {:
         RESULT=a; 
         System.out.println("datoTot:"+a.toString());
@@ -1089,28 +1346,44 @@ OPERACIONES::= EXPRESION:a
                     char convertedChar = (char)c; 
                     auxP+= "'"+String.valueOf(convertedChar)+"'";
                     auxC+= "'"+String.valueOf(convertedChar)+"'";
+
+                    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-caracterAS",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+                    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+String.valueOf(convertedChar),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-caracterAS");
+
                     cA="";
                 }
                 else{
+                    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-caracterAS",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+                    arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"- N/A",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-caracterAS");
                     auxP+= "\" \"";
                     auxC+= "\" \"";
                     cA="";
                 }
             }
             else if(a.toString().toLowerCase().equals("verdadero")){
+
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rverdadero",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-verdadero",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-Rverdadero");
+
                 auxP+= "True";
                 auxC+= "true";
             }
             else if(a.toString().toLowerCase().equals("falso")){
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-RFalso",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-falso",String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-RFalso");
+
                 auxP+= "False";
                 auxC+= "false";
             }
             else{
+                arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+a.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
+
                 auxP+= a.toString();
                 auxC+= a.toString();
             }
         }
         else{
+            arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-"+a.toString(),String.valueOf(contLL)+"-"+String.valueOf(contCL)+"-EXPRESION");
             auxP+= a.toString();
             auxC+= a.toString();
         }
@@ -1132,7 +1405,8 @@ OP2::= OP2:a Rpotencia abrir_cor OP3:b cerrar_cor {:RESULT = potencia(a,b);:}
     |  OP3:a {: RESULT = a; :}
 ;                 
 
-OP3::= abrir_par            {:auxP+="("; auxC+="(";:} OPERACIONES:a cerrar_par {:RESULT = a; auxP+=")"; auxC+=")";:}
+OP3::= abrir_par            
+    {:auxP+="("; auxC+="(";:} OPERACIONES:a cerrar_par {:RESULT = a; auxP+=")"; auxC+=")";:}
     | digitoEntero:a         {:RESULT = a;:} 
     | digitoDecimal:a       {:RESULT = a;:} 
     | id:a                  {:RESULT = a;:} 
@@ -1197,8 +1471,8 @@ INSTRUCCIONES::= DECLARACION
     | INSTRUCCIONES IMPRESION
 ;
 
-TIPODATO::= Rnumero:td {:RESULT="float64";:}
-            | Rcadena:td {:RESULT="string";:}
-            | Rboolean:td {:RESULT="bool";:}
-            | Rcaracter:td {:RESULT="byte";:}
+TIPODATO::= Rnumero:td {:RESULT="float64"; arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-numero",String.valueOf(contLL)+"-TIPODATO");:}
+            | Rcadena:td {:RESULT="string";arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-cadena",String.valueOf(contLL)+"-TIPODATO");:}
+            | Rboolean:td {:RESULT="bool";arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-boolean",String.valueOf(contLL)+"-TIPODATO");:}
+            | Rcaracter:td {:RESULT="byte";arbolAux.InsertarRecursivo(nodoAux,String.valueOf(contLL)+"-caracter",String.valueOf(contLL)+"-TIPODATO");:}
 ;

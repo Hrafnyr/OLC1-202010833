@@ -593,6 +593,9 @@ public class interfaz extends javax.swing.JFrame {
         //ver arbol - metodo de pruebas
         arbol.raíz.verNodo();
         arbol.verHijosRecursivo(nodo);
+        
+        arbol.Graficar();
+        
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
