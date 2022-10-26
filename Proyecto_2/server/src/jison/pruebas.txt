@@ -1,1 +1,5 @@
 
+String [ ] vector2 = {"hola", "Mundo"}; //vector de 2 posiciones, con "Hola" y "Mundo"
+Int [ ] vectorNumero = {2020,2021,2022};
+vector2[1] = "OLC1";
+vector2[2] = "2do Semestre" + vectorNumero[2];
