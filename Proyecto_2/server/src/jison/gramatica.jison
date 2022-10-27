@@ -71,7 +71,33 @@
 "}" {console.log("Token <tk_cerrLL>:  "+yytext);  return "tkCerrLL"; }
 
 //otros
-"new" {console.log("Token <pr_new>:  "+yytext);  return "prNew"; }
+"new"       {console.log("Token <pr_new>:  "+yytext);     return "prNew";       }
+"print"     {console.log("Token <pr_print>:  "+yytext);   return "prPrint";     }
+"println"   {console.log("Token <pr_printl>:  "+yytext);  return "prPrintln";   }
+"if"        {console.log("Token <pr_if>:  "+yytext);      return "prIF";        }
+"else"      {console.log("Token <pr_else>:  "+yytext);    return "prElse";      }
+"elif"      {console.log("Token <pr_elif>:  "+yytext);    return "prElif";      }
+"switch"    {console.log("Token <pr_switch>:  "+yytext);  return "prSwitch";    }
+"case"      {console.log("Token <pr_case>:  "+yytext);    return "prCase";      }
+"default"   {console.log("Token <pr_default>:  "+yytext); return "prDefault";   }
+"break"     {console.log("Token <pr_break>:  "+yytext);   return "prBreak";     }
+"continue"     {console.log("Token <pr_continue>:  "+yytext);   return "prContinue";     }
+"while"     {console.log("Token <pr_while>:  "+yytext);   return "prWhile";     }
+"for"       {console.log("Token <pr_for>:  "+yytext);     return "prFor";       }
+"do"        {console.log("Token <pr_do>:  "+yytext);      return "prDo";        }
+"until"     {console.log("Token <pr_until>:  "+yytext);   return "prUntil";     }
+"return"    {console.log("Token <pr_return>:  "+yytext);   return "prReturn";   }
+"tolower"     {console.log("Token <pr_lower>:  "+yytext);   return "prLower";     }
+"toupper"    {console.log("Token <pr_Upper>:  "+yytext);   return "prUpper";   }
+"round"    {console.log("Token <pr_Round>:  "+yytext);   return "prRound";   }
+"void"      {console.log("Token <pr_void>:  "+yytext);   return "prVoid";  }
+"run"      {console.log("Token <pr_Run>:  "+yytext);   return "prRun";  }
+"length"     {console.log("Token <pr_length>:  "+yytext);   return "prLength";     }
+"typeof"    {console.log("Token <pr_typeof>:  "+yytext);   return "prTypeof";   }
+".push"     {console.log("Token <pr_push>:  "+yytext);   return "prPush";     }
+".pop"    {console.log("Token <pr_pop>:  "+yytext);   return "prPop";   }
+"toString"    {console.log("Token <pr_toString>:  "+yytext);   return "prToString";   }
+"toCharArray"      {console.log("Token <pr_toCharArray>:  "+yytext);   return "prToCharArray";  }
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]* {console.log("Token <tk_ID>:  "+yytext);  return "tkID"; }
 "," {console.log("Token <tk_coma>:  "+yytext);  return "tkComa"; }
 ":" {console.log("Token <tk_2puntos>:  "+yytext);  return "tk2Puntos"; }
@@ -95,7 +121,6 @@
 %left tkPot
 %left UMENUS
 
-
 %start INICIAR
 
 %%
@@ -116,7 +141,62 @@ INS
     | INCREMENTO tkPtComa
     | VECTORES tkPtComa
     | MODIFICARVEC tkPtComa
+    | PRINTS tkPtComa
+    | prBreak tkPtComa
+    | prContinue tkPtComa
+    | RETURN tkPtComa
+    | CONDICIONALES
+    | CICLOS
+    | FUNCIONES
+    | METODOS
+    | LLAMADAS tkPtComa
+    | RUN
+    | OPVEC tkPtComa
     | error tkPtComa {console.log("Error sintactico, no se esperaba: "+ yytext +" en linea " + yylineno );}
+;
+
+METODOS
+    : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL
+    | tkID tkAbrP PARAMETROSF tkCerrP tkAbrLL CUERPO tkCerrLL
+    | tkID tkAbrP tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL
+    | tkID tkAbrP tkCerrP tkAbrLL CUERPO tkCerrLL
+;
+
+FUNCIONES
+    : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
+    | tkID tkAbrP tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
+;
+
+RUN
+    : prRun LLAMADAS tkPtComa
+;
+
+LLAMADAS
+    : tkID tkAbrP LISTAVEC1 tkCerrP
+    | tkID tkAbrP tkCerrP
+;
+
+FUNCS
+    : prLower tkAbrP EXPRESION tkCerrP 
+    | prUpper tkAbrP EXPRESION tkCerrP 
+    | prRound tkAbrP EXPRESION tkCerrP
+    | prLength tkAbrP EXPRESION tkCerrP
+    | prTypeof tkAbrP EXPRESION tkCerrP
+    | prToString tkAbrP EXPRESION tkCerrP
+;
+
+PRINTS
+    : prPrint tkAbrP EXPRESION tkCerrP
+    | prPrintln tkAbrP EXPRESION tkCerrP
+;
+
+PARAMETROSF
+    : PARAMETROSF tkComa TIPODATO tkID
+    | TIPODATO tkID
+;
+
+RETURN
+    : prReturn EXPRESION
 ;
 
 DECLARACION
@@ -133,6 +213,7 @@ VECTORES
 
 TIPOV1
     : tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC
+    | tkID tkSgIgual prToCharArray tkAbrP EXPRESION tkCerrP
     | tkID tkSgIgual prNew TIPODATO tkAbrC CASTEO EXPRESION tkCerrC
     | tkID tkSgIgual tkAbrLL LISTAVEC1 tkCerrLL
 ;
@@ -141,7 +222,7 @@ TIPOV2
     : tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC
     | tkID tkSgIgual tkAbrLL tkAbrLL LISTAVEC1 tkCerrLL tkComa  tkAbrLL LISTAVEC1 tkCerrLL tkCerrLL
 ;
-
+    
 LISTAVEC1
     : LISTAVEC1 tkComa EXPRESION
     | EXPRESION
@@ -150,6 +231,79 @@ LISTAVEC1
 MODIFICARVEC
     : tkID tkAbrC EXPRESION tkCerrC tkSgIgual EXPRESION
     | tkID tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC tkSgIgual EXPRESION
+;
+
+OPVEC
+    : tkID prPush tkAbrP EXPRESION tkCerrP
+    | tkID prPop tkAbrP tkCerrP
+;
+
+CONDICIONALES
+    : IF
+    | SWITCH
+;
+
+IF
+    : prIF tkAbrP EXPRESION tkCerrP BLOQUEIF
+;
+
+BLOQUEIF
+    : tkAbrLL CUERPO tkCerrLL
+    | tkAbrLL CUERPO tkCerrLL ELIFB
+    | tkAbrLL CUERPO tkCerrLL ELSEB
+;
+
+ELIFB
+    : prElif tkAbrP EXPRESION tkCerrP BLOQUEIF  
+;
+
+ELSEB
+    : prElse BLOQUEIF  
+;
+
+SWITCH
+    : prSwitch tkAbrP EXPRESION tkCerrP BLOQUESW
+;
+
+BLOQUESW
+    : tkAbrLL CASE DEFAULT tkCerrLL
+    | tkAbrLL CASE tkCerrLL
+    | tkAbrLL DEFAULT tkCerrLL
+;
+
+CASE
+    : CASE prCase EXPRESION tk2Puntos CUERPO
+    | prCase EXPRESION tk2Puntos CUERPO
+;
+
+DEFAULT
+    : prDefault tk2Puntos CUERPO
+;
+
+CICLOS
+    : WHILE
+    | FOR
+    | DOWHILE
+    | DOUNTIL
+;
+
+WHILE
+    : prWhile tkAbrP EXPRESION tkCerrP tkAbrLL CUERPO tkCerrLL
+;
+
+FOR 
+    : prFor tkAbrP DECLARACION tkPtComa EXPRESION tkPtComa INCREMENTO tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP DECLARACION tkPtComa EXPRESION tkPtComa ASIGNACION tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP ASIGNACION tkPtComa EXPRESION tkPtComa INCREMENTO tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP ASIGNACION tkPtComa EXPRESION tkPtComa ASIGNACION tkCerrP tkAbrLL CUERPO tkCerrLL
+;
+
+DOWHILE
+    : prDo tkAbrLL CUERPO tkCerrLL prWhile tkAbrP EXPRESION tkCerrP tkPtComa
+;
+
+DOUNTIL
+    : prDo tkAbrLL CUERPO tkCerrLL prUntil tkAbrP EXPRESION tkCerrP tkPtComa
 ;
 
 CASTEO
@@ -207,6 +361,8 @@ EXPRESION
     | prFalse
     | tkCadena
     | tkCaracter
+    | LLAMADAS
+    | FUNCS
     | ACCEDERVECTOR                                 
 	| tkAbrP EXPRESION tkCerrP        
 ;

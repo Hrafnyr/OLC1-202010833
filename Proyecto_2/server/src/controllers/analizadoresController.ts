@@ -9,10 +9,15 @@ class analizadorController {
             //si hay un error
             if (err) throw err;
 
-            //si no hay error
+            //si no hay error al leer
             console.log("Todo esta bien:");
-            mygramatica.parse(data.toString())
-            
+            try {
+                //si funciona el analizador
+                mygramatica.parse(data.toString())
+              } catch (error) {
+                //si hay algún error
+                console.log("Hubo un error")
+            }
         })
         res.send('Analizado')
     }
