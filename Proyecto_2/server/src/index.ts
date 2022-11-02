@@ -1,5 +1,4 @@
 import express, { Application } from 'express'; //Dependencias para desarrollo
-import indexRoutes from './routes/indexRoutes';
 import analizadorRuta from './routes/analizadorRuta';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -23,18 +22,17 @@ class Server {
     }
 
     routes():void{  //Guarda las rutas
-        this.app.use(indexRoutes);
         this.app.use('/analizar',analizadorRuta)
         
     }
 
-    start():void{ //Inicia el servidor
+    start():void{ //Inicia el servdidor
         this.app.listen(this.app.get('port'), () => {
             console.log('server on port',this.app.get('port'));
         });
     }
 }
 
-const server = new Server(); //Guardar el server en una constante
+const server = new Server(); //Guardar  el server en una constante
 
 server.start()

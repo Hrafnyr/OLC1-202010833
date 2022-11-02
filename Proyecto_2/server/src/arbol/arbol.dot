@@ -1,0 +1,46 @@
+digraph G{
+ graph [ dpi = 200]; 
+node0[label = "Raiz" shape="box"];
+node0 -> node010
+node010[label = "0-DOUNTIL" shape="box"];
+node010 -> node01010
+node01010[label = "0-insDoUntil" shape="box"];
+node01010 -> node0101010
+node0101010[label = "0-IF" shape="box"];
+node0101010 -> node010101010
+node010101010[label = "0-CONDICION" shape="box"];
+node010101010 -> node01010101010
+node01010101010[label = "a" shape="box"];
+node010101010 -> node01010101021
+node01010101021[label = "<" shape="box"];
+node010101010 -> node01010101032
+node01010101032[label = "3" shape="box"];
+node0101010 -> node010101021
+node010101021[label = "0-INSTRUCCIONESIF" shape="box"];
+node010101021 -> node01010102110
+node01010102110[label = "0-Println" shape="box"];
+node01010102110 -> node0101010211010
+node0101010211010[label = "true" shape="box"];
+node0101010 -> node010101032
+node010101032[label = "0-ELSE" shape="box"];
+node010101032 -> node01010103210
+node01010103210[label = "0-INSTRUCCIONES-ELSE" shape="box"];
+node01010103210 -> node0101010321010
+node0101010321010[label = "2-Println" shape="box"];
+node0101010321010 -> node010101032101010
+node010101032101010[label = "false" shape="box"];
+node01010 -> node0101021
+node0101021[label = "2-Decremento" shape="box"];
+node0101021 -> node010102110
+node010102110[label = "2-a" shape="box"];
+node010 -> node01021
+node01021[label = "0HASTA" shape="box"];
+node01021 -> node0102110
+node0102110[label = "0a" shape="box"];
+node01021 -> node0102121
+node0102121[label = "0==" shape="box"];
+node01021 -> node0102132
+node0102132[label = "00" shape="box"];
+
+
+}

@@ -1,5 +1,5 @@
 import { response, Router } from "express"; //Importar router, metodo que devuelve un objeto con las rutas
-import {analizador} from '../controllers/analizadoresController';
+import {analizador} from '../controllers/analizadorController';
 
 class analizadorRutas{
     public router: Router = Router(); //Almacena un objeto que devuelve el método router

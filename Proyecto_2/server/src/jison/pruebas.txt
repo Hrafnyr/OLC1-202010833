@@ -1,6 +1,0 @@
-
-
-vector2.push("bonito");
-
-
-vector2.pop();

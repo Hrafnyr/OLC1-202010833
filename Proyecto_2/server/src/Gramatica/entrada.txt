@@ -1,0 +1,9 @@
+do{
+    if (a <3){
+        Println(true);
+    }
+    else{
+        Println(false);
+    }
+    a--;
+} until (a==0);
