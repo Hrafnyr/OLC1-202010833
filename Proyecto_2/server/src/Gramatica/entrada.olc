@@ -221,6 +221,5 @@ Multiplicacion(1+1,58/8);
 var_3= "compi 1 == compi 1";
 holamundo();
 
-
-
+run main();
 

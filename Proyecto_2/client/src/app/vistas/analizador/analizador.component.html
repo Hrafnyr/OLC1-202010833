@@ -1,0 +1,101 @@
+<h1 class = "title" > MFMScript</h1>
+<form class="form-inline">
+
+    <form class="form-inline">   
+      
+        <form [formGroup]= "get_form" (ngSubmit)="makeFile(get_form.value)" >  
+            <form [formGroup]= "get_form">  
+            <input accept=".olc" id="archivo" type="file" (change)="readFile($event)">  
+            </form>
+        <!-- <script>
+            function abrirArchivo(evento){
+                let archivo = evento.target.files[0];
+                
+                if (archivo) {
+                    let reader = new FileReader();
+                    reader.onload = function(e){
+                        let contenido = e.target.result;
+                        document.getElementById('compilar').value = contenido;
+                        console.log(contenido)
+                    };
+                    reader.readAsText(archivo)
+                }else{
+                    alert("No se ha seleccionado un archivo");
+                }
+
+            }
+
+           window.addEventListener('load',()=>{
+                document.getElementById("archivo").addEventListener('change',abrirArchivo)
+           });
+        </script> -->
+        
+        <button mdbBtn  type="submit" color="success"   mdbWavesEffect >Guardar Archivo</button>
+        <button mdbBtn color="success" class="waves-light" mdbWavesEffect type="button" >Tabla de Simbolos</button>
+        <button mdbBtn  color="success" class="waves-light" mdbWavesEffect type="button" >Ver AST</button>
+        <button mdbBtn color="success" class="waves-light" mdbWavesEffect type="button" >Tabla de Errores</button>
+        
+        <!-- <form [formGroup]= "get_form" (ngSubmit)="readFile(get_form.value)" > 
+        <button mdbBtn  color="success" type="submit" class="waves-light" mdbWavesEffect>Abrir Archivo</button>
+        </form> -->
+    </form>
+    </form>
+
+</form>
+
+<br>
+<!-- IMPLEMENTACION DE TEXTAREAS -->
+
+<div class = "container_mt-3">
+    <div class="row">
+        <div class = "col-lg-6 offset-lg-3">
+            <div class="card">
+                <div class = "card-body text-center">
+                    <h3> Bienvenido </h3>
+                </div>
+            </div>
+        </div>
+     </div>
+    
+
+ <div class="row_mt-3">
+    <div class = "col-lg-6">
+        <form [formGroup]= "get_form" (ngSubmit)="getEntrada(get_form.value)" >  
+            <!-- (ngSubmit)="Analizar(entrada_Form.value)" -->
+        <div class="card">
+            <div class = "card-body">
+                <h5 class = "text-center"> Ingreso</h5>
+                    <div class="mb-3">
+                    <input type = "text" class = "form-control" placeholder="Nombre de documento" value="" formControlName="titulo" >
+                    </div>
+                    <div class="mb-3">
+                        
+                    <textarea id = "compilar" placeholder="Escriba su código" class = "form-control"  value="" formControlName="txt" cols = "78" rows="24">
+                    </textarea>
+                        
+                    </div>
+                <div class = "d-grid grap-2 col-6 mx-auto">
+                    <button type="submit" class="btn btn-info">Ejecutar</button>
+                </div>    
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <!-- <div class = "col-lg-6">
+        <div class="card">
+            <div class = "card-body">
+                <h5 class = "text-center">Resultado</h5>
+                <div class="mb-3">
+                    <input type = "text" [(ngModel)]= "exp" class = "form-control" placeholder="Ingrese tabla"> 
+                </div>
+                <div class = "d-grid grap-2 col-6 mx-auto">
+                    <button type="button" class="btn btn-info">Generar archivo</button>
+                </div> 
+            
+            </div>
+        </div>
+    </div> -->
+    
+ </div>
+</div>

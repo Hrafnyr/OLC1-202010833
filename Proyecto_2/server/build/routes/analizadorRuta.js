@@ -8,7 +8,8 @@ var analizadorRutas = /** @class */ (function () {
         this.config();
     }
     analizadorRutas.prototype.config = function () {
-        this.router.get('/', analizadorController_1.analizador.getFile); //Ruta para obtener texto
+        this.router.post('/', analizadorController_1.analizador.read); //Ruta que recibe el texto a analizar
+        this.router.post('/createFile', analizadorController_1.analizador.createFile);
     };
     return analizadorRutas;
 }());

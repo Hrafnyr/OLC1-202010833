@@ -9,7 +9,8 @@ class analizadorRutas{
     }
 
     config():void{
-        this.router.get('/',analizador.getFile); //Ruta para obtener texto
+        this.router.post('/',analizador.read); //Ruta que recibe el texto a analizar
+        this.router.post('/createFile',analizador.createFile);
     }
 }
 

@@ -863,7 +863,7 @@ export class ASTC{
         var cabecera = "";
         cabecera+="digraph G {\ngraph[dpi = 200]\n"
 
-        cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Tabla de Errores\";\n"
+        cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Tabla de Simbolos\";\n"
 
         cabecera+="nodo [ label = <\n<table border=\"1\">\n<tr>\n"
         cabecera+="<td align=\"text\" bgcolor=\"#f5fca2\">No.</td>\n"
