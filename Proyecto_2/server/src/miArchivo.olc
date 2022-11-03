@@ -1,1 +1,11 @@
-Print("Hola");
+
+int varible_1;
+double varible_2;
+boolean varible_3;
+char varible_4;
+string varible_5;
+int varible_1, varible_11;
+double varible_2, varible_22;
+boolean varible_3, varible_33;
+char varible_4, varible_44;
+string varible_5, varible_55;

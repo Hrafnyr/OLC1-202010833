@@ -9,6 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApiService } from './servicios/api/api.service';
+import { ReportesComponent } from './vistas/reportes/reportes.component';
+import { TablaSComponent } from './vistas/tabla-s/tabla-s.component';
+import { TablaErrComponent } from './vistas/tabla-err/tabla-err.component';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +20,10 @@ import { ApiService } from './servicios/api/api.service';
     HeaderComponent,
     NavigationComponent,
     FootersComponent,
-    routingComponents
+    routingComponents,
+    ReportesComponent,
+    TablaSComponent,
+    TablaErrComponent
   ],
   imports: [
     BrowserModule,

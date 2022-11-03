@@ -10,6 +10,7 @@ button {
     border-radius: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: inline-block;
+    margin-top: 20px;
     margin-left: 100px;
     color: white;
     border: solid 2px black;
@@ -67,4 +68,17 @@ input::file-selector-button:hover {
     color: black;
     background-color: darkseagreen;
     border: 1px solid black;
+}
+
+#botones{
+    display: inline-block;
+}
+
+textarea{
+    background: url(http://i.imgur.com/2cOaJ.png);
+background-attachment: local;
+background-repeat: no-repeat;
+padding-left: 35px;
+padding-top: 10px;
+    border-color:#ccc;
 }

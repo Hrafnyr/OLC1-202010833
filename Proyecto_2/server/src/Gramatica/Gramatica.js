@@ -123,37 +123,37 @@ case 14: case 15: case 16: case 17: case 19:
 break;
 case 21:
  
-        tablaSimbolos.push([$$[$0-8],"Metodo",$$[$0-3],_$[$0-8].first_line,_$[$0-8].first_line]); 
+        tablaSimbolos.push([$$[$0-8],"Metodo",$$[$0-3],_$[$0-8].first_line,_$[$0-8].first_column]); 
         this.$= ["METODO",$$[$0-8],"PARAMETROS",$$[$0-6],"VOID",$$[$0-1]];
     
 break;
 case 22:
  
-         tablaSimbolos.push([$$[$0-6],"Metodo","-",_$[$0-6].first_line,_$[$0-6].first_line]); 
+         tablaSimbolos.push([$$[$0-6],"Metodo","-",_$[$0-6].first_line,_$[$0-6].first_column]); 
         this.$= ["METODO",$$[$0-6],"PARAMETROS",$$[$0-4],$$[$0-1]];
     
 break;
 case 23:
  
-        tablaSimbolos.push($$[$0-7],"Metodo",$$[$0-3],_$[$0-7].first_line,_$[$0-7].first_line); 
+        tablaSimbolos.push($$[$0-7],"Metodo",$$[$0-3],_$[$0-7].first_line,_$[$0-7].first_column); 
         this.$= ["METODO",$$[$0-7],"VOID",$$[$0-1]];
     
 break;
 case 24:
  
-        tablaSimbolos.push([$$[$0-5],"Metodo","-",_$[$0-5].first_line,_$[$0-5].first_line]); 
+        tablaSimbolos.push([$$[$0-5],"Metodo","-",_$[$0-5].first_line,_$[$0-5].first_column]); 
         this.$= ["METODO",$$[$0-5],$$[$0-1]];
     
 break;
 case 25:
 
-        tablaSimbolos.push([$$[$0-8],"Funcion",$$[$0-3],_$[$0-8].first_line,_$[$0-8].first_line]); 
+        tablaSimbolos.push([$$[$0-8],"Funcion",$$[$0-3],_$[$0-8].first_line,_$[$0-8].first_column]); 
         this.$=["FUNCION",$$[$0-8],"PARAMETROS",$$[$0-6],$$[$0-3],$$[$0-1]];
     
 break;
 case 26:
 
-        tablaSimbolos.push([$$[$0-7],"Funcion",$$[$0-3],_$[$0-7].first_line,_$[$0-7].first_line]); 
+        tablaSimbolos.push([$$[$0-7],"Funcion",$$[$0-3],_$[$0-7].first_line,_$[$0-7].first_column]); 
         this.$=["FUNCION",$$[$0-7],$$[$0-3],$$[$0-1]];
     
 break;
@@ -241,8 +241,9 @@ case 41:
         aux.push($$[$0-3]);
         for (let i = 0; i < $$[$0-2].length; i++){
             aux.push($$[$0-2][i])
-            tablaSimbolos.push([$$[$0-2][i],"Variable",$$[$0-3],_$[$0-3].first_line,_$[$0-3].first_line]);
+            tablaSimbolos.push([$$[$0-2][i],"Variable",$$[$0-3],_$[$0-3].first_line,_$[$0-3].first_column]);
         }
+
         aux.push("=")
         if(typeof $$[$0] === "object"){
             for (let i = 0; i < $$[$0].length; i++){
@@ -260,7 +261,7 @@ case 42:
         aux.push($$[$0-4]);
         for (let i = 0; i < $$[$0-3].length; i++){
             aux.push($$[$0-3][i]);
-            tablaSimbolos.push([$$[$0-3][i],"Variable",$$[$0-4],_$[$0-4].first_line,_$[$0-4].first_line]);
+            tablaSimbolos.push([$$[$0-3][i],"Variable",$$[$0-4],_$[$0-4].first_line,_$[$0-4].first_column]);
         }
         aux.push($$[$0-2]);
         aux.push("CASTEO");
@@ -282,7 +283,7 @@ case 43:
          aux.push($$[$0-1]);
         for (let i = 0; i < $$[$0].length; i++){
             aux.push($$[$0][i]);
-            tablaSimbolos.push([$$[$0][i],"Variable",$$[$0-1],_$[$0-1].first_line,_$[$0-1].first_line]);
+            tablaSimbolos.push([$$[$0][i],"Variable",$$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column]);
         }
         this.$ = aux;
     
@@ -309,13 +310,22 @@ case 45:
     
 break;
 case 46:
-this.$ = [$$[$0-6],"Tamaño1",$$[$0-1]];
+
+        tablaSimbolos.push([$$[$0-6],"Vector",$$[$0-3],_$[$0-6].first_line,_$[$0-6].first_line]);
+        this.$ = [$$[$0-6],"Tamaño1",$$[$0-1]];
+    
 break;
 case 47:
-this.$ = [$$[$0-5],"toCharArray",$$[$0-1]];
+
+        tablaSimbolos.push([$$[$0-5],"Vector","CharArray",_$[$0-5].first_line,_$[$0-5].first_line]);
+        this.$ = [$$[$0-5],"toCharArray",$$[$0-1]];
+    
 break;
 case 48:
-this.$ = [$$[$0-7],"Tamaño1","CASTEO",$$[$0-1]];
+
+        tablaSimbolos.push([$$[$0-7],"Vector",$$[$0-4],_$[$0-7].first_line,_$[$0-7].first_line]);
+        this.$ = [$$[$0-7],"Tamaño1","CASTEO",$$[$0-1]];
+    
 break;
 case 49:
 
@@ -323,14 +333,18 @@ case 49:
         for (let i = 0; i < $$[$0-1].length; i++){
             aux.push($$[$0-1][i]);
         }
+        tablaSimbolos.push([$$[$0-4],"Vector","-",_$[$0-4].first_line,_$[$0-4].first_line]);
         this.$ = aux;
     
 break;
 case 50:
- this.$ = [$$[$0-9],"Tamaño2",$$[$0-4],$$[$0-1]];
+ 
+        tablaSimbolos.push([$$[$0-9],"Vector",$$[$0-6],_$[$0-9].first_line,_$[$0-9].first_column]);
+        this.$ = [$$[$0-9],"Tamaño2",$$[$0-4],$$[$0-1]];
 break;
 case 51:
 
+        tablaSimbolos.push([$$[$0-10],"Vector","-",_$[$0-10].first_line,_$[$0-10].first_column]);
         var aux = [$$[$0-10],"ValoresP1"];      
         for (let i = 0; i < $$[$0-6].length; i++){
             aux.push($$[$0-6][i]);
@@ -877,10 +891,28 @@ _handle_error:
 }};
 
     //tabla de símbolos -> Variables, funciones y métodos
-    let tablaSimbolos = []; //->datos [[nombre,tipo,fila,columna]]
-    let tablaErrores = []; //->datos [[Tipo,descripcion,fila,columna]]
+    var tablaSimbolos = []; //->datos [[nombre,tipo,fila,columna]]
+    var tablaErrores = []; //->datos [[Tipo,descripcion,fila,columna]]
+    
+    
+
     module.exports.tablaErrores = tablaErrores;
     module.exports.tablaSimbolos = tablaSimbolos;
+    module.exports.clear1 = function clearSimbolos(){
+        
+        while (tablaSimbolos.length > 0){
+            tablaSimbolos.pop()
+        }
+        console.log("Debería estar vacío:",tablaSimbolos)
+    };
+    module.exports.clear2 = function clearErrores(){
+        
+        while (tablaErrores.length > 0){
+            tablaErrores.pop()
+        }
+        console.log("Debería estar vacío:",tablaErrores)
+    };
+
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({

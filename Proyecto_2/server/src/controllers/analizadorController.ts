@@ -22,14 +22,26 @@ class analizadorController {
             createAST.graficar();
 
             //tabla de simbolos
-            let symbols = require('../../src/Gramatica/Gramatica').tablaSimbolos;
+            var symbols = require('../../src/Gramatica/Gramatica').tablaSimbolos;
             createAST.creaTablaSimbolos(symbols);
+
+            //limpiar tabla
+            const sym =  require('../../src/Gramatica/Gramatica').clear1;
+            sym();
+            
             res.json({message: 'OK'})
 
         } catch (ex) {
             //si hay algún error
-            let errors = require('../../src/Gramatica/Gramatica').tablaErrores;
+            var errors = require('../../src/Gramatica/Gramatica').tablaErrores;
+            console.log(errors)
             createAST.creaTablaErrores(errors);
+
+            //limpiar tabla
+            const sym2 =  require('../../src/Gramatica/Gramatica').clear2;
+            sym2();
+                        
+
             console.log("Hubo un error al analizar")
             res.json({message: 'Errores'})
         }
@@ -82,6 +94,40 @@ class analizadorController {
         }
         res.json({message: 'OK'})
     }
+
+    public async getAST(req:Request,res:Response){
+        try {
+            
+            res.sendFile("arbol.png",{root:'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server'});
+
+        } catch (ex) {
+            //si hay algún error
+            res.json({message: 'Errores'})
+        }
+    }
+
+    public async getSimbolos(req:Request,res:Response){
+        try {
+            
+            res.sendFile("simbolos.png",{root:'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server'});
+
+        } catch (ex) {
+            //si hay algún error
+            res.json({message: 'Errores'})
+        }
+    }
+
+    public async getErrores(req:Request,res:Response){
+        try {
+            
+            res.sendFile("errores.png",{root:'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server'});
+
+        } catch (ex) {
+            //si hay algún error
+            res.json({message: 'Errores'})
+        }
+    }
+
 }
 
 export const analizador = new analizadorController();

@@ -62,13 +62,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.analizador = void 0;
 var fs = __importStar(require("fs"));
 var AST_1 = require("../AST/AST");
-var path_1 = require("path");
 var analizadorController = /** @class */ (function () {
     function analizadorController() {
     }
     analizadorController.prototype.read = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var mygramatica, createAST, data, ast, symbols, errors;
+            var mygramatica, createAST, data, ast, symbols, sym, errors, sym2;
             return __generator(this, function (_a) {
                 mygramatica = require('../../src/Gramatica/Gramatica');
                 createAST = new AST_1.ASTC();
@@ -80,11 +79,16 @@ var analizadorController = /** @class */ (function () {
                     createAST.graficar();
                     symbols = require('../../src/Gramatica/Gramatica').tablaSimbolos;
                     createAST.creaTablaSimbolos(symbols);
+                    sym = require('../../src/Gramatica/Gramatica').clear1;
+                    sym();
                     res.json({ message: 'OK' });
                 }
                 catch (ex) {
                     errors = require('../../src/Gramatica/Gramatica').tablaErrores;
+                    console.log(errors);
                     createAST.creaTablaErrores(errors);
+                    sym2 = require('../../src/Gramatica/Gramatica').clear2;
+                    sym2();
                     console.log("Hubo un error al analizar");
                     res.json({ message: 'Errores' });
                 }
@@ -97,13 +101,56 @@ var analizadorController = /** @class */ (function () {
             var data, fichero;
             return __generator(this, function (_a) {
                 data = req.body.txt;
+                console.log(data);
                 try {
-                    fichero = fs.writeFileSync((0, path_1.join)(__dirname, "miArchivo.dot"), data, { flag: 'w', });
+                    fichero = fs.writeFileSync("./src/miArchivo.olc", data.toString(), { flag: 'w', });
                 }
                 catch (error) {
                     console.log("error al generar el olc");
                 }
                 res.json({ message: 'OK' });
+                return [2 /*return*/];
+            });
+        });
+    };
+    analizadorController.prototype.getAST = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                    res.sendFile("arbol.png", { root: 'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server' });
+                }
+                catch (ex) {
+                    //si hay algún error
+                    res.json({ message: 'Errores' });
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    analizadorController.prototype.getSimbolos = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                    res.sendFile("simbolos.png", { root: 'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server' });
+                }
+                catch (ex) {
+                    //si hay algún error
+                    res.json({ message: 'Errores' });
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    analizadorController.prototype.getErrores = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                    res.sendFile("errores.png", { root: 'C:\\Users\\Moises\\Documents\\NetBeansProjects\\Proyecto_2\\server' });
+                }
+                catch (ex) {
+                    //si hay algún error
+                    res.json({ message: 'Errores' });
+                }
                 return [2 /*return*/];
             });
         });

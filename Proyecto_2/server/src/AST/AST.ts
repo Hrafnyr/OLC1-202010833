@@ -897,6 +897,7 @@ export class ASTC{
                 }
                 console.log("Output: \n", output)
             })
+
             
         } catch (error) {
             console.log("error al generar dot");
@@ -925,7 +926,6 @@ export class ASTC{
         }
        
         cabecera+="\n</table>\n>\n]\n}"
-
         try{
             var fichero = fs.writeFileSync(join(__dirname,"errores.dot"), cabecera, {flag: 'w',});
     
@@ -940,6 +940,7 @@ export class ASTC{
                 console.log("Output: \n", output)
             })
             
+
         } catch (error) {
             console.log("error al generar dot");
         } 

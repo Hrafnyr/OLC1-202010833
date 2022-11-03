@@ -39,7 +39,7 @@ export class AnalizadorComponent implements OnInit {
       //Se comprueba el estado para poder ver ast y tablas
       if(data.message=='OK'){
         alert('Análisis correcto');
-        localStorage.setItem("correcto", form)
+        localStorage.setItem("Estado","Correcto")
       }else{
         localStorage.setItem("Estado", "Incorrecto")
         alert('Se han detectado errores');
@@ -82,6 +82,39 @@ export class AnalizadorComponent implements OnInit {
     reader.readAsText(input.files[0]);
     this.txtOut = '';
     console.log('File opened!')
+  }
+
+
+  //Funciones para ver imágenes 
+  showAst(){
+    var key = localStorage.getItem("Estado")
+    if (key=="Correcto") {
+      this.router.navigate(["Reportes"])
+    }
+    else{
+      alert("Hay errores en el código")
+    }
+  }
+
+  showSimbolos(){
+    var key = localStorage.getItem("Estado")
+    if (key=="Correcto") {
+      this.router.navigate(["Simbolos"])
+    }
+    else{
+      alert("Hay errores en el código")
+    }
+  }
+
+  showErrores(){
+    var key = localStorage.getItem("Estado")
+    if (key=="Correcto") {
+      alert("No hay errores que mostrar")
+     
+    }
+    else{
+      this.router.navigate(["Errores"])
+    }
   }
 
 

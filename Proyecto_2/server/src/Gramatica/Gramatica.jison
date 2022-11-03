@@ -1,10 +1,28 @@
 
 %{
     //tabla de símbolos -> Variables, funciones y métodos
-    let tablaSimbolos = []; //->datos [[nombre,tipo,fila,columna]]
-    let tablaErrores = []; //->datos [[Tipo,descripcion,fila,columna]]
+    var tablaSimbolos = []; //->datos [[nombre,tipo,fila,columna]]
+    var tablaErrores = []; //->datos [[Tipo,descripcion,fila,columna]]
+    
+    
+
     module.exports.tablaErrores = tablaErrores;
     module.exports.tablaSimbolos = tablaSimbolos;
+    module.exports.clear1 = function clearSimbolos(){
+        
+        while (tablaSimbolos.length > 0){
+            tablaSimbolos.pop()
+        }
+        console.log("Debería estar vacío:",tablaSimbolos)
+    };
+    module.exports.clear2 = function clearErrores(){
+        
+        while (tablaErrores.length > 0){
+            tablaErrores.pop()
+        }
+        console.log("Debería estar vacío:",tablaErrores)
+    };
+
 %}
 
 //Definición Léxica -> $$ equivalente a RESULT de cup
@@ -184,22 +202,22 @@ INS
 METODOS
     : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
     { 
-        tablaSimbolos.push([$1,"Metodo",$6,@1.first_line,@1.first_line]); 
+        tablaSimbolos.push([$1,"Metodo",$6,@1.first_line,@1.first_column]); 
         $$= ["METODO",$1,"PARAMETROS",$3,"VOID",$8];
     }
     | tkID tkAbrP PARAMETROSF tkCerrP tkAbrLL CUERPO tkCerrLL 
     { 
-         tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_line]); 
+         tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_column]); 
         $$= ["METODO",$1,"PARAMETROS",$3,$6];
     }
     | tkID tkAbrP tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
     { 
-        tablaSimbolos.push($1,"Metodo",$5,@1.first_line,@1.first_line); 
+        tablaSimbolos.push($1,"Metodo",$5,@1.first_line,@1.first_column); 
         $$= ["METODO",$1,"VOID",$7];
     }
     | tkID tkAbrP tkCerrP tkAbrLL CUERPO tkCerrLL 
     { 
-        tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_line]); 
+        tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_column]); 
         $$= ["METODO",$1,$5];
     }
 ;
@@ -207,12 +225,12 @@ METODOS
 FUNCIONES
     : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
     {
-        tablaSimbolos.push([$1,"Funcion",$6,@1.first_line,@1.first_line]); 
+        tablaSimbolos.push([$1,"Funcion",$6,@1.first_line,@1.first_column]); 
         $$=["FUNCION",$1,"PARAMETROS",$3,$6,$8];
     }
     | tkID tkAbrP tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
     {
-        tablaSimbolos.push([$1,"Funcion",$5,@1.first_line,@1.first_line]); 
+        tablaSimbolos.push([$1,"Funcion",$5,@1.first_line,@1.first_column]); 
         $$=["FUNCION",$1,$5,$7];
     }
 ;
@@ -293,14 +311,14 @@ RETURN
 
 DECLARACION
     : TIPODATO LISTAID tkSgIgual EXPRESION 
-    
     {   
         var aux = ["DECLARACION"];
         aux.push($1);
         for (let i = 0; i < $2.length; i++){
             aux.push($2[i])
-            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_column]);
         }
+
         aux.push("=")
         if(typeof $4 === "object"){
             for (let i = 0; i < $4.length; i++){
@@ -317,7 +335,7 @@ DECLARACION
         aux.push($1);
         for (let i = 0; i < $2.length; i++){
             aux.push($2[i]);
-            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_column]);
         }
         aux.push($3);
         aux.push("CASTEO");
@@ -338,7 +356,7 @@ DECLARACION
          aux.push($1);
         for (let i = 0; i < $2.length; i++){
             aux.push($2[i]);
-            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_column]);
         }
         $$ = aux;
     }
@@ -368,24 +386,40 @@ VECTORES
 ;
 
 TIPOV1
-    : tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC {$$ = [$1,"Tamaño1",$6];}
-    | tkID tkSgIgual prToCharArray tkAbrP EXPRESION tkCerrP {$$ = [$1,"toCharArray",$5];}
-    | tkID tkSgIgual prNew TIPODATO tkAbrC CASTEO EXPRESION tkCerrC {$$ = [$1,"Tamaño1","CASTEO",$7];}
+    : tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC 
+    {
+        tablaSimbolos.push([$1,"Vector",$4,@1.first_line,@1.first_line]);
+        $$ = [$1,"Tamaño1",$6];
+    }
+    | tkID tkSgIgual prToCharArray tkAbrP EXPRESION tkCerrP 
+    {
+        tablaSimbolos.push([$1,"Vector","CharArray",@1.first_line,@1.first_line]);
+        $$ = [$1,"toCharArray",$5];
+    }
+    | tkID tkSgIgual prNew TIPODATO tkAbrC CASTEO EXPRESION tkCerrC 
+    {
+        tablaSimbolos.push([$1,"Vector",$4,@1.first_line,@1.first_line]);
+        $$ = [$1,"Tamaño1","CASTEO",$7];
+    }
     | tkID tkSgIgual tkAbrLL LISTAVEC1 tkCerrLL
     {
         var aux = [$1,"Valores1"];
         for (let i = 0; i < $4.length; i++){
             aux.push($4[i]);
         }
+        tablaSimbolos.push([$1,"Vector","-",@1.first_line,@1.first_line]);
         $$ = aux;
     }
 ;
 
 TIPOV2
     : tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC
-    { $$ = [$1,"Tamaño2",$6,$9];}
+    { 
+        tablaSimbolos.push([$1,"Vector",$4,@1.first_line,@1.first_column]);
+        $$ = [$1,"Tamaño2",$6,$9];}
     | tkID tkSgIgual tkAbrLL tkAbrLL LISTAVEC1 tkCerrLL tkComa  tkAbrLL LISTAVEC1 tkCerrLL tkCerrLL
     {
+        tablaSimbolos.push([$1,"Vector","-",@1.first_line,@1.first_column]);
         var aux = [$1,"ValoresP1"];      
         for (let i = 0; i < $5.length; i++){
             aux.push($5[i]);

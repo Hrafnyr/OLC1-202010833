@@ -9,7 +9,10 @@ var analizadorRutas = /** @class */ (function () {
     }
     analizadorRutas.prototype.config = function () {
         this.router.post('/', analizadorController_1.analizador.read); //Ruta que recibe el texto a analizar
-        this.router.post('/createFile', analizadorController_1.analizador.createFile);
+        this.router.post('/createFile', analizadorController_1.analizador.createFile); //Ruta que crea un archivo olc
+        this.router.get('/reporteAST', analizadorController_1.analizador.getAST); //Ruta que devuelve file:ast
+        this.router.get('/reporteSimbolos', analizadorController_1.analizador.getSimbolos);
+        this.router.get('/reporteErrores', analizadorController_1.analizador.getErrores);
     };
     return analizadorRutas;
 }());
