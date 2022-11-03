@@ -62,7 +62,7 @@ var AST = /** @class */ (function () {
         }
     };
     AST.prototype.Graficar = function () {
-        var grafica = "digraph G{\n graph [ dpi = 200 ]; \n" + this.generarNodos(this.Raiz, "0") + "\n\n}";
+        var grafica = "digraph G{\n graph [ dpi = 200]; \n" + this.generarNodos(this.Raiz, "0") + "\n\n}";
         this.generarArchivoDot(grafica);
     };
     AST.prototype.generarNodos = function (nodo, i) {
@@ -70,7 +70,7 @@ var AST = /** @class */ (function () {
         var datos = "";
         var nodoAux = nodo.getValor();
         nodoAux = nodoAux.replace("\"", "");
-        datos = "node" + i + "[label = \"" + nodoAux + "\"];\n";
+        datos = "node" + i + "[label = \"" + nodoAux + "\" shape=\"box\"];\n";
         for (var j = 0; j <= nodo.contHijos - 1; j++) {
             datos += "node" + i + " -> node" + i + cont + j + "\n";
             datos += this.generarNodos(nodo.hijos[j], i + cont + j);

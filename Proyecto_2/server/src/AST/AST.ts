@@ -1,5 +1,8 @@
 import { AST } from "../arbol/arbol";
+import { join } from 'path';
 import { Nodo } from "../arbol/nodo";
+const { exec } = require('node:child_process')
+import * as fs from 'fs';
 
 export class ASTC{
     tree:AST;
@@ -7,6 +10,7 @@ export class ASTC{
     cont1:number;
     cont2:number;
     cont3:number;
+
     constructor(){
         this.tree = new AST();
         this.root = this.tree.insertarRaiz("Raiz");
@@ -32,11 +36,63 @@ export class ASTC{
         //vemos que opcion debe ser
         switch (ins) {
             //Las posiciones están dadas según la configuración desde jison sobre el []
+            case "PUSH":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[1],this.cont1+"-"+Instruccion[0]);
+                var tmp1 = Instruccion[2].replace("\"","")
+                var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
+                this.cont1++;
+                break;
+
+            case "POP":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[1],this.cont1+"-"+Instruccion[0]);
+                this.cont1++;
+                break;
+
             case "BREAK":
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
                 this.cont1++;
                 break;
-            
+
+            case "LLAMADAS":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[1],this.cont1+"-"+Instruccion[0]);
+                
+                for (let i = 2; i < Instruccion.length; i++) {
+                    if (Instruccion[i]!=undefined) {
+                        if (i==2) {
+                            this.tree.InsertarRecursivo(this.root,this.cont1+"-ParametrosL",this.cont1+"-"+Instruccion[0]);
+                            var tmp1 = Instruccion[i].replace("\"","")
+                            var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                            this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-ParametrosL");
+                        }else{
+                            var tmp1 = Instruccion[i].replace("\"","")
+                            var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        
+                            this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-ParametrosL");
+        
+                        }
+                    }  
+                }
+
+                this.cont1++;
+                break;
+
+            case "CONTINUE":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.cont1++;
+                break;
+
+            case "Return":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                var tmp1 = Instruccion[1].replace("\"","")
+                var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
+                this.cont1++;
+                break;
+
             case "Run":
                 //se crea el padre
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
@@ -132,6 +188,25 @@ export class ASTC{
 
                     }
 
+                    //si viene llamadas
+                    if (Instruccion[pos]=="LLAMADAS") {
+                        pos++;
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-Llamada",this.cont1+"-"+Instruccion[0]);
+                        this.tree.InsertarRecursivo(this.root,Instruccion[pos],this.cont1+"-Llamada");
+                        pos++;
+  
+                        if (Instruccion[pos]!=undefined) {
+                            this.tree.InsertarRecursivo(this.root,this.cont1+"-ParametrosL",this.cont1+"-Llamada");
+                            for (let i = pos; i < Instruccion.length; i++){
+                                var tmp1 = Instruccion[i].replace("\"","")
+                                var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                                this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-ParametrosL");           
+                                pos++;
+                            }
+                        }  
+
+                    }
+
                     if(Instruccion[pos]!=undefined){
                         var tmp1 = Instruccion[pos].replace("\"","");
                         var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
@@ -171,19 +246,35 @@ export class ASTC{
                         }
                     }
                     else{
-                        var tmp1 = Instruccion[3].replace("\"","")
-                        var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
-                        this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
+                        if (Instruccion[3]=="LLAMADAS") {
+                            this.tree.InsertarRecursivo(this.root,this.cont1+"-Llamada",this.cont1+"-"+Instruccion[0]);
+                            this.tree.InsertarRecursivo(this.root,Instruccion[4],this.cont1+"-Llamada");
+                            
+                            if (Instruccion[5]!=undefined) {
+                                this.tree.InsertarRecursivo(this.root,this.cont1+"-ParametroA",this.cont1+"-Llamada");
+                                for (let i = 5; i < Instruccion.length; i++){
+                                    if (Instruccion[i]!=undefined) {
+                                        var tmp1 = Instruccion[i].replace("\"","")
+                                        var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                                        this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-ParametroA");
+                                    }
+                                   
+                                }
+                            }
+                        }else{
+                            var tmp1 = Instruccion[3].replace("\"","")
+                            var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                            this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
 
-                        //Si trae algo más se agrega
-                        for (let i = 4; i < Instruccion.length; i++) {
-                            if (Instruccion[i]!= undefined) {
-                                var tmp1 = Instruccion[i].replace("\"","")
-                                var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
-                                this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
+                            //Si trae algo más se agrega
+                            for (let i = 4; i < Instruccion.length; i++) {
+                                if (Instruccion[i]!= undefined) {
+                                    var tmp1 = Instruccion[i].replace("\"","")
+                                    var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                                    this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-"+Instruccion[0]);
+                                }
                             }
                         }
-
                     }
                 }
                 this.cont1++;
@@ -341,9 +432,13 @@ export class ASTC{
 
                 //Se agregan hijos de condicion -> funcional solo para 2 :(
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-CONDICION",this.cont1+"-"+Instruccion[0]); 
-                this.tree.InsertarRecursivo(this.root,Instruccion[1],this.cont1+"-CONDICION");
-                this.tree.InsertarRecursivo(this.root,Instruccion[2],this.cont1+"-CONDICION");
-                this.tree.InsertarRecursivo(this.root,Instruccion[3],this.cont1+"-CONDICION");
+                    
+                for (let index = 1; index < 4; index++){
+                    var tmp1 = Instruccion[index].replace("\"","")
+                    var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        
+                    this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-CONDICION");
+                }
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-INSTRUCCIONESIF",this.cont1+"-"+Instruccion[0]);
                 
                 //Funcion recursiva para agregar las instrucciones
@@ -469,12 +564,15 @@ export class ASTC{
                 
                 //agregamos la condicion 
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-CONDICIONW",this.cont1+"-"+Instruccion[0]); 
-                this.tree.InsertarRecursivo(this.root,Instruccion[1],this.cont1+"-CONDICIONW");
-                this.tree.InsertarRecursivo(this.root,Instruccion[2],this.cont1+"-CONDICIONW");
-                this.tree.InsertarRecursivo(this.root,Instruccion[3],this.cont1+"-CONDICIONW");
+                for (let index = 1; index < 4; index++){
+                    var tmp1 = Instruccion[index].replace("\"","")
+                    var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        
+                    this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-CONDICIONW");
+                }
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-INSWhile",this.cont1+"-"+Instruccion[0]);
 
-                 //Funcion recursiva para agregar las instrucciones
+                //Funcion recursiva para agregar las instrucciones
                 this.cont2 = this.cont1;
 
                 for (let i = 0; i < Instruccion[4].length; i++) {
@@ -551,7 +649,9 @@ export class ASTC{
                     if (i == 2) {
                         this.tree.InsertarRecursivo(this.root,this.cont1+Instruccion[i],this.cont1+"-"+Instruccion[0]);
                     }else{
-                        this.tree.InsertarRecursivo(this.root,this.cont1+Instruccion[i],this.cont1+Instruccion[2]);
+                        var tmp1 = Instruccion[i].replace("\"","")
+                        var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        this.tree.InsertarRecursivo(this.root,tmp,this.cont1+Instruccion[2]);
                     }
                 }
 
@@ -578,21 +678,129 @@ export class ASTC{
                     if (i == 2) {
                         this.tree.InsertarRecursivo(this.root,this.cont1+Instruccion[i],this.cont1+"-"+Instruccion[0]);
                     }else{
-                        this.tree.InsertarRecursivo(this.root,this.cont1+Instruccion[i],this.cont1+Instruccion[2]);
+                        var tmp1 = Instruccion[i].replace("\"","")
+                        var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        this.tree.InsertarRecursivo(this.root,tmp,this.cont1+Instruccion[2]);
                     }
                 }
 
                 this.cont1++;
                 break;
-        
+                
+            case "FUNCION":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-Nombre",this.cont1+"-"+Instruccion[0]); 
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[1],this.cont1+"-Nombre"); 
+                
+                //vemos si tiene parametros
+                if (Instruccion[2]=="PARAMETROS") {
+                    //agregamos parametros
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-ParametrosF",this.cont1+"-"+Instruccion[0]); 
+                    for (let i = 0; i < Instruccion[3].length; i++){
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[3][i],this.cont1+"-ParametrosF"); 
+                    }
+
+                    //Agregamos el tipo
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-TipoF",this.cont1+"-"+Instruccion[0]); 
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[4],this.cont1+"-TipoF"); 
+                    
+                    //Funcion recursiva para agregar las instrucciones
+                    this.cont2 = this.cont1;
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-INSFuncion",this.cont1+"-"+Instruccion[0]); 
+                    for (let i = 0; i < Instruccion[5].length; i++) {
+                        this.Instrucciones(Instruccion[5][i],this.cont2+"-INSFuncion") 
+                        this.cont1++                   
+                    }
+
+                }else{
+                    //Agregamos el tipo
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-TipoF",this.cont1+"-"+Instruccion[0]); 
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[2],this.cont1+"-TipoF"); 
+
+                    //Funcion recursiva para agregar las instrucciones
+                    this.cont2 = this.cont1;
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-INSFuncion",this.cont1+"-"+Instruccion[0]); 
+                    for (let i = 0; i < Instruccion[3].length; i++) {
+                        this.Instrucciones(Instruccion[3][i],this.cont2+"-INSFuncion") 
+                        this.cont1++                   
+                    }
+                }
+
+                this.cont1 = this.cont2;
+                this.cont1++;
+                break;
+
+            case "METODO":
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[0],padre);
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-NombreM",this.cont1+"-"+Instruccion[0]); 
+                this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[1],this.cont1+"-NombreM"); 
+                
+                //Vemos si tiene parametros o no
+                if (Instruccion[2]=="PARAMETROS") {
+                    //agregamos parametros
+                    this.tree.InsertarRecursivo(this.root,this.cont1+"-ParametrosM",this.cont1+"-"+Instruccion[0]); 
+                    for (let i = 0; i < Instruccion[3].length; i++){
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[3][i],this.cont1+"-ParametrosM"); 
+                    }
+                    this.cont2 = this.cont1;
+                    //Vemos si tiene tipo void o no
+                    if (Instruccion[4]=="VOID") {
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-TipoM",this.cont1+"-"+Instruccion[0]); 
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[4],this.cont1+"-TipoM");    
+                        
+                        //Funcion recursiva para agregar las instrucciones
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-INSMetodo",this.cont1+"-"+Instruccion[0]); 
+                        for (let i = 0; i < Instruccion[5].length; i++) {
+                            this.Instrucciones(Instruccion[5][i],this.cont2+"-INSMetodo") 
+                            this.cont1++                   
+                        }
+                    }else{
+                        //Funcion recursiva para agregar las instrucciones
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-INSMetodo",this.cont1+"-"+Instruccion[0]); 
+                        for (let i = 0; i < Instruccion[4].length; i++) {
+                            this.Instrucciones(Instruccion[4][i],this.cont2+"-INSMetodo") 
+                            this.cont1++                   
+                        }
+                    }
+                }else{
+                    //Vemos si tiene tipo void o no
+                    this.cont2 = this.cont1;
+                    if (Instruccion[2]=="VOID") {
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-TipoM",this.cont1+"-"+Instruccion[0]); 
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-"+Instruccion[2],this.cont1+"-TipoM");    
+                        
+                        //Funcion recursiva para agregar las instrucciones
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-INSMetodo",this.cont1+"-"+Instruccion[0]); 
+                        for (let i = 0; i < Instruccion[3].length; i++) {
+                            this.Instrucciones(Instruccion[3][i],this.cont2+"-INSMetodo") 
+                            this.cont1++                   
+                        }
+                    }else{
+                        //Funcion recursiva para agregar las instrucciones
+                        this.tree.InsertarRecursivo(this.root,this.cont1+"-INSMetodo",this.cont1+"-"+Instruccion[0]); 
+                        for (let i = 0; i < Instruccion[2].length; i++) {
+                            this.Instrucciones(Instruccion[2][i],this.cont2+"-INSMetodo") 
+                            this.cont1++                   
+                        }
+                    }
+                }
+
+                this.cont1 = this.cont2;
+                this.cont1++;
+                break;
+
             //Casos especiales para ELIF y ELSE
             case "ELIF":
                 //El padre ya se creo
                 //Se agregan hijos de condicion -> funcional solo para 2 :(
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-CONDICION",padre); 
-                this.tree.InsertarRecursivo(this.root,Instruccion[1],this.cont1+"-CONDICION");
-                this.tree.InsertarRecursivo(this.root,Instruccion[2],this.cont1+"-CONDICION");
-                this.tree.InsertarRecursivo(this.root,Instruccion[3],this.cont1+"-CONDICION");
+                for (let index = 1; index < 4; index++){
+                    var tmp1 = Instruccion[index].replace("\"","")
+                    var tmp = tmp1.replace("\n","\\\\n").replace("\\","\\\\").replace("\t","\\\\t")
+                        
+                    this.tree.InsertarRecursivo(this.root,tmp,this.cont1+"-CONDICION");
+                }
+
                 this.tree.InsertarRecursivo(this.root,this.cont1+"-INSTRUCCIONESELIF",padre);
 
                 this.cont2 = this.cont1;
@@ -649,4 +857,92 @@ export class ASTC{
     public graficar():void{
         this.tree.Graficar()
     }
+
+    //id,tipo1,tipo2,linea,columna
+    public creaTablaSimbolos(listaSymbolos:any):void{
+        var cabecera = "";
+        cabecera+="digraph G {\ngraph[dpi = 200]\n"
+
+        cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Tabla de Errores\";\n"
+
+        cabecera+="nodo [ label = <\n<table border=\"1\">\n<tr>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#f5fca2\">No.</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">Nombre</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">Tipo</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Tipo</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Fila</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Columna</td>\n</tr>"
+        for (let i = 0; i < listaSymbolos.length; i++) {
+            cabecera+="<tr>\n"
+            cabecera+="<td align=\"text\" bgcolor=\"#f5fca2\">"+i+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">"+listaSymbolos[i][0]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">"+listaSymbolos[i][1]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">"+listaSymbolos[i][2]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">"+listaSymbolos[i][3]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">"+listaSymbolos[i][4]+"<br align=\"left\"/></td></tr>";
+        }
+       
+        cabecera+="\n</table>\n>\n]\n}"
+
+        try{
+            var fichero = fs.writeFileSync(join(__dirname,"simbolos.dot"), cabecera, {flag: 'w',});
+    
+            //Generarpng();
+            var path = join(__dirname,"simbolos.dot");
+            //dot -Tpng arbol.dot -o arbols.png
+            exec('dot -Tpng '+path+' -o simbolos.png', (err:any, output:any) => {
+                if (err) {
+                    console.error("could not execute command: ", err)
+                    return
+                }
+                console.log("Output: \n", output)
+            })
+            
+        } catch (error) {
+            console.log("error al generar dot");
+        } 
+    }
+
+    public creaTablaErrores(listaErrores:any):void{
+        var cabecera = "";
+        cabecera+="digraph G {\ngraph[dpi = 200]\n"
+
+        cabecera+="node[shape=box fontsize=12 fillcolor=\"darkseagreen1\" style=\"filled\"];\nlabel=\"Tabla de Errores\";\n"
+
+        cabecera+="nodo [ label = <\n<table border=\"1\">\n<tr>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#f5fca2\">No.</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">Tipo</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Descripción</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Fila</td>\n"
+        cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">Columna</td>\n</tr>"
+        for (let i = 0; i < listaErrores.length; i++) {
+            cabecera+="<tr>\n"
+            cabecera+="<td align=\"text\" bgcolor=\"#f5fca2\">"+i+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">"+listaErrores[i][0]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">"+listaErrores[i][1]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#cbffd9\">"+listaErrores[i][2]+"<br align=\"left\"/></td>";
+            cabecera+="<td align=\"text\" bgcolor=\"#a8f2f9\">"+listaErrores[i][3]+"<br align=\"left\"/></td></tr>";
+        }
+       
+        cabecera+="\n</table>\n>\n]\n}"
+
+        try{
+            var fichero = fs.writeFileSync(join(__dirname,"errores.dot"), cabecera, {flag: 'w',});
+    
+            //Generarpng();
+            var path = join(__dirname,"errores.dot");
+            //dot -Tpng arbol.dot -o arbols.png
+            exec('dot -Tpng '+path+' -o errores.png', (err:any, output:any) => {
+                if (err) {
+                    console.error("could not execute command: ", err)
+                    return
+                }
+                console.log("Output: \n", output)
+            })
+            
+        } catch (error) {
+            console.log("error al generar dot");
+        } 
+    }
+
 }

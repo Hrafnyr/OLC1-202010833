@@ -1,0 +1,19 @@
+digraph G {
+graph[dpi = 200]
+node[shape=box fontsize=12 fillcolor="darkseagreen1" style="filled"];
+label="Tabla de Errores";
+nodo [ label = <
+<table border="1">
+<tr>
+<td align="text" bgcolor="#f5fca2">No.</td>
+<td align="text" bgcolor="#cbffd9">Tipo</td>
+<td align="text" bgcolor="#a8f2f9">Descripción</td>
+<td align="text" bgcolor="#a8f2f9">Fila</td>
+<td align="text" bgcolor="#a8f2f9">Columna</td>
+</tr><tr>
+<td align="text" bgcolor="#f5fca2">0<br align="left"/></td><td align="text" bgcolor="#cbffd9">Error sintáctico<br align="left"/></td><td align="text" bgcolor="#a8f2f9">No se esperaba: ;<br align="left"/></td><td align="text" bgcolor="#cbffd9">5<br align="left"/></td><td align="text" bgcolor="#a8f2f9">9<br align="left"/></td></tr><tr>
+<td align="text" bgcolor="#f5fca2">1<br align="left"/></td><td align="text" bgcolor="#cbffd9">Error sintáctico<br align="left"/></td><td align="text" bgcolor="#a8f2f9">No se esperaba: ;<br align="left"/></td><td align="text" bgcolor="#cbffd9">7<br align="left"/></td><td align="text" bgcolor="#a8f2f9">10<br align="left"/></td></tr>
+</table>
+>
+]
+}

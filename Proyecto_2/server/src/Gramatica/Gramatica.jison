@@ -1,8 +1,10 @@
 
 %{
-    var cont1 = 0;
-    var cont2 = 0;
-    var cont3 = 0;
+    //tabla de símbolos -> Variables, funciones y métodos
+    let tablaSimbolos = []; //->datos [[nombre,tipo,fila,columna]]
+    let tablaErrores = []; //->datos [[Tipo,descripcion,fila,columna]]
+    module.exports.tablaErrores = tablaErrores;
+    module.exports.tablaSimbolos = tablaSimbolos;
 %}
 
 //Definición Léxica -> $$ equivalente a RESULT de cup
@@ -110,7 +112,10 @@
 <<EOF>> {console.log("Fin de documento"); return 'EOF';}
 
 //Errores lexicos
-.   { console.error('Error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);}
+.   { 
+        console.error('Error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+        tablaErrores.push(["Error léxico","No se reconoce: "+yytext,yylloc.first_line,yylloc.first_column]); 
+    }
 
 /lex
 
@@ -144,7 +149,11 @@ INICIAR
             // cont1 = 0;
             return $1;
         }
-    | error tkPtComa {console.log("Error sintactico, no se esperaba: "+ yytext +" en linea " + yylineno );}
+    | error tkPtComa 
+        {
+            console.log("Error sintactico, no se esperaba: "+ yytext +" en linea " + @1.first_line +", columna "+@1.first_column );
+            tablaErrores.push(["Error sintáctico","No se esperaba: "+yytext, @1.first_line,@1.first_column]);
+        }
 ;
 
 CUERPO
@@ -160,7 +169,7 @@ INS
     | MODIFICARVEC tkPtComa {  $$ = $1;  }
     | PRINTS tkPtComa       {  $$ = $1;  }
     | prBreak tkPtComa      {  $$ = ["BREAK"];  }
-    | prContinue tkPtComa   {  $$ = $1;  }
+    | prContinue tkPtComa   {  $$ = ["CONTINUE"];  }
     | RETURN tkPtComa       {  $$ = $1;  }
     | CONDICIONALES         {  $$ = $1;  }
     | CICLOS                {  $$ = $1;  }
@@ -173,19 +182,37 @@ INS
 ;
 
 METODOS
-    : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL { $$= ["METODO",$1,"PARAMETROS",$3,"VOID",$8]}
-    | tkID tkAbrP PARAMETROSF tkCerrP tkAbrLL CUERPO tkCerrLL { $$= ["METODO",$1,"PARAMETROS",$3,$6]}
-    | tkID tkAbrP tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL { $$= ["METODO",$1,"VOID",$7]}
-    | tkID tkAbrP tkCerrP tkAbrLL CUERPO tkCerrLL { $$= ["METODO",$1,$5]}
+    : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
+    { 
+        tablaSimbolos.push([$1,"Metodo",$6,@1.first_line,@1.first_line]); 
+        $$= ["METODO",$1,"PARAMETROS",$3,"VOID",$8];
+    }
+    | tkID tkAbrP PARAMETROSF tkCerrP tkAbrLL CUERPO tkCerrLL 
+    { 
+         tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_line]); 
+        $$= ["METODO",$1,"PARAMETROS",$3,$6];
+    }
+    | tkID tkAbrP tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
+    { 
+        tablaSimbolos.push($1,"Metodo",$5,@1.first_line,@1.first_line); 
+        $$= ["METODO",$1,"VOID",$7];
+    }
+    | tkID tkAbrP tkCerrP tkAbrLL CUERPO tkCerrLL 
+    { 
+        tablaSimbolos.push([$1,"Metodo","-",@1.first_line,@1.first_line]); 
+        $$= ["METODO",$1,$5];
+    }
 ;
 
 FUNCIONES
     : tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
     {
+        tablaSimbolos.push([$1,"Funcion",$6,@1.first_line,@1.first_line]); 
         $$=["FUNCION",$1,"PARAMETROS",$3,$6,$8];
     }
     | tkID tkAbrP tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
     {
+        tablaSimbolos.push([$1,"Funcion",$5,@1.first_line,@1.first_line]); 
         $$=["FUNCION",$1,$5,$7];
     }
 ;
@@ -207,7 +234,7 @@ LLAMADAS
         }
         $$ = aux;
     }
-    | tkID tkAbrP tkCerrP {$$ = [$1]}
+    | tkID tkAbrP tkCerrP {$$ = ["LLAMADAS",$1]}
 ;
 
 FUNCS
@@ -245,7 +272,7 @@ PRINTS
 ;
 
 PARAMETROSF
-    : PARAMETROSF tkComa TIPODATO tkID {$1.push([$3,$4]);$$=$1}
+    : PARAMETROSF tkComa TIPODATO tkID {$1.push($3,$4);$$=$1}
     | TIPODATO tkID {$$ = [$1,$2]}
 ;
 
@@ -267,11 +294,12 @@ RETURN
 DECLARACION
     : TIPODATO LISTAID tkSgIgual EXPRESION 
     
-    {
+    {   
         var aux = ["DECLARACION"];
         aux.push($1);
         for (let i = 0; i < $2.length; i++){
             aux.push($2[i])
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
         }
         aux.push("=")
         if(typeof $4 === "object"){
@@ -286,9 +314,10 @@ DECLARACION
     | TIPODATO LISTAID tkSgIgual CASTEO EXPRESION
     {
         var aux = ["DECLARACION"];
-         aux.push($1);
+        aux.push($1);
         for (let i = 0; i < $2.length; i++){
-            aux.push($2[i])
+            aux.push($2[i]);
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
         }
         aux.push($3);
         aux.push("CASTEO");
@@ -308,7 +337,8 @@ DECLARACION
         var aux = ["DECLARACION"];
          aux.push($1);
         for (let i = 0; i < $2.length; i++){
-            aux.push($2[i])
+            aux.push($2[i]);
+            tablaSimbolos.push([$2[i],"Variable",$1,@1.first_line,@1.first_line]);
         }
         $$ = aux;
     }

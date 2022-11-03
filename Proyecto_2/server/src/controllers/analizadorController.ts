@@ -12,27 +12,26 @@ class analizadorController {
 
             //si no hay error al leer
             console.log("Todo esta bien:");
+            var createAST = new ASTC();
             try {
                 //si funciona el analizador
                 const ast = mygramatica.parse(data.toString())
-                var createAST = new ASTC();
+                
                 console.log(ast);
+
                 createAST.data(ast);
                 createAST.graficar();
+
+                //tabla de simbolos
+                let symbols = require('../../src/Gramatica/Gramatica').tablaSimbolos;
+                createAST.creaTablaSimbolos(symbols);
+
               } catch (error) {
                 //si hay algún error
+                let errors = require('../../src/Gramatica/Gramatica').tablaErrores;
+                createAST.creaTablaErrores(errors);
                 console.log("Hubo un error al analizar")
             }
-
-            // var tree = new AST();
-            // var root = tree.insertarRaiz("0");c
-            
-            // tree.InsertarRecursivo(root,"1","0");
-            // tree.InsertarRecursivo(root,"2","0");
-            // tree.InsertarRecursivo(root,"3","0");
-            // tree.Raiz.verNodo();
-            // tree.verHijosRecursivo(root);
-            // tree.Graficar();
 
         })
         res.send('Analizado')

@@ -2,45 +2,1273 @@ digraph G{
  graph [ dpi = 200]; 
 node0[label = "Raiz" shape="box"];
 node0 -> node010
-node010[label = "0-DOUNTIL" shape="box"];
+node010[label = "0-DECLARACION" shape="box"];
 node010 -> node01010
-node01010[label = "0-insDoUntil" shape="box"];
+node01010[label = "0-TIPO" shape="box"];
 node01010 -> node0101010
-node0101010[label = "0-IF" shape="box"];
-node0101010 -> node010101010
-node010101010[label = "0-CONDICION" shape="box"];
-node010101010 -> node01010101010
-node01010101010[label = "a" shape="box"];
-node010101010 -> node01010101021
-node01010101021[label = "<" shape="box"];
-node010101010 -> node01010101032
-node01010101032[label = "3" shape="box"];
-node0101010 -> node010101021
-node010101021[label = "0-INSTRUCCIONESIF" shape="box"];
-node010101021 -> node01010102110
-node01010102110[label = "0-Println" shape="box"];
-node01010102110 -> node0101010211010
-node0101010211010[label = "true" shape="box"];
-node0101010 -> node010101032
-node010101032[label = "0-ELSE" shape="box"];
-node010101032 -> node01010103210
-node01010103210[label = "0-INSTRUCCIONES-ELSE" shape="box"];
-node01010103210 -> node0101010321010
-node0101010321010[label = "2-Println" shape="box"];
-node0101010321010 -> node010101032101010
-node010101032101010[label = "false" shape="box"];
-node01010 -> node0101021
-node0101021[label = "2-Decremento" shape="box"];
-node0101021 -> node010102110
-node010102110[label = "2-a" shape="box"];
+node0101010[label = "int" shape="box"];
 node010 -> node01021
-node01021[label = "0HASTA" shape="box"];
+node01021[label = "0-LISTAID" shape="box"];
 node01021 -> node0102110
-node0102110[label = "0a" shape="box"];
-node01021 -> node0102121
-node0102121[label = "0==" shape="box"];
-node01021 -> node0102132
-node0102132[label = "00" shape="box"];
+node0102110[label = "varible_1" shape="box"];
+node0 -> node021
+node021[label = "1-DECLARACION" shape="box"];
+node021 -> node02110
+node02110[label = "1-TIPO" shape="box"];
+node02110 -> node0211010
+node0211010[label = "double" shape="box"];
+node021 -> node02121
+node02121[label = "1-LISTAID" shape="box"];
+node02121 -> node0212110
+node0212110[label = "varible_2" shape="box"];
+node0 -> node032
+node032[label = "2-DECLARACION" shape="box"];
+node032 -> node03210
+node03210[label = "2-TIPO" shape="box"];
+node03210 -> node0321010
+node0321010[label = "boolean" shape="box"];
+node032 -> node03221
+node03221[label = "2-LISTAID" shape="box"];
+node03221 -> node0322110
+node0322110[label = "varible_3" shape="box"];
+node0 -> node043
+node043[label = "3-DECLARACION" shape="box"];
+node043 -> node04310
+node04310[label = "3-TIPO" shape="box"];
+node04310 -> node0431010
+node0431010[label = "char" shape="box"];
+node043 -> node04321
+node04321[label = "3-LISTAID" shape="box"];
+node04321 -> node0432110
+node0432110[label = "varible_4" shape="box"];
+node0 -> node054
+node054[label = "4-DECLARACION" shape="box"];
+node054 -> node05410
+node05410[label = "4-TIPO" shape="box"];
+node05410 -> node0541010
+node0541010[label = "string" shape="box"];
+node054 -> node05421
+node05421[label = "4-LISTAID" shape="box"];
+node05421 -> node0542110
+node0542110[label = "varible_5" shape="box"];
+node0 -> node065
+node065[label = "5-DECLARACION" shape="box"];
+node065 -> node06510
+node06510[label = "5-TIPO" shape="box"];
+node06510 -> node0651010
+node0651010[label = "int" shape="box"];
+node065 -> node06521
+node06521[label = "5-LISTAID" shape="box"];
+node06521 -> node0652110
+node0652110[label = "varible_1" shape="box"];
+node06521 -> node0652121
+node0652121[label = "varible_11" shape="box"];
+node0 -> node076
+node076[label = "6-DECLARACION" shape="box"];
+node076 -> node07610
+node07610[label = "6-TIPO" shape="box"];
+node07610 -> node0761010
+node0761010[label = "double" shape="box"];
+node076 -> node07621
+node07621[label = "6-LISTAID" shape="box"];
+node07621 -> node0762110
+node0762110[label = "varible_2" shape="box"];
+node07621 -> node0762121
+node0762121[label = "varible_22" shape="box"];
+node0 -> node087
+node087[label = "7-DECLARACION" shape="box"];
+node087 -> node08710
+node08710[label = "7-TIPO" shape="box"];
+node08710 -> node0871010
+node0871010[label = "boolean" shape="box"];
+node087 -> node08721
+node08721[label = "7-LISTAID" shape="box"];
+node08721 -> node0872110
+node0872110[label = "varible_3" shape="box"];
+node08721 -> node0872121
+node0872121[label = "varible_33" shape="box"];
+node0 -> node098
+node098[label = "8-DECLARACION" shape="box"];
+node098 -> node09810
+node09810[label = "8-TIPO" shape="box"];
+node09810 -> node0981010
+node0981010[label = "char" shape="box"];
+node098 -> node09821
+node09821[label = "8-LISTAID" shape="box"];
+node09821 -> node0982110
+node0982110[label = "varible_4" shape="box"];
+node09821 -> node0982121
+node0982121[label = "varible_44" shape="box"];
+node0 -> node0109
+node0109[label = "9-DECLARACION" shape="box"];
+node0109 -> node010910
+node010910[label = "9-TIPO" shape="box"];
+node010910 -> node01091010
+node01091010[label = "string" shape="box"];
+node0109 -> node010921
+node010921[label = "9-LISTAID" shape="box"];
+node010921 -> node01092110
+node01092110[label = "varible_5" shape="box"];
+node010921 -> node01092121
+node01092121[label = "varible_55" shape="box"];
+node0 -> node01110
+node01110[label = "10-DECLARACION" shape="box"];
+node01110 -> node0111010
+node0111010[label = "10-TIPO" shape="box"];
+node0111010 -> node011101010
+node011101010[label = "int" shape="box"];
+node01110 -> node0111021
+node0111021[label = "10-LISTAID" shape="box"];
+node0111021 -> node011102110
+node011102110[label = "var_1" shape="box"];
+node01110 -> node0111032
+node0111032[label = "=" shape="box"];
+node01110 -> node0111043
+node0111043[label = "12" shape="box"];
+node0 -> node01211
+node01211[label = "11-DECLARACION" shape="box"];
+node01211 -> node0121110
+node0121110[label = "11-TIPO" shape="box"];
+node0121110 -> node012111010
+node012111010[label = "int" shape="box"];
+node01211 -> node0121121
+node0121121[label = "11-LISTAID" shape="box"];
+node0121121 -> node012112110
+node012112110[label = "tm1_" shape="box"];
+node0121121 -> node012112121
+node012112121[label = "tmp2_" shape="box"];
+node0121121 -> node012112132
+node012112132[label = "tmp3_" shape="box"];
+node0121121 -> node012112143
+node012112143[label = "tmp4_" shape="box"];
+node01211 -> node0121132
+node0121132[label = "=" shape="box"];
+node01211 -> node0121143
+node0121143[label = "17" shape="box"];
+node0 -> node01312
+node01312[label = "12-DECLARACION" shape="box"];
+node01312 -> node0131210
+node0131210[label = "12-TIPO" shape="box"];
+node0131210 -> node013121010
+node013121010[label = "double" shape="box"];
+node01312 -> node0131221
+node0131221[label = "12-LISTAID" shape="box"];
+node0131221 -> node013122110
+node013122110[label = "var_2" shape="box"];
+node01312 -> node0131232
+node0131232[label = "=" shape="box"];
+node01312 -> node0131243
+node0131243[label = "15.02" shape="box"];
+node0 -> node01413
+node01413[label = "13-DECLARACION" shape="box"];
+node01413 -> node0141310
+node0141310[label = "13-TIPO" shape="box"];
+node0141310 -> node014131010
+node014131010[label = "double" shape="box"];
+node01413 -> node0141321
+node0141321[label = "13-LISTAID" shape="box"];
+node0141321 -> node014132110
+node014132110[label = "var_2_1" shape="box"];
+node01413 -> node0141332
+node0141332[label = "=" shape="box"];
+node01413 -> node0141343
+node0141343[label = "2022.00" shape="box"];
+node0 -> node01514
+node01514[label = "14-DECLARACION" shape="box"];
+node01514 -> node0151410
+node0151410[label = "14-TIPO" shape="box"];
+node0151410 -> node015141010
+node015141010[label = "double" shape="box"];
+node01514 -> node0151421
+node0151421[label = "14-LISTAID" shape="box"];
+node0151421 -> node015142110
+node015142110[label = "var_2_2" shape="box"];
+node01514 -> node0151432
+node0151432[label = "=" shape="box"];
+node01514 -> node0151443
+node0151443[label = "0.10" shape="box"];
+node0 -> node01615
+node01615[label = "15-DECLARACION" shape="box"];
+node01615 -> node0161510
+node0161510[label = "15-TIPO" shape="box"];
+node0161510 -> node016151010
+node016151010[label = "double" shape="box"];
+node01615 -> node0161521
+node0161521[label = "15-LISTAID" shape="box"];
+node0161521 -> node016152110
+node016152110[label = "var_2_3" shape="box"];
+node01615 -> node0161532
+node0161532[label = "=" shape="box"];
+node01615 -> node0161543
+node0161543[label = "1.0" shape="box"];
+node0 -> node01716
+node01716[label = "16-DECLARACION" shape="box"];
+node01716 -> node0171610
+node0171610[label = "16-TIPO" shape="box"];
+node0171610 -> node017161010
+node017161010[label = "double" shape="box"];
+node01716 -> node0171621
+node0171621[label = "16-LISTAID" shape="box"];
+node0171621 -> node017162110
+node017162110[label = "var_2_4" shape="box"];
+node01716 -> node0171632
+node0171632[label = "=" shape="box"];
+node01716 -> node0171643
+node0171643[label = "51.1589462625459" shape="box"];
+node0 -> node01817
+node01817[label = "17-DECLARACION" shape="box"];
+node01817 -> node0181710
+node0181710[label = "17-TIPO" shape="box"];
+node0181710 -> node018171010
+node018171010[label = "boolean" shape="box"];
+node01817 -> node0181721
+node0181721[label = "17-LISTAID" shape="box"];
+node0181721 -> node018172110
+node018172110[label = "var_3" shape="box"];
+node01817 -> node0181732
+node0181732[label = "=" shape="box"];
+node01817 -> node0181743
+node0181743[label = "true" shape="box"];
+node0 -> node01918
+node01918[label = "18-DECLARACION" shape="box"];
+node01918 -> node0191810
+node0191810[label = "18-TIPO" shape="box"];
+node0191810 -> node019181010
+node019181010[label = "boolean" shape="box"];
+node01918 -> node0191821
+node0191821[label = "18-LISTAID" shape="box"];
+node0191821 -> node019182110
+node019182110[label = "var_3_1" shape="box"];
+node01918 -> node0191832
+node0191832[label = "=" shape="box"];
+node01918 -> node0191843
+node0191843[label = "false" shape="box"];
+node0 -> node02019
+node02019[label = "19-DECLARACION" shape="box"];
+node02019 -> node0201910
+node0201910[label = "19-TIPO" shape="box"];
+node0201910 -> node020191010
+node020191010[label = "char" shape="box"];
+node02019 -> node0201921
+node0201921[label = "19-LISTAID" shape="box"];
+node0201921 -> node020192110
+node020192110[label = "var_4_1" shape="box"];
+node02019 -> node0201932
+node0201932[label = "=" shape="box"];
+node02019 -> node0201943
+node0201943[label = "'a'" shape="box"];
+node0 -> node02120
+node02120[label = "20-DECLARACION" shape="box"];
+node02120 -> node0212010
+node0212010[label = "20-TIPO" shape="box"];
+node0212010 -> node021201010
+node021201010[label = "char" shape="box"];
+node02120 -> node0212021
+node0212021[label = "20-LISTAID" shape="box"];
+node0212021 -> node021202110
+node021202110[label = "var_4_2" shape="box"];
+node02120 -> node0212032
+node0212032[label = "=" shape="box"];
+node02120 -> node0212043
+node0212043[label = "'2'" shape="box"];
+node0 -> node02221
+node02221[label = "21-DECLARACION" shape="box"];
+node02221 -> node0222110
+node0222110[label = "21-TIPO" shape="box"];
+node0222110 -> node022211010
+node022211010[label = "char" shape="box"];
+node02221 -> node0222121
+node0222121[label = "21-LISTAID" shape="box"];
+node0222121 -> node022212110
+node022212110[label = "var_4_3" shape="box"];
+node02221 -> node0222132
+node0222132[label = "=" shape="box"];
+node02221 -> node0222143
+node0222143[label = "'W'" shape="box"];
+node0 -> node02322
+node02322[label = "22-DECLARACION" shape="box"];
+node02322 -> node0232210
+node0232210[label = "22-TIPO" shape="box"];
+node0232210 -> node023221010
+node023221010[label = "char" shape="box"];
+node02322 -> node0232221
+node0232221[label = "22-LISTAID" shape="box"];
+node0232221 -> node023222110
+node023222110[label = "var_4_4" shape="box"];
+node02322 -> node0232232
+node0232232[label = "=" shape="box"];
+node02322 -> node0232243
+node0232243[label = "'@'" shape="box"];
+node0 -> node02423
+node02423[label = "23-DECLARACION" shape="box"];
+node02423 -> node0242310
+node0242310[label = "23-TIPO" shape="box"];
+node0242310 -> node024231010
+node024231010[label = "char" shape="box"];
+node02423 -> node0242321
+node0242321[label = "23-LISTAID" shape="box"];
+node0242321 -> node024232110
+node024232110[label = "var_4_5" shape="box"];
+node02423 -> node0242332
+node0242332[label = "=" shape="box"];
+node02423 -> node0242343
+node0242343[label = "'!'" shape="box"];
+node0 -> node02524
+node02524[label = "24-DECLARACION" shape="box"];
+node02524 -> node0252410
+node0252410[label = "24-TIPO" shape="box"];
+node0252410 -> node025241010
+node025241010[label = "char" shape="box"];
+node02524 -> node0252421
+node0252421[label = "24-LISTAID" shape="box"];
+node0252421 -> node025242110
+node025242110[label = "var_4_6" shape="box"];
+node02524 -> node0252432
+node0252432[label = "=" shape="box"];
+node02524 -> node0252443
+node0252443[label = "'%'" shape="box"];
+node0 -> node02625
+node02625[label = "25-DECLARACION" shape="box"];
+node02625 -> node0262510
+node0262510[label = "25-TIPO" shape="box"];
+node0262510 -> node026251010
+node026251010[label = "char" shape="box"];
+node02625 -> node0262521
+node0262521[label = "25-LISTAID" shape="box"];
+node0262521 -> node026252110
+node026252110[label = "var_4_7" shape="box"];
+node02625 -> node0262532
+node0262532[label = "=" shape="box"];
+node02625 -> node0262543
+node0262543[label = "'/'" shape="box"];
+node0 -> node02726
+node02726[label = "26-DECLARACION" shape="box"];
+node02726 -> node0272610
+node0272610[label = "26-TIPO" shape="box"];
+node0272610 -> node027261010
+node027261010[label = "string" shape="box"];
+node02726 -> node0272621
+node0272621[label = "26-LISTAID" shape="box"];
+node0272621 -> node027262110
+node027262110[label = "var_5_1" shape="box"];
+node02726 -> node0272632
+node0272632[label = "=" shape="box"];
+node02726 -> node0272643
+node0272643[label = "Hola" shape="box"];
+node0 -> node02827
+node02827[label = "27-DECLARACION" shape="box"];
+node02827 -> node0282710
+node0282710[label = "27-TIPO" shape="box"];
+node0282710 -> node028271010
+node028271010[label = "string" shape="box"];
+node02827 -> node0282721
+node0282721[label = "27-LISTAID" shape="box"];
+node0282721 -> node028272110
+node028272110[label = "var_5_2" shape="box"];
+node02827 -> node0282732
+node0282732[label = "=" shape="box"];
+node02827 -> node0282743
+node0282743[label = "Mundo" shape="box"];
+node0 -> node02928
+node02928[label = "28-DECLARACION" shape="box"];
+node02928 -> node0292810
+node0292810[label = "28-TIPO" shape="box"];
+node0292810 -> node029281010
+node029281010[label = "string" shape="box"];
+node02928 -> node0292821
+node0292821[label = "28-LISTAID" shape="box"];
+node0292821 -> node029282110
+node029282110[label = "var_5_3" shape="box"];
+node02928 -> node0292832
+node0292832[label = "=" shape="box"];
+node02928 -> node0292843
+node0292843[label = "este es un mensaje @" shape="box"];
+node0 -> node03029
+node03029[label = "29-DECLARACION" shape="box"];
+node03029 -> node0302910
+node0302910[label = "29-TIPO" shape="box"];
+node0302910 -> node030291010
+node030291010[label = "string" shape="box"];
+node03029 -> node0302921
+node0302921[label = "29-LISTAID" shape="box"];
+node0302921 -> node030292110
+node030292110[label = "var_5_4" shape="box"];
+node03029 -> node0302932
+node0302932[label = "=" shape="box"];
+node03029 -> node0302943
+node0302943[label = "Organizacion de lenguajes y compiladores\\\n1" shape="box"];
+node0 -> node03130
+node03130[label = "30-DECLARACION" shape="box"];
+node03130 -> node0313010
+node0313010[label = "30-TIPO" shape="box"];
+node0313010 -> node031301010
+node031301010[label = "string" shape="box"];
+node03130 -> node0313021
+node0313021[label = "30-LISTAID" shape="box"];
+node0313021 -> node031302110
+node031302110[label = "var_5_5" shape="box"];
+node03130 -> node0313032
+node0313032[label = "=" shape="box"];
+node03130 -> node0313043
+node0313043[label = "Compiladores\\n1" shape="box"];
+node0 -> node03231
+node03231[label = "31-DECLARACION" shape="box"];
+node03231 -> node0323110
+node0323110[label = "31-TIPO" shape="box"];
+node0323110 -> node032311010
+node032311010[label = "string" shape="box"];
+node03231 -> node0323121
+node0323121[label = "31-LISTAID" shape="box"];
+node0323121 -> node032312110
+node032312110[label = "var_5_6" shape="box"];
+node03231 -> node0323132
+node0323132[label = "=" shape="box"];
+node03231 -> node0323143
+node0323143[label = "Compiladores\\\1\\" shape="box"];
+node0 -> node03332
+node03332[label = "32-DECLARACION" shape="box"];
+node03332 -> node0333210
+node0333210[label = "32-TIPO" shape="box"];
+node0333210 -> node033321010
+node033321010[label = "string" shape="box"];
+node03332 -> node0333221
+node0333221[label = "32-LISTAID" shape="box"];
+node0333221 -> node033322110
+node033322110[label = "var_5_8" shape="box"];
+node03332 -> node0333232
+node0333232[label = "=" shape="box"];
+node03332 -> node0333243
+node0333243[label = "\\tCompiladores 1" shape="box"];
+node0 -> node03433
+node03433[label = "33-DECLARACION" shape="box"];
+node03433 -> node0343310
+node0343310[label = "33-TIPO" shape="box"];
+node0343310 -> node034331010
+node034331010[label = "string" shape="box"];
+node03433 -> node0343321
+node0343321[label = "33-LISTAID" shape="box"];
+node0343321 -> node034332110
+node034332110[label = "var_5_9" shape="box"];
+node03433 -> node0343332
+node0343332[label = "=" shape="box"];
+node03433 -> node0343343
+node0343343[label = "\\'compiladores 1\'" shape="box"];
+node0 -> node03534
+node03534[label = "34-ASIGNACION" shape="box"];
+node03534 -> node0353410
+node0353410[label = "34-var_1" shape="box"];
+node03534 -> node0353421
+node0353421[label = "34-=" shape="box"];
+node03534 -> node0353432
+node0353432[label = "-3" shape="box"];
+node0 -> node03635
+node03635[label = "35-ASIGNACION" shape="box"];
+node03635 -> node0363510
+node0363510[label = "35-var_1" shape="box"];
+node03635 -> node0363521
+node0363521[label = "35-=" shape="box"];
+node03635 -> node0363532
+node0363532[label = "45" shape="box"];
+node0 -> node03736
+node03736[label = "36-ASIGNACION" shape="box"];
+node03736 -> node0373610
+node0373610[label = "36-var_1" shape="box"];
+node03736 -> node0373621
+node0373621[label = "36-=" shape="box"];
+node03736 -> node0373632
+node0373632[label = "9" shape="box"];
+node0 -> node03837
+node03837[label = "37-ASIGNACION" shape="box"];
+node03837 -> node0383710
+node0383710[label = "37-var_3" shape="box"];
+node03837 -> node0383721
+node0383721[label = "37-=" shape="box"];
+node03837 -> node0383732
+node0383732[label = "50" shape="box"];
+node03837 -> node0383743
+node0383743[label = ">" shape="box"];
+node03837 -> node0383754
+node0383754[label = "51" shape="box"];
+node0 -> node03938
+node03938[label = "38-ASIGNACION" shape="box"];
+node03938 -> node0393810
+node0393810[label = "38-var_3" shape="box"];
+node03938 -> node0393821
+node0393821[label = "38-=" shape="box"];
+node03938 -> node0393832
+node0393832[label = "5" shape="box"];
+node03938 -> node0393843
+node0393843[label = "<" shape="box"];
+node03938 -> node0393854
+node0393854[label = "51" shape="box"];
+node0 -> node04039
+node04039[label = "39-ASIGNACION" shape="box"];
+node04039 -> node0403910
+node0403910[label = "39-var_3" shape="box"];
+node04039 -> node0403921
+node0403921[label = "39-=" shape="box"];
+node04039 -> node0403932
+node0403932[label = "50" shape="box"];
+node04039 -> node0403943
+node0403943[label = ">=" shape="box"];
+node04039 -> node0403954
+node0403954[label = "51" shape="box"];
+node0 -> node04140
+node04140[label = "40-ASIGNACION" shape="box"];
+node04140 -> node0414010
+node0414010[label = "40-var_3" shape="box"];
+node04140 -> node0414021
+node0414021[label = "40-=" shape="box"];
+node04140 -> node0414032
+node0414032[label = "74" shape="box"];
+node04140 -> node0414043
+node0414043[label = "<=" shape="box"];
+node04140 -> node0414054
+node0414054[label = "51" shape="box"];
+node0 -> node04241
+node04241[label = "41-DECLARACION" shape="box"];
+node04241 -> node0424110
+node0424110[label = "41-TIPO" shape="box"];
+node0424110 -> node042411010
+node042411010[label = "int" shape="box"];
+node04241 -> node0424121
+node0424121[label = "41-LISTAID" shape="box"];
+node0424121 -> node042412110
+node042412110[label = "v_5" shape="box"];
+node04241 -> node0424132
+node0424132[label = "=" shape="box"];
+node04241 -> node0424143
+node0424143[label = "41-CASTEO" shape="box"];
+node0424143 -> node042414310
+node042414310[label = "int" shape="box"];
+node04241 -> node0424154
+node0424154[label = "hola" shape="box"];
+node0 -> node04342
+node04342[label = "42-DECLARACION" shape="box"];
+node04342 -> node0434210
+node0434210[label = "42-TIPO" shape="box"];
+node0434210 -> node043421010
+node043421010[label = "string" shape="box"];
+node04342 -> node0434221
+node0434221[label = "42-LISTAID" shape="box"];
+node0434221 -> node043422110
+node043422110[label = "v_1" shape="box"];
+node04342 -> node0434232
+node0434232[label = "=" shape="box"];
+node04342 -> node0434243
+node0434243[label = "42-CASTEO" shape="box"];
+node0434243 -> node043424310
+node043424310[label = "string" shape="box"];
+node04342 -> node0434254
+node0434254[label = "4" shape="box"];
+node0 -> node04443
+node04443[label = "43-DECLARACION" shape="box"];
+node04443 -> node0444310
+node0444310[label = "43-TIPO" shape="box"];
+node0444310 -> node044431010
+node044431010[label = "char" shape="box"];
+node04443 -> node0444321
+node0444321[label = "43-LISTAID" shape="box"];
+node0444321 -> node044432110
+node044432110[label = "v_3" shape="box"];
+node04443 -> node0444332
+node0444332[label = "=" shape="box"];
+node04443 -> node0444343
+node0444343[label = "43-CASTEO" shape="box"];
+node0444343 -> node044434310
+node044434310[label = "char" shape="box"];
+node04443 -> node0444354
+node0444354[label = "true" shape="box"];
+node0 -> node04544
+node04544[label = "44-DECLARACION" shape="box"];
+node04544 -> node0454410
+node0454410[label = "44-TIPO" shape="box"];
+node0454410 -> node045441010
+node045441010[label = "char" shape="box"];
+node04544 -> node0454421
+node0454421[label = "44-LISTAID" shape="box"];
+node0454421 -> node045442110
+node045442110[label = "v_4" shape="box"];
+node04544 -> node0454432
+node0454432[label = "=" shape="box"];
+node04544 -> node0454443
+node0454443[label = "44-CASTEO" shape="box"];
+node0454443 -> node045444310
+node045444310[label = "char" shape="box"];
+node04544 -> node0454454
+node0454454[label = "'A'" shape="box"];
+node0 -> node04645
+node04645[label = "45-FUNCION" shape="box"];
+node04645 -> node0464510
+node0464510[label = "45-Nombre" shape="box"];
+node0464510 -> node046451010
+node046451010[label = "45-division" shape="box"];
+node04645 -> node0464521
+node0464521[label = "45-TipoF" shape="box"];
+node0464521 -> node046452110
+node046452110[label = "45-string" shape="box"];
+node04645 -> node0464532
+node0464532[label = "45-INSFuncion" shape="box"];
+node0464532 -> node046453210
+node046453210[label = "45-DECLARACION" shape="box"];
+node046453210 -> node04645321010
+node04645321010[label = "45-TIPO" shape="box"];
+node04645321010 -> node0464532101010
+node0464532101010[label = "string" shape="box"];
+node046453210 -> node04645321021
+node04645321021[label = "45-LISTAID" shape="box"];
+node04645321021 -> node0464532102110
+node0464532102110[label = "v_2" shape="box"];
+node046453210 -> node04645321032
+node04645321032[label = "=" shape="box"];
+node046453210 -> node04645321043
+node04645321043[label = "45-CASTEO" shape="box"];
+node04645321043 -> node0464532104310
+node0464532104310[label = "string" shape="box"];
+node046453210 -> node04645321054
+node04645321054[label = "13" shape="box"];
+node0464532 -> node046453221
+node046453221[label = "47-DECLARACION" shape="box"];
+node046453221 -> node04645322110
+node04645322110[label = "47-TIPO" shape="box"];
+node04645322110 -> node0464532211010
+node0464532211010[label = "string" shape="box"];
+node046453221 -> node04645322121
+node04645322121[label = "47-LISTAID" shape="box"];
+node04645322121 -> node0464532212110
+node0464532212110[label = "v_3" shape="box"];
+node046453221 -> node04645322132
+node04645322132[label = "=" shape="box"];
+node046453221 -> node04645322143
+node04645322143[label = "47-CASTEO" shape="box"];
+node04645322143 -> node0464532214310
+node0464532214310[label = "string" shape="box"];
+node046453221 -> node04645322154
+node04645322154[label = "true" shape="box"];
+node0464532 -> node046453232
+node046453232[label = "49-DECLARACION" shape="box"];
+node046453232 -> node04645323210
+node04645323210[label = "49-TIPO" shape="box"];
+node04645323210 -> node0464532321010
+node0464532321010[label = "string" shape="box"];
+node046453232 -> node04645323221
+node04645323221[label = "49-LISTAID" shape="box"];
+node04645323221 -> node0464532322110
+node0464532322110[label = "v_4" shape="box"];
+node046453232 -> node04645323232
+node04645323232[label = "=" shape="box"];
+node046453232 -> node04645323243
+node04645323243[label = "49-CASTEO" shape="box"];
+node04645323243 -> node0464532324310
+node0464532324310[label = "string" shape="box"];
+node046453232 -> node04645323254
+node04645323254[label = "'A'" shape="box"];
+node0464532 -> node046453243
+node046453243[label = "51-Return" shape="box"];
+node046453243 -> node04645324310
+node04645324310[label = "olc1" shape="box"];
+node0464532 -> node046453254
+node046453254[label = "53-ASIGNACION" shape="box"];
+node046453254 -> node04645325410
+node04645325410[label = "53-mivar" shape="box"];
+node046453254 -> node04645325421
+node04645325421[label = "53-=" shape="box"];
+node046453254 -> node04645325432
+node04645325432[label = "toLower" shape="box"];
+node046453254 -> node04645325443
+node04645325443[label = "QWERT" shape="box"];
+node0464532 -> node046453265
+node046453265[label = "55-ASIGNACION" shape="box"];
+node046453265 -> node04645326510
+node04645326510[label = "55-mivar" shape="box"];
+node046453265 -> node04645326521
+node04645326521[label = "55-=" shape="box"];
+node046453265 -> node04645326532
+node04645326532[label = "toUpper" shape="box"];
+node046453265 -> node04645326543
+node04645326543[label = "QWERT" shape="box"];
+node0464532 -> node046453276
+node046453276[label = "57-DECLARACION" shape="box"];
+node046453276 -> node04645327610
+node04645327610[label = "57-TIPO" shape="box"];
+node04645327610 -> node0464532761010
+node0464532761010[label = "boolean" shape="box"];
+node046453276 -> node04645327621
+node04645327621[label = "57-LISTAID" shape="box"];
+node04645327621 -> node0464532762110
+node0464532762110[label = "v_2" shape="box"];
+node046453276 -> node04645327632
+node04645327632[label = "=" shape="box"];
+node046453276 -> node04645327643
+node04645327643[label = "57-CASTEO" shape="box"];
+node04645327643 -> node0464532764310
+node0464532764310[label = "boolean" shape="box"];
+node046453276 -> node04645327654
+node04645327654[label = "12.25" shape="box"];
+node0464532 -> node046453287
+node046453287[label = "59-DECLARACION" shape="box"];
+node046453287 -> node04645328710
+node04645328710[label = "59-TIPO" shape="box"];
+node04645328710 -> node0464532871010
+node0464532871010[label = "string" shape="box"];
+node046453287 -> node04645328721
+node04645328721[label = "59-LISTAID" shape="box"];
+node04645328721 -> node0464532872110
+node0464532872110[label = "a_1" shape="box"];
+node046453287 -> node04645328732
+node04645328732[label = "=" shape="box"];
+node046453287 -> node04645328743
+node04645328743[label = "TypeOf" shape="box"];
+node046453287 -> node04645328754
+node04645328754[label = "15" shape="box"];
+node0464532 -> node046453298
+node046453298[label = "61-DECLARACION" shape="box"];
+node046453298 -> node04645329810
+node04645329810[label = "61-TIPO" shape="box"];
+node04645329810 -> node0464532981010
+node0464532981010[label = "string" shape="box"];
+node046453298 -> node04645329821
+node04645329821[label = "61-LISTAID" shape="box"];
+node04645329821 -> node0464532982110
+node0464532982110[label = "a_2" shape="box"];
+node046453298 -> node04645329832
+node04645329832[label = "=" shape="box"];
+node046453298 -> node04645329843
+node04645329843[label = "TypeOf" shape="box"];
+node046453298 -> node04645329854
+node04645329854[label = "21" shape="box"];
+node0464532 -> node0464532109
+node0464532109[label = "63-DECLARACION" shape="box"];
+node0464532109 -> node046453210910
+node046453210910[label = "63-TIPO" shape="box"];
+node046453210910 -> node04645321091010
+node04645321091010[label = "string" shape="box"];
+node0464532109 -> node046453210921
+node046453210921[label = "63-LISTAID" shape="box"];
+node046453210921 -> node04645321092110
+node04645321092110[label = "a_3" shape="box"];
+node0464532109 -> node046453210932
+node046453210932[label = "=" shape="box"];
+node0464532109 -> node046453210943
+node046453210943[label = "TypeOf" shape="box"];
+node0464532109 -> node046453210954
+node046453210954[label = "'a'" shape="box"];
+node0464532 -> node04645321110
+node04645321110[label = "65-DECLARACION" shape="box"];
+node04645321110 -> node0464532111010
+node0464532111010[label = "65-TIPO" shape="box"];
+node0464532111010 -> node046453211101010
+node046453211101010[label = "string" shape="box"];
+node04645321110 -> node0464532111021
+node0464532111021[label = "65-LISTAID" shape="box"];
+node0464532111021 -> node046453211102110
+node046453211102110[label = "a_4" shape="box"];
+node04645321110 -> node0464532111032
+node0464532111032[label = "=" shape="box"];
+node04645321110 -> node0464532111043
+node0464532111043[label = "TypeOf" shape="box"];
+node04645321110 -> node0464532111054
+node0464532111054[label = "true" shape="box"];
+node0464532 -> node04645321211
+node04645321211[label = "67-DECLARACION" shape="box"];
+node04645321211 -> node0464532121110
+node0464532121110[label = "67-TIPO" shape="box"];
+node0464532121110 -> node046453212111010
+node046453212111010[label = "string" shape="box"];
+node04645321211 -> node0464532121121
+node0464532121121[label = "67-LISTAID" shape="box"];
+node0464532121121 -> node046453212112110
+node046453212112110[label = "a_5" shape="box"];
+node04645321211 -> node0464532121132
+node0464532121132[label = "=" shape="box"];
+node04645321211 -> node0464532121143
+node0464532121143[label = "TypeOf" shape="box"];
+node04645321211 -> node0464532121154
+node0464532121154[label = "dsafdsa" shape="box"];
+node0464532 -> node04645321312
+node04645321312[label = "69-DECLARACION" shape="box"];
+node04645321312 -> node0464532131210
+node0464532131210[label = "69-TIPO" shape="box"];
+node0464532131210 -> node046453213121010
+node046453213121010[label = "string" shape="box"];
+node04645321312 -> node0464532131221
+node0464532131221[label = "69-LISTAID" shape="box"];
+node0464532131221 -> node046453213122110
+node046453213122110[label = "a_5" shape="box"];
+node04645321312 -> node0464532131232
+node0464532131232[label = "=" shape="box"];
+node04645321312 -> node0464532131243
+node0464532131243[label = "toString" shape="box"];
+node04645321312 -> node0464532131254
+node0464532131254[label = "melmv" shape="box"];
+node0464532 -> node04645321413
+node04645321413[label = "71-DECLARACION" shape="box"];
+node04645321413 -> node0464532141310
+node0464532141310[label = "71-TIPO" shape="box"];
+node0464532141310 -> node046453214131010
+node046453214131010[label = "string" shape="box"];
+node04645321413 -> node0464532141321
+node0464532141321[label = "71-LISTAID" shape="box"];
+node0464532141321 -> node046453214132110
+node046453214132110[label = "a_5" shape="box"];
+node04645321413 -> node0464532141332
+node0464532141332[label = "=" shape="box"];
+node04645321413 -> node0464532141343
+node0464532141343[label = "toString" shape="box"];
+node04645321413 -> node0464532141354
+node0464532141354[label = "15" shape="box"];
+node0464532 -> node04645321514
+node04645321514[label = "73-DECLARACION" shape="box"];
+node04645321514 -> node0464532151410
+node0464532151410[label = "73-TIPO" shape="box"];
+node0464532151410 -> node046453215141010
+node046453215141010[label = "string" shape="box"];
+node04645321514 -> node0464532151421
+node0464532151421[label = "73-LISTAID" shape="box"];
+node0464532151421 -> node046453215142110
+node046453215142110[label = "a_5" shape="box"];
+node04645321514 -> node0464532151432
+node0464532151432[label = "=" shape="box"];
+node04645321514 -> node0464532151443
+node0464532151443[label = "toString" shape="box"];
+node04645321514 -> node0464532151454
+node0464532151454[label = "24" shape="box"];
+node0464532 -> node04645321615
+node04645321615[label = "75-DECLARACION" shape="box"];
+node04645321615 -> node0464532161510
+node0464532161510[label = "75-TIPO" shape="box"];
+node0464532161510 -> node046453216151010
+node046453216151010[label = "string" shape="box"];
+node04645321615 -> node0464532161521
+node0464532161521[label = "75-LISTAID" shape="box"];
+node0464532161521 -> node046453216152110
+node046453216152110[label = "a_5" shape="box"];
+node04645321615 -> node0464532161532
+node0464532161532[label = "=" shape="box"];
+node04645321615 -> node0464532161543
+node0464532161543[label = "toString" shape="box"];
+node04645321615 -> node0464532161554
+node0464532161554[label = "true" shape="box"];
+node0 -> node04746
+node04746[label = "46-FUNCION" shape="box"];
+node04746 -> node0474610
+node0474610[label = "46-Nombre" shape="box"];
+node0474610 -> node047461010
+node047461010[label = "46-Multiplicacion" shape="box"];
+node04746 -> node0474621
+node0474621[label = "46-ParametrosF" shape="box"];
+node0474621 -> node047462110
+node047462110[label = "46-int" shape="box"];
+node0474621 -> node047462121
+node047462121[label = "46-numero1" shape="box"];
+node0474621 -> node047462132
+node047462132[label = "46-int" shape="box"];
+node0474621 -> node047462143
+node047462143[label = "46-numero2" shape="box"];
+node04746 -> node0474632
+node0474632[label = "46-TipoF" shape="box"];
+node0474632 -> node047463210
+node047463210[label = "46-int" shape="box"];
+node04746 -> node0474643
+node0474643[label = "46-INSFuncion" shape="box"];
+node0474643 -> node047464310
+node047464310[label = "46-IF" shape="box"];
+node047464310 -> node04746431010
+node04746431010[label = "46-CONDICION" shape="box"];
+node04746431010 -> node0474643101010
+node0474643101010[label = "Universidad" shape="box"];
+node04746431010 -> node0474643101021
+node0474643101021[label = "==" shape="box"];
+node04746431010 -> node0474643101032
+node0474643101032[label = "usac" shape="box"];
+node047464310 -> node04746431021
+node04746431021[label = "46-INSTRUCCIONESIF" shape="box"];
+node04746431021 -> node0474643102110
+node0474643102110[label = "46-ASIGNACION" shape="box"];
+node0474643102110 -> node047464310211010
+node047464310211010[label = "46-var_1" shape="box"];
+node0474643102110 -> node047464310211021
+node047464310211021[label = "46-=" shape="box"];
+node0474643102110 -> node047464310211032
+node047464310211032[label = "5" shape="box"];
+node04746431021 -> node0474643102121
+node0474643102121[label = "48-ASIGNACION" shape="box"];
+node0474643102121 -> node047464310212110
+node047464310212110[label = "48-var_2" shape="box"];
+node0474643102121 -> node047464310212121
+node047464310212121[label = "48-=" shape="box"];
+node0474643102121 -> node047464310212132
+node047464310212132[label = "168" shape="box"];
+node04746431021 -> node0474643102132
+node0474643102132[label = "50-DECLARACION" shape="box"];
+node0474643102132 -> node047464310213210
+node047464310213210[label = "50-TIPO" shape="box"];
+node047464310213210 -> node04746431021321010
+node04746431021321010[label = "double" shape="box"];
+node0474643102132 -> node047464310213221
+node047464310213221[label = "50-LISTAID" shape="box"];
+node047464310213221 -> node04746431021322110
+node04746431021322110[label = "val1" shape="box"];
+node0474643102132 -> node047464310213232
+node047464310213232[label = "=" shape="box"];
+node0474643102132 -> node047464310213243
+node047464310213243[label = "round" shape="box"];
+node0474643102132 -> node047464310213254
+node047464310213254[label = "5.800" shape="box"];
+node04746431021 -> node0474643102143
+node0474643102143[label = "52-ASIGNACION" shape="box"];
+node0474643102143 -> node047464310214310
+node047464310214310[label = "52-val1" shape="box"];
+node0474643102143 -> node047464310214321
+node047464310214321[label = "52-=" shape="box"];
+node0474643102143 -> node047464310214332
+node047464310214332[label = "round" shape="box"];
+node0474643102143 -> node047464310214343
+node047464310214343[label = "6" shape="box"];
+node04746431021 -> node0474643102154
+node0474643102154[label = "54-Println" shape="box"];
+node0474643102154 -> node047464310215410
+node047464310215410[label = "tricentenadira" shape="box"];
+node04746431021 -> node0474643102165
+node0474643102165[label = "56-IF" shape="box"];
+node0474643102165 -> node047464310216510
+node047464310216510[label = "56-CONDICION" shape="box"];
+node047464310216510 -> node04746431021651010
+node04746431021651010[label = "Universidad" shape="box"];
+node047464310216510 -> node04746431021651021
+node04746431021651021[label = "==" shape="box"];
+node047464310216510 -> node04746431021651032
+node04746431021651032[label = "usac" shape="box"];
+node0474643102165 -> node047464310216521
+node047464310216521[label = "56-INSTRUCCIONESIF" shape="box"];
+node047464310216521 -> node04746431021652110
+node04746431021652110[label = "56-Println" shape="box"];
+node04746431021652110 -> node0474643102165211010
+node0474643102165211010[label = "tricentenadira" shape="box"];
+node047464310216521 -> node04746431021652121
+node04746431021652121[label = "58-IF" shape="box"];
+node04746431021652121 -> node0474643102165212110
+node0474643102165212110[label = "58-CONDICION" shape="box"];
+node0474643102165212110 -> node047464310216521211010
+node047464310216521211010[label = "Universidad" shape="box"];
+node0474643102165212110 -> node047464310216521211021
+node047464310216521211021[label = "==" shape="box"];
+node0474643102165212110 -> node047464310216521211032
+node047464310216521211032[label = "usac" shape="box"];
+node04746431021652121 -> node0474643102165212121
+node0474643102165212121[label = "58-INSTRUCCIONESIF" shape="box"];
+node0474643102165212121 -> node047464310216521212110
+node047464310216521212110[label = "58-Println" shape="box"];
+node047464310216521212110 -> node04746431021652121211010
+node04746431021652121211010[label = "tricentenadira" shape="box"];
+node0474643102165212121 -> node047464310216521212121
+node047464310216521212121[label = "60-IF" shape="box"];
+node047464310216521212121 -> node04746431021652121212110
+node04746431021652121212110[label = "60-CONDICION" shape="box"];
+node04746431021652121212110 -> node0474643102165212121211010
+node0474643102165212121211010[label = "Universidad" shape="box"];
+node04746431021652121212110 -> node0474643102165212121211021
+node0474643102165212121211021[label = "==" shape="box"];
+node04746431021652121212110 -> node0474643102165212121211032
+node0474643102165212121211032[label = "usac" shape="box"];
+node047464310216521212121 -> node04746431021652121212121
+node04746431021652121212121[label = "60-INSTRUCCIONESIF" shape="box"];
+node04746431021652121212121 -> node0474643102165212121212110
+node0474643102165212121212110[label = "60-Println" shape="box"];
+node0474643102165212121212110 -> node047464310216521212121211010
+node047464310216521212121211010[label = "tricentenadira" shape="box"];
+node04746431021652121212121 -> node0474643102165212121212121
+node0474643102165212121212121[label = "62-DECLARACION" shape="box"];
+node0474643102165212121212121 -> node047464310216521212121212110
+node047464310216521212121212110[label = "62-TIPO" shape="box"];
+node047464310216521212121212110 -> node04746431021652121212121211010
+node04746431021652121212121211010[label = "char" shape="box"];
+node0474643102165212121212121 -> node047464310216521212121212121
+node047464310216521212121212121[label = "62-LISTAID" shape="box"];
+node047464310216521212121212121 -> node04746431021652121212121212110
+node04746431021652121212121212110[label = "v_1" shape="box"];
+node0474643102165212121212121 -> node047464310216521212121212132
+node047464310216521212121212132[label = "=" shape="box"];
+node0474643102165212121212121 -> node047464310216521212121212143
+node047464310216521212121212143[label = "62-CASTEO" shape="box"];
+node047464310216521212121212143 -> node04746431021652121212121214310
+node04746431021652121212121214310[label = "char" shape="box"];
+node0474643102165212121212121 -> node047464310216521212121212154
+node047464310216521212121212154[label = "12" shape="box"];
+node04746431021652121212121 -> node0474643102165212121212132
+node0474643102165212121212132[label = "64-DECLARACION" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213210
+node047464310216521212121213210[label = "64-TIPO" shape="box"];
+node047464310216521212121213210 -> node04746431021652121212121321010
+node04746431021652121212121321010[label = "char" shape="box"];
+node047464310216521212121213210 -> node04746431021652121212121321021
+node04746431021652121212121321021[label = "boolean" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213221
+node047464310216521212121213221[label = "64-LISTAID" shape="box"];
+node047464310216521212121213221 -> node04746431021652121212121322110
+node04746431021652121212121322110[label = "v_2" shape="box"];
+node047464310216521212121213221 -> node04746431021652121212121322121
+node04746431021652121212121322121[label = "v_5" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213232
+node047464310216521212121213232[label = "=" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213243
+node047464310216521212121213243[label = "64-CASTEO" shape="box"];
+node047464310216521212121213243 -> node04746431021652121212121324310
+node04746431021652121212121324310[label = "char" shape="box"];
+node047464310216521212121213243 -> node04746431021652121212121324321
+node04746431021652121212121324321[label = "boolean" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213254
+node047464310216521212121213254[label = "12.25" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213265
+node047464310216521212121213265[label = "64-TIPO" shape="box"];
+node047464310216521212121213265 -> node04746431021652121212121326510
+node04746431021652121212121326510[label = "boolean" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213276
+node047464310216521212121213276[label = "64-LISTAID" shape="box"];
+node047464310216521212121213276 -> node04746431021652121212121327610
+node04746431021652121212121327610[label = "v_5" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213287
+node047464310216521212121213287[label = "=" shape="box"];
+node0474643102165212121212132 -> node047464310216521212121213298
+node047464310216521212121213298[label = "64-CASTEO" shape="box"];
+node047464310216521212121213298 -> node04746431021652121212121329810
+node04746431021652121212121329810[label = "boolean" shape="box"];
+node0474643102165212121212132 -> node0474643102165212121212132109
+node0474643102165212121212132109[label = "hola" shape="box"];
+node0 -> node04847
+node04847[label = "91-METODO" shape="box"];
+node04847 -> node0484710
+node0484710[label = "91-NombreM" shape="box"];
+node0484710 -> node048471010
+node048471010[label = "91-saludo" shape="box"];
+node04847 -> node0484721
+node0484721[label = "91-ParametrosM" shape="box"];
+node0484721 -> node048472110
+node048472110[label = "91-String" shape="box"];
+node0484721 -> node048472121
+node048472121[label = "91-nombre" shape="box"];
+node04847 -> node0484732
+node0484732[label = "91-TipoM" shape="box"];
+node0484732 -> node048473210
+node048473210[label = "91-VOID" shape="box"];
+node04847 -> node0484743
+node0484743[label = "91-INSMetodo" shape="box"];
+node0484743 -> node048474310
+node048474310[label = "91-DOUNTIL" shape="box"];
+node048474310 -> node04847431010
+node04847431010[label = "91-insDoUntil" shape="box"];
+node04847431010 -> node0484743101010
+node0484743101010[label = "91-DOWHILE" shape="box"];
+node0484743101010 -> node048474310101010
+node048474310101010[label = "91-insDo" shape="box"];
+node048474310101010 -> node04847431010101010
+node04847431010101010[label = "91-ASIGNACION" shape="box"];
+node04847431010101010 -> node0484743101010101010
+node0484743101010101010[label = "91-var_3" shape="box"];
+node04847431010101010 -> node0484743101010101021
+node0484743101010101021[label = "91-=" shape="box"];
+node04847431010101010 -> node0484743101010101032
+node0484743101010101032[label = "compi 1 usac compi 1" shape="box"];
+node048474310101010 -> node04847431010101021
+node04847431010101021[label = "93-ASIGNACION" shape="box"];
+node04847431010101021 -> node0484743101010102110
+node0484743101010102110[label = "93-var_3" shape="box"];
+node04847431010101021 -> node0484743101010102121
+node0484743101010102121[label = "93-=" shape="box"];
+node04847431010101021 -> node0484743101010102132
+node0484743101010102132[label = "11" shape="box"];
+node04847431010101021 -> node0484743101010102143
+node0484743101010102143[label = ">" shape="box"];
+node04847431010101021 -> node0484743101010102154
+node0484743101010102154[label = "48" shape="box"];
+node04847431010101021 -> node0484743101010102165
+node0484743101010102165[label = "TERNARIO" shape="box"];
+node04847431010101021 -> node0484743101010102176
+node0484743101010102176[label = "2" shape="box"];
+node04847431010101021 -> node0484743101010102187
+node0484743101010102187[label = ":" shape="box"];
+node04847431010101021 -> node0484743101010102198
+node0484743101010102198[label = "45" shape="box"];
+node048474310101010 -> node04847431010101032
+node04847431010101032[label = "95-DOWHILE" shape="box"];
+node04847431010101032 -> node0484743101010103210
+node0484743101010103210[label = "95-insDo" shape="box"];
+node0484743101010103210 -> node048474310101010321010
+node048474310101010321010[label = "95-WHILE" shape="box"];
+node048474310101010321010 -> node04847431010101032101010
+node04847431010101032101010[label = "95-CONDICIONW" shape="box"];
+node04847431010101032101010 -> node0484743101010103210101010
+node0484743101010103210101010[label = "edad" shape="box"];
+node04847431010101032101010 -> node0484743101010103210101021
+node0484743101010103210101021[label = "<" shape="box"];
+node04847431010101032101010 -> node0484743101010103210101032
+node0484743101010103210101032[label = "100" shape="box"];
+node048474310101010321010 -> node04847431010101032101021
+node04847431010101032101021[label = "95-INSWhile" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102110
+node0484743101010103210102110[label = "95-Decremento" shape="box"];
+node0484743101010103210102110 -> node048474310101010321010211010
+node048474310101010321010211010[label = "95-var_1" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102121
+node0484743101010103210102121[label = "97-Println" shape="box"];
+node0484743101010103210102121 -> node048474310101010321010212110
+node048474310101010321010212110[label = "nombre" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102132
+node0484743101010103210102132[label = "99-Println" shape="box"];
+node0484743101010103210102132 -> node048474310101010321010213210
+node048474310101010321010213210[label = "Segundo semestre 2022" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102143
+node0484743101010103210102143[label = "101-Incremento" shape="box"];
+node0484743101010103210102143 -> node048474310101010321010214310
+node048474310101010321010214310[label = "101-var_1" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102154
+node0484743101010103210102154[label = "103-Incremento" shape="box"];
+node0484743101010103210102154 -> node048474310101010321010215410
+node048474310101010321010215410[label = "103-edad" shape="box"];
+node04847431010101032101021 -> node0484743101010103210102165
+node0484743101010103210102165[label = "105-IF" shape="box"];
+node0484743101010103210102165 -> node048474310101010321010216510
+node048474310101010321010216510[label = "105-CONDICION" shape="box"];
+node048474310101010321010216510 -> node04847431010101032101021651010
+node04847431010101032101021651010[label = "3" shape="box"];
+node048474310101010321010216510 -> node04847431010101032101021651021
+node04847431010101032101021651021[label = "&&" shape="box"];
+node048474310101010321010216510 -> node04847431010101032101021651032
+node04847431010101032101021651032[label = "101" shape="box"];
+node0484743101010103210102165 -> node048474310101010321010216521
+node048474310101010321010216521[label = "105-INSTRUCCIONESIF" shape="box"];
+node048474310101010321010216521 -> node04847431010101032101021652110
+node04847431010101032101021652110[label = "105-Println" shape="box"];
+node04847431010101032101021652110 -> node0484743101010103210102165211010
+node0484743101010103210102165211010[label = "Esta bien" shape="box"];
+node048474310101010321010216521 -> node04847431010101032101021652121
+node04847431010101032101021652121[label = "107-Decremento" shape="box"];
+node04847431010101032101021652121 -> node0484743101010103210102165212110
+node0484743101010103210102165212110[label = "107-var_1" shape="box"];
+node0484743101010103210102165 -> node048474310101010321010216532
+node048474310101010321010216532[label = "105-ELIF" shape="box"];
+node048474310101010321010216532 -> node04847431010101032101021653210
+node04847431010101032101021653210[label = "109-CONDICION" shape="box"];
+node04847431010101032101021653210 -> node0484743101010103210102165321010
+node0484743101010103210102165321010[label = "4" shape="box"];
+node04847431010101032101021653210 -> node0484743101010103210102165321021
+node0484743101010103210102165321021[label = "||" shape="box"];
+node04847431010101032101021653210 -> node0484743101010103210102165321032
+node0484743101010103210102165321032[label = "Universidad" shape="box"];
+node048474310101010321010216532 -> node04847431010101032101021653221
+node04847431010101032101021653221[label = "109-INSTRUCCIONESELIF" shape="box"];
+node04847431010101032101021653221 -> node0484743101010103210102165322110
+node0484743101010103210102165322110[label = "109-Println" shape="box"];
+node0484743101010103210102165322110 -> node048474310101010321010216532211010
+node048474310101010321010216532211010[label = "Esta es otra suma" shape="box"];
+node04847431010101032101021653221 -> node0484743101010103210102165322121
+node0484743101010103210102165322121[label = "111-DECLARACION" shape="box"];
+node0484743101010103210102165322121 -> node048474310101010321010216532212110
+node048474310101010321010216532212110[label = "111-TIPO" shape="box"];
+node048474310101010321010216532212110 -> node04847431010101032101021653221211010
+node04847431010101032101021653221211010[label = "boolean" shape="box"];
+node0484743101010103210102165322121 -> node048474310101010321010216532212121
+node048474310101010321010216532212121[label = "111-LISTAID" shape="box"];
+node048474310101010321010216532212121 -> node04847431010101032101021653221212110
+node04847431010101032101021653221212110[label = "v_4" shape="box"];
+node0484743101010103210102165322121 -> node048474310101010321010216532212132
+node048474310101010321010216532212132[label = "=" shape="box"];
+node0484743101010103210102165322121 -> node048474310101010321010216532212143
+node048474310101010321010216532212143[label = "111-CASTEO" shape="box"];
+node048474310101010321010216532212143 -> node04847431010101032101021653221214310
+node04847431010101032101021653221214310[label = "boolean" shape="box"];
+node0484743101010103210102165322121 -> node048474310101010321010216532212154
+node048474310101010321010216532212154[label = "'A'" shape="box"];
+node048474310101010321010216532 -> node04847431010101032101021653232
+node04847431010101032101021653232[label = "109-ELIF" shape="box"];
+node04847431010101032101021653232 -> node0484743101010103210102165323210
+node0484743101010103210102165323210[label = "113-CONDICION" shape="box"];
+node0484743101010103210102165323210 -> node048474310101010321010216532321010
+node048474310101010321010216532321010[label = "x" shape="box"];
+node0484743101010103210102165323210 -> node048474310101010321010216532321021
+node048474310101010321010216532321021[label = ">" shape="box"];
+node0484743101010103210102165323210 -> node048474310101010321010216532321032
+node048474310101010321010216532321032[label = "5" shape="box"];
+node04847431010101032101021653232 -> node0484743101010103210102165323221
+node0484743101010103210102165323221[label = "113-INSTRUCCIONESELIF" shape="box"];
+node0484743101010103210102165323221 -> node048474310101010321010216532322110
+node048474310101010321010216532322110[label = "113-Println" shape="box"];
+node048474310101010321010216532322110 -> node04847431010101032101021653232211010
+node04847431010101032101021653232211010[label = "Esta es otra suma" shape="box"];
+node04847431010101032101021653232 -> node0484743101010103210102165323232
+node0484743101010103210102165323232[label = "113-ELSE" shape="box"];
+node0484743101010103210102165323232 -> node048474310101010321010216532323210
+node048474310101010321010216532323210[label = "113-INSTRUCCIONES-ELSE" shape="box"];
+node048474310101010321010216532323210 -> node04847431010101032101021653232321010
+node04847431010101032101021653232321010[label = "115-Incremento" shape="box"];
+node04847431010101032101021653232321010 -> node0484743101010103210102165323232101010
+node0484743101010103210102165323232101010[label = "115-var_1" shape="box"];
+node048474310101010321010216532323210 -> node04847431010101032101021653232321021
+node04847431010101032101021653232321021[label = "117-POP" shape="box"];
+node04847431010101032101021653232321021 -> node0484743101010103210102165323232102110
+node0484743101010103210102165323232102110[label = "117-articulos" shape="box"];
+node048474310101010321010216532323210 -> node04847431010101032101021653232321032
+node04847431010101032101021653232321032[label = "119-DECLARACION" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103210
+node0484743101010103210102165323232103210[label = "119-TIPO" shape="box"];
+node0484743101010103210102165323232103210 -> node048474310101010321010216532323210321010
+node048474310101010321010216532323210321010[label = "boolean" shape="box"];
+node0484743101010103210102165323232103210 -> node048474310101010321010216532323210321021
+node048474310101010321010216532323210321021[label = "int" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103221
+node0484743101010103210102165323232103221[label = "119-LISTAID" shape="box"];
+node0484743101010103210102165323232103221 -> node048474310101010321010216532323210322110
+node048474310101010321010216532323210322110[label = "v_3" shape="box"];
+node0484743101010103210102165323232103221 -> node048474310101010321010216532323210322121
+node048474310101010321010216532323210322121[label = "v_3" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103232
+node0484743101010103210102165323232103232[label = "=" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103243
+node0484743101010103210102165323232103243[label = "119-CASTEO" shape="box"];
+node0484743101010103210102165323232103243 -> node048474310101010321010216532323210324310
+node048474310101010321010216532323210324310[label = "boolean" shape="box"];
+node0484743101010103210102165323232103243 -> node048474310101010321010216532323210324321
+node048474310101010321010216532323210324321[label = "int" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103254
+node0484743101010103210102165323232103254[label = "true" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103265
+node0484743101010103210102165323232103265[label = "119-TIPO" shape="box"];
+node0484743101010103210102165323232103265 -> node048474310101010321010216532323210326510
+node048474310101010321010216532323210326510[label = "int" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103276
+node0484743101010103210102165323232103276[label = "119-LISTAID" shape="box"];
+node0484743101010103210102165323232103276 -> node048474310101010321010216532323210327610
+node048474310101010321010216532323210327610[label = "v_3" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103287
+node0484743101010103210102165323232103287[label = "=" shape="box"];
+node04847431010101032101021653232321032 -> node0484743101010103210102165323232103298
+node0484743101010103210102165323232103298[label = "119-CASTEO" shape="box"];
+node0484743101010103210102165323232103298 -> node048474310101010321010216532323210329810
+node048474310101010321010216532323210329810[label = "int" shape="box"];
+node04847431010101032101021653232321032 -> node04847431010101032101021653232321032109
+node04847431010101032101021653232321032109[label = "true" shape="box"];
+node0 -> node04948
+node04948[label = "124-LLAMADAS" shape="box"];
+node04948 -> node0494810
+node0494810[label = "124-Multiplicacion" shape="box"];
+node04948 -> node0494821
+node0494821[label = "124-ParametrosL" shape="box"];
+node0494821 -> node049482110
+node049482110[label = "2" shape="box"];
+node0494821 -> node049482121
+node049482121[label = "7.25" shape="box"];
+node0 -> node05049
+node05049[label = "125-ASIGNACION" shape="box"];
+node05049 -> node0504910
+node0504910[label = "125-var_3" shape="box"];
+node05049 -> node0504921
+node0504921[label = "125-=" shape="box"];
+node05049 -> node0504932
+node0504932[label = "compi 1 == compi 1" shape="box"];
+node0 -> node05150
+node05150[label = "126-LLAMADAS" shape="box"];
+node05150 -> node0515010
+node0515010[label = "126-holamundo" shape="box"];
 
 
 }
