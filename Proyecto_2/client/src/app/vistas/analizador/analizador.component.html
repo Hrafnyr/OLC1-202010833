@@ -4,15 +4,15 @@
     <form id = "botones" class="form-inline">   
       
         <form [formGroup]= "get_form" (ngSubmit)="makeFile(get_form.value)" >  
-            <form [formGroup]= "get_form">  
+            <!-- <form [formGroup]= "get_form">   -->
                 <input accept=".olc" id="archivo" type="file" (change)="readFile($event)">  
                 <button mdbBtn  type="submit" color="success"   mdbWavesEffect >Guardar Archivo</button>
             
             <button mdbBtn color="success" class="waves-light" mdbWavesEffect type="button" (click)="showSimbolos()" >Tabla de Simbolos</button>
             <button mdbBtn  color="success" class="waves-light" mdbWavesEffect type="button"  (click)="showAst()">Ver AST</button>
             <button mdbBtn color="success" class="waves-light" mdbWavesEffect type="button" (click)="showErrores()">Tabla de Errores</button>
-            </form>
-            
+            <!-- </form>
+             -->
             
             <!-- <form [formGroup]= "get_form" (ngSubmit)="showAst(get_form.value)">  
                

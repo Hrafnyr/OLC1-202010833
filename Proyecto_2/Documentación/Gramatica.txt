@@ -1,0 +1,187 @@
+
+Terminales = {
+	prInt, prDouble, prBoolean, prChar, prString, tkDecimal, tkEntero, prTrue, prFalse,
+	tkCaracter, tkCadena, tkIncremento, tkDecremento, tkMas, tkMenos, tkMult, tkDiv,
+	tkPot, tkMod, tkMayorIgual, tkMenorIgual, tkIgual, tkDiferente, tkMayor, tkMenor, tkSgIgual,
+	tkOr, tkAnd, tkNot, tkAbrP, tkCerrP, tkPtComa, tkAbrLL, tkCerrLL, prNew, prPrint, prPrintln,
+	prIF, prElse, prElif, prSwitch, prCase, prDefault, prBreak, prContinue, prWhile, prFor, prDo,
+	prUntil, prReturn, prLower, prUpper, prRound, prVoid, prRun, prLength, prTypeof, prPush, prPop
+	prToString, prToCharArray, tkID, tkComa, tk2Puntos, tkTernario, tkAbrC,tkCerrC, EOF
+}
+
+
+No terminales = { 
+    UMENOS, INICIAR, error, CUERPO,INS,DECLARACION,ASIGNACION,INCREMENTO,
+    VECTORES, MODIFICARVEC, PRINTS, RETURN, CONDICIONALES, CICLOS, FUNCIONES,             
+    METODOS, LLAMADAS, RUN, OPVEC, PARAMETROSF,TIPODATO, LISTAVEC1, FUNCS,
+    EXPRESION, LISTAID, CASTEO, TIPOV1, TIPOV2, IF, SWITCH, BLOQUEIF, ELIFELSE,
+    BLOQUESW, CASE, DEFAULT, WHILE, FOR, DOWHILE, DOUNTIL,  ACCEDERVECTOR
+}
+
+Inicio = INICIAR
+ 
+INICIAR::= CUERPO EOF 
+    | error tkPtComa 
+ 
+CUERPO::=CUERPO INS
+    | INS    
+ 
+INS::= DECLARACION tkPtComa 
+    | ASIGNACION tkPtComa   
+    | INCREMENTO tkPtComa   
+    | VECTORES tkPtComa     
+    | MODIFICARVEC tkPtComa 
+    | PRINTS tkPtComa       
+    | prBreak tkPtComa      
+    | prContinue tkPtComa   
+    | RETURN tkPtComa       
+    | CONDICIONALES         
+    | CICLOS                
+    | FUNCIONES             
+    | METODOS               
+    | LLAMADAS tkPtComa     
+    | RUN                   
+    | OPVEC tkPtComa        
+ 
+METODOS::= tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
+    | tkID tkAbrP PARAMETROSF tkCerrP tkAbrLL CUERPO tkCerrLL 
+    | tkID tkAbrP tkCerrP tk2Puntos prVoid tkAbrLL CUERPO tkCerrLL 
+    | tkID tkAbrP tkCerrP tkAbrLL CUERPO tkCerrLL 
+ 
+FUNCIONES::= tkID tkAbrP PARAMETROSF tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
+    | tkID tkAbrP tkCerrP tk2Puntos TIPODATO tkAbrLL CUERPO tkCerrLL
+
+RUN::= prRun LLAMADAS tkPtComa 
+ 
+LLAMADAS ::= tkID tkAbrP LISTAVEC1 tkCerrP 
+    | tkID tkAbrP tkCerrP
+
+FUNCS::= prLower tkAbrP EXPRESION tkCerrP 
+    | prUpper tkAbrP EXPRESION tkCerrP 
+    | prRound tkAbrP EXPRESION tkCerrP 
+    | prLength tkAbrP EXPRESION tkCerrP 
+    | prTypeof tkAbrP EXPRESION tkCerrP 
+    | prToString tkAbrP EXPRESION tkCerrP
+
+PRINTS::= prPrint tkAbrP EXPRESION tkCerrP
+    | prPrintln tkAbrP EXPRESION tkCerrP
+ 
+PARAMETROSF::= PARAMETROSF tkComa TIPODATO tkID
+    | TIPODATO tkID
+ 
+RETURN::= prReturn EXPRESION
+
+DECLARACION::= TIPODATO LISTAID tkSgIgual EXPRESION 
+    | TIPODATO LISTAID tkSgIgual CASTEO EXPRESION
+    | TIPODATO LISTAID
+ 
+VECTORES::= TIPODATO tkAbrC tkCerrC TIPOV1 
+    | TIPODATO tkAbrC tkCerrC tkAbrC tkCerrC TIPOV2
+ 
+TIPOV1::= tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC 
+    | tkID tkSgIgual prToCharArray tkAbrP EXPRESION tkCerrP 
+    | tkID tkSgIgual prNew TIPODATO tkAbrC CASTEO EXPRESION tkCerrC 
+    | tkID tkSgIgual tkAbrLL LISTAVEC1 tkCerrLL
+ 
+TIPOV2::= tkID tkSgIgual prNew TIPODATO tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC
+    | tkID tkSgIgual tkAbrLL tkAbrLL LISTAVEC1 tkCerrLL tkComa  tkAbrLL LISTAVEC1 tkCerrLL tkCerrLL
+    
+LISTAVEC1::= LISTAVEC1 tkComa EXPRESION
+    | EXPRESION
+
+MODIFICARVEC::= tkID tkAbrC EXPRESION tkCerrC tkSgIgual EXPRESION
+    | tkID tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC tkSgIgual EXPRESION
+
+OPVEC::= tkID prPush tkAbrP EXPRESION tkCerrP
+    | tkID prPop tkAbrP tkCerrP
+
+CONDICIONALES::= IF        
+    | SWITCH  
+
+IF::= prIF tkAbrP EXPRESION tkCerrP BLOQUEIF 
+
+BLOQUEIF::= tkAbrLL CUERPO tkCerrLL
+    | tkAbrLL CUERPO tkCerrLL ELIFELSE
+
+ELIFELSE::= prElif tkAbrP EXPRESION tkCerrP BLOQUEIF 
+    | prElse BLOQUEIF  
+
+SWITCH::= prSwitch tkAbrP EXPRESION tkCerrP BLOQUESW
+
+BLOQUESW::= tkAbrLL CASE DEFAULT tkCerrLL 
+    | tkAbrLL CASE tkCerrLL 
+    | tkAbrLL DEFAULT tkCerrLL
+ 
+CASE::= CASE prCase EXPRESION tk2Puntos CUERPO
+    | prCase EXPRESION tk2Puntos CUERPO 
+ 
+DEFAULT::= prDefault tk2Puntos CUERPO
+
+CICLOS::= WHILE 
+    | FOR   
+    | DOWHILE 
+    | DOUNTIL 
+
+WHILE::= prWhile tkAbrP EXPRESION tkCerrP tkAbrLL CUERPO tkCerrLL
+ 
+FOR ::= prFor tkAbrP DECLARACION tkPtComa EXPRESION tkPtComa INCREMENTO tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP DECLARACION tkPtComa EXPRESION tkPtComa ASIGNACION tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP ASIGNACION tkPtComa EXPRESION tkPtComa INCREMENTO tkCerrP tkAbrLL CUERPO tkCerrLL
+    | prFor tkAbrP ASIGNACION tkPtComa EXPRESION tkPtComa ASIGNACION tkCerrP tkAbrLL CUERPO tkCerrLL
+ 
+DOWHILE::= prDo tkAbrLL CUERPO tkCerrLL prWhile tkAbrP EXPRESION tkCerrP tkPtComa
+
+DOUNTIL::= prDo tkAbrLL CUERPO tkCerrLL prUntil tkAbrP EXPRESION tkCerrP tkPtComa
+
+CASTEO::= tkAbrP TIPODATO tkCerrP
+
+INCREMENTO::= tkID tkIncremento 
+    | tkID tkDecremento
+
+ASIGNACION::= tkID tkSgIgual EXPRESION
+    | tkID tkSgIgual EXPRESION tkTernario EXPRESION tk2Puntos EXPRESION
+
+LISTAID::= LISTAID tkComa tkID
+    | tkID
+ 
+TIPODATO::= prInt     
+    | prDouble  
+    | prString  
+    | prChar    
+    | prBoolean
+ 
+-> Aclaración: Se agregó precedencia de operadores en código para mitigar la ambigüedad
+de la producción siguiente:
+
+EXPRESION::= tkMenos EXPRESION %prec UMENOS
+	| tkID tkDecremento 
+    | tkID tkIncremento
+    | EXPRESION tkMas   EXPRESION    
+	| EXPRESION tkMenos EXPRESION  
+	| EXPRESION tkMult EXPRESION    
+	| EXPRESION tkDiv EXPRESION    
+    | EXPRESION tkMod EXPRESION      
+    | EXPRESION tkPot EXPRESION    
+    | EXPRESION tkMenor  EXPRESION 
+    | EXPRESION tkMayor  EXPRESION 
+    | EXPRESION tkMayorIgual EXPRESION  
+    | EXPRESION tkMenorIgual EXPRESION  
+    | EXPRESION tkIgual EXPRESION       
+    | EXPRESION tkDiferente EXPRESION 
+    | EXPRESION tkAnd EXPRESION 
+    | EXPRESION tkOr EXPRESION  
+    | tkNot EXPRESION 
+    | tkEntero                   
+    | tkDecimal  
+    | tkID      
+    | prTrue       
+    | prFalse      
+    | tkCadena     
+    | tkCaracter   
+    | LLAMADAS    
+    | FUNCS   
+    | ACCEDERVECTOR                                
+    | tkAbrP EXPRESION tkCerrP    
+ 
+ACCEDERVECTOR::= tkID tkAbrC EXPRESION tkCerrC 
+    | tkID tkAbrC EXPRESION tkCerrC tkAbrC EXPRESION tkCerrC

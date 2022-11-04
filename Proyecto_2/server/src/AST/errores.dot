@@ -11,7 +11,7 @@ nodo [ label = <
 <td align="text" bgcolor="#a8f2f9">Fila</td>
 <td align="text" bgcolor="#a8f2f9">Columna</td>
 </tr><tr>
-<td align="text" bgcolor="#f5fca2">0<br align="left"/></td><td align="text" bgcolor="#cbffd9">Error sintáctico<br align="left"/></td><td align="text" bgcolor="#a8f2f9">No se esperaba: ;<br align="left"/></td><td align="text" bgcolor="#cbffd9">11<br align="left"/></td><td align="text" bgcolor="#a8f2f9">28<br align="left"/></td></tr>
+<td align="text" bgcolor="#f5fca2">0<br align="left"/></td><td align="text" bgcolor="#cbffd9">Error sintáctico<br align="left"/></td><td align="text" bgcolor="#a8f2f9">No se esperaba: ;<br align="left"/></td><td align="text" bgcolor="#cbffd9">3<br align="left"/></td><td align="text" bgcolor="#a8f2f9">6<br align="left"/></td></tr>
 </table>
 >
 ]
